@@ -13,6 +13,7 @@ public class Main {
 
 
             System.out.println("Hello sunt Peter Miheller");
+            System.out.println("Hello sunt Andrei :)");
         }
     }
 }
