@@ -1,3 +1,5 @@
+package Models;
+
 public class Reservation {
     public int id;
     public String date;

@@ -1,4 +1,5 @@
-import java.util.LinkedList;
+package Models;
+
 import java.util.List;
 
 public class Airport {

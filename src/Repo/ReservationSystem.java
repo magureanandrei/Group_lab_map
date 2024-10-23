@@ -1,6 +1,10 @@
+package Repo;
+
+import Models.*;
+
 import java.util.List;
 
-public class ReservationSystem implements Repository{
+public class ReservationSystem implements Repository {
     @Override
     public List<Passenger> getPassengers() {
         return List.of();

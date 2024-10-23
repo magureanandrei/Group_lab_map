@@ -1,3 +1,7 @@
+package Repo;
+
+import Models.*;
+
 import java.util.List;
 
 public interface Repository {

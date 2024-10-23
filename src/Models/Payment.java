@@ -1,3 +1,5 @@
+package Models;
+
 public class Payment {
     public int id;
     public String Description;

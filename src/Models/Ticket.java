@@ -1,3 +1,5 @@
+package Models;
+
 public class Ticket {
     public int id;
     public String title;
