@@ -1,6 +1,6 @@
 package Models;
 
-public class Ticket {
+public class Ticket implements HasID{
     public int id;
     public String title;
     public String description;
@@ -11,5 +11,10 @@ public class Ticket {
         this.title = title;
         this.description = description;
         this.payment = payment;
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 }

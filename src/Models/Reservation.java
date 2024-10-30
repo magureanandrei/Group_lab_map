@@ -1,6 +1,6 @@
 package Models;
 
-public class Reservation {
+public class Reservation implements HasID {
     public int id;
     public String date;
     public Payment payment;
@@ -11,5 +11,10 @@ public class Reservation {
         this.date = date;
         this.payment = payment;
         this.passenger = passenger;
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 }

@@ -4,15 +4,10 @@ import Models.*;
 
 import java.util.List;
 
-public interface Repository {
-
-    List<Passenger> getPassengers();
-
-    List<Airplane> getAirplanes();
-
-    List<Pilot> getPilot();
-
-    List<Cabin_Crew> getCabinCrew();
-
-    List<Reservation> getReservation();
+public interface Repository<T extends HasID> {
+    void create(T obj);
+    T get(Integer id);
+    void update(T obj);
+    void delete(Integer id);
+    List<T> getAll();
 }

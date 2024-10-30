@@ -1,6 +1,6 @@
 package Models;
 
-public class Payment {
+public class Payment implements HasID{
     public int id;
     public String Description;
     public double Amount;
@@ -11,5 +11,10 @@ public class Payment {
         Description = description;
         Amount = amount;
         this.passenger = passenger;
+    }
+
+    @Override
+    public int getID() {
+        return id;
     }
 }

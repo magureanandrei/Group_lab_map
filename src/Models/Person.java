@@ -1,9 +1,9 @@
 package Models;
 
-public abstract class Person {
-    public int id;
-    public String nume;
-    public String email;
+public abstract class Person{
+    protected int id;
+    protected String nume;
+    protected String email;
 
     public Person(String nume, int id, String email) {
         this.nume = nume;
@@ -11,9 +11,7 @@ public abstract class Person {
         this.email = email;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() {return id;}
 
     public void setId(int id) {
         this.id = id;

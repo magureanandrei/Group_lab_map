@@ -1,6 +1,6 @@
 package Models;
 
-public class Airplane {
+public class Airplane implements HasID{
     private int id;
     private String model;
     private int capacitate;
@@ -15,4 +15,8 @@ public class Airplane {
 
     }
 
+    @Override
+    public int getID() {
+        return id;
+    }
 }

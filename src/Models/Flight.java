@@ -1,6 +1,6 @@
 package Models;
 
-public class Flight {
+public class Flight implements HasID{
     public int flightID;
     public String from;
     public String to;
@@ -11,5 +11,10 @@ public class Flight {
         this.from = from;
         this.to = to;
         this.pilot = pilot;
+    }
+
+    @Override
+    public int getID() {
+        return flightID;
     }
 }
