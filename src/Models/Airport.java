@@ -20,15 +20,25 @@ public class Airport {
     public void setLocation(String location) {
         this.location = location;
     }
-
+// deci / dupa ** dupa enter pentru javaDoc
+    /**
+     * Ce face metode
+     * @return
+     */
     public Integer getNumber_of_airstrips() {
         return number_of_airstrips;
     }
+
 
     public void setNumber_of_airstrips(Integer number_of_airstrips) {
         this.number_of_airstrips = number_of_airstrips;
     }
 
+    /**
+     * Logica metodei
+     *  ce fce param
+     * @return ce returneza
+     */
     public List<Integer> getLength_of_airstrips() {
         return length_of_airstrips;
     }

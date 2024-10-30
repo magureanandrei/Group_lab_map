@@ -3,17 +3,14 @@ package Models;
 public class Airplane implements HasID{
     private int id;
     private String model;
-    private int capacitate;
+    private int capacity;
 
-    public Airplane(int id, String model, int capacitate) {
+    public Airplane(int id, String model, int capacity) {
         this.id = id;
         this.model = model;
-        this.capacitate = capacitate;
+        this.capacity = capacity;
     }
 
-    void create_flght() {
-
-    }
 
     @Override
     public int getID() {
