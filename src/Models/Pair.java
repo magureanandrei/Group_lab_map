@@ -17,6 +17,14 @@ public class Pair {
         return second;
     }
 
+    public void setFrom(String first) {
+        this.first = first;
+    }
+
+    public void setTo(String second) {
+        this.second = second;
+    }
+
     @Override
     public String toString() {
         return "(" + first + ", " + second + ")";

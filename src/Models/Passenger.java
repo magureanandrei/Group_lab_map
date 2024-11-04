@@ -1,7 +1,6 @@
 package Models;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Passenger extends Person implements HasID {
     public ArrayList<Pair> flight;

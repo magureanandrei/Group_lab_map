@@ -4,6 +4,11 @@ import Repo.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+//
+//CRUD opps for all these repos.
+//did read for all of them
+//did create, delete and update also
+
 public class Service {
 
     private final Repository<Pilot> pilotsRepo;
@@ -53,8 +58,8 @@ public class Service {
         Pilot pilot = new Pilot(nume,id,email,availibility);
         pilotsRepo.create(pilot);
     }
-    public void createCabinCrew(String nume, int id, String email){
-        CabinCrew cabin = new CabinCrew(nume,id,email);
+    public void createCabinCrew(String nume, int id, String email, String profession){
+        CabinCrew cabin = new CabinCrew(nume,id,email,profession);
         cabinCrewRepo.create(cabin);
     }
 
@@ -75,4 +80,74 @@ public class Service {
         return reservation;
     }
 
+    public List<Flight> getAllFlights() {return flightRepo.getAll();}
+
+    public void deletePilot(Pilot pilotPara){
+        for(Pilot pilot: pilotsRepo.getAll())
+            if(pilot.equals(pilotPara))
+                pilotsRepo.delete(pilot.getID());
+    }
+
+    public void deletePassenger(Passenger passengerPara){
+        for(Passenger passenger: passengerRepo.getAll())
+        {
+            if(passenger.equals(passengerPara))
+                passengerRepo.delete(passenger.getID());
+        }
+    }
+
+    public void deleteCabinCrew(CabinCrew cabinCrewPara){
+        for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
+            if(cabinCrew.equals(cabinCrewPara))
+                cabinCrewRepo.delete(cabinCrew.getID());
+    }
+
+    public void deleteFlight(Flight flightPara){
+        for(Flight flight: flightRepo.getAll())
+            if(flight.equals(flightPara))
+                flightRepo.delete(flight.getID());
+    }
+
+    public void updatePilot(Pilot pilotPara,String newName, String newEmail){
+        for(Pilot pilot: pilotsRepo.getAll())
+            if(pilot.equals(pilotPara))
+            {
+                pilotPara.setNume(newName);
+                pilotPara.setEmail(newEmail);
+            }
+    }
+
+    public void updatePassenger(Passenger passengerPara,String newName, String newEmail, String newTo, String newFrom){
+        for(Passenger passenger: passengerRepo.getAll())
+
+            if(passenger.equals(passengerPara))
+            {
+                passengerPara.setNume(newName);
+                passengerPara.setEmail(newEmail);
+                Pair pair= new Pair(newFrom,newTo);
+                ArrayList<Pair> newFlight=new ArrayList<>();
+                newFlight.add(pair);
+                passengerPara.flight=newFlight;
+            }
+    }
+
+    public void updateCabinCrew(CabinCrew cabinCrewPara, String newName, String newEmail, String newProfesion){
+        for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
+            if(cabinCrew.equals(cabinCrewPara))
+            {
+                cabinCrew.setNume(newName);
+                cabinCrew.setEmail(newEmail);
+                cabinCrew.profession=newProfesion;
+            }
+    }
+
+    public void updateFlight(Flight flightPara,String newFrom, String newTo, Pilot newPilot){
+        for (Flight flight: flightRepo.getAll())
+            if(flight.equals(flightPara))
+            {
+                flight.to=newTo;
+                flight.from=newFrom;
+                flight.pilot=newPilot;
+            }
+    }
 }
