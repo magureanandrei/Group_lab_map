@@ -23,11 +23,10 @@ public class UI {
     public void run() {
         Scanner scanner = new Scanner(System.in);
         greeting();
-        System.out.println("Are you an Operator or a Passenger?");
-        String userType = scanner.nextLine().toLowerCase(); // Citim tipul de utilizator și transformăm în litere mici
-
+        System.out.println("Are you an Operator(1) or a Passenger(2)?");
+        Integer userType = scanner.nextInt();
         // Validăm tipul de utilizator
-        if (userType.equals("operator")) {
+        if (userType.equals(1)) {
             // Opțiuni pentru Operator
             boolean running = true;
             while (running) {
@@ -46,7 +45,7 @@ public class UI {
                         break;
                 }
             }
-        } else if (userType.equals("passenger")) {
+        } else if (userType.equals(2)) {
             // Opțiuni pentru Passenger
             boolean running = true;
             while (running) {

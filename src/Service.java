@@ -37,4 +37,42 @@ public class Service {
 
     public List<CabinCrew> getAllCabinCrews() {return cabinCrewRepo.getAll();}
 
+
+    public void createFlight(int flightID, String from, String to, Pilot pilot){
+         Flight flight = new Flight(flightID,from,to,pilot);
+        flightRepo.create(flight);// verify in controller if the pilot is available and everything
+    }
+    public void createPassenger(String passengerName,int passengerID, String from, String to, String email){
+        Pair pair = new Pair(from,to);
+        ArrayList<Pair> passengerFlights = new ArrayList<Pair>();
+        passengerFlights.add(pair);
+        Passenger passenger = new Passenger(passengerName,passengerID,email,passengerFlights);
+        passengerRepo.create(passenger);
+    }
+    public void createPilot(String nume, int id, String email, Boolean availibility){
+        Pilot pilot = new Pilot(nume,id,email,availibility);
+        pilotsRepo.create(pilot);
+    }
+    public void createCabinCrew(String nume, int id, String email){
+        CabinCrew cabin = new CabinCrew(nume,id,email);
+        cabinCrewRepo.create(cabin);
+    }
+
+
+    public ArrayList<Flight> bookSeat(String from, String to){
+        ArrayList<Flight> possibleFlights= new ArrayList<Flight>();
+        for(Flight flight: flightRepo.getAll()){
+            if(flight.from.equals(from) && flight.to.equals(to))
+                possibleFlights.add(flight);
+        }
+        return possibleFlights;
+    }
+
+    public Reservation createReservation(int reservationID, String date, Payment payment, int passengerID, int flightID) {
+        Passenger passenger = passengerRepo.get(passengerID);
+        Flight flight = flightRepo.get(flightID);
+        Reservation reservation = new Reservation(reservationID, date, payment, passenger, flight);
+        return reservation;
+    }
+
 }
