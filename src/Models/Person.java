@@ -1,17 +1,17 @@
 package Models;
 
 public abstract class Person{
-    protected int id;
+    protected Integer id;
     protected String nume;
     protected String email;
 
-    public Person(String nume, int id, String email) {
+    public Person(String nume, Integer id, String email) {
         this.nume = nume;
         this.id = id;
         this.email = email;
     }
 
-    public int getId() {return id;}
+    public Integer getId() {return id;}
 
     public void setId(int id) {
         this.id = id;

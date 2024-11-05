@@ -1,13 +1,13 @@
 package Models;
 
 public class Reservation implements HasID {
-    public int id;
+    public Integer id;
     public String date;
     public Payment payment;
     public Passenger passenger;
     public Flight flight;
 
-    public Reservation(int id, String date, Payment payment, Passenger passenger, Flight flight) {
+    public Reservation(Integer id, String date, Payment payment, Passenger passenger, Flight flight) {
         this.id = id;
         this.date = date;
         this.payment = payment;
@@ -16,7 +16,7 @@ public class Reservation implements HasID {
     }
 
     @Override
-    public int getID() {
+    public Integer getID() {
         return id;
     }
 
@@ -30,4 +30,5 @@ public class Reservation implements HasID {
                 ", flight=" + flight +
                 '}';
     }
+
 }

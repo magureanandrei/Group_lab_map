@@ -1,7 +1,7 @@
 package Models;
 
 public class Payment implements HasID{
-    public int id;
+    public Integer id;
     public String Description;
     public double Amount;
     public Passenger passenger;
@@ -14,7 +14,7 @@ public class Payment implements HasID{
     }
 
     @Override
-    public int getID() {
+    public Integer getID() {
         return id;
     }
 }
