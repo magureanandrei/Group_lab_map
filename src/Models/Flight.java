@@ -14,6 +14,16 @@ public class Flight implements HasID{
     }
 
     @Override
+    public String toString() {
+        return "Flight{" +
+                "flightID=" + flightID +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", pilot=" + pilot +
+                '}';
+    }
+
+    @Override
     public int getID() {
         return flightID;
     }

@@ -25,6 +25,14 @@ public class Service {
         this.flightRepo = flightRepo;
     }
 
+    public ArrayList<Pilot> getAvailablePilots() {
+        ArrayList<Pilot> pilots= new ArrayList<Pilot>();
+        for(Pilot pilot: pilotsRepo.getAll())
+            if(pilot.availability.equals(true))
+                pilots.add(pilot);
+        return pilots;
+    }
+
     public List<Pilot> getPilots() {return pilotsRepo.getAll();}
 
     public List<Passenger> getAllPassengers() {return passengerRepo.getAll();}
@@ -45,7 +53,7 @@ public class Service {
 
     public void createFlight(int flightID, String from, String to, Pilot pilot){
          Flight flight = new Flight(flightID,from,to,pilot);
-        flightRepo.create(flight);// verify in controller if the pilot is available and everything
+        flightRepo.create(flight);// verify in controller if the pilot is available and and if the airport has free airstrips
     }
     public void createPassenger(String passengerName,int passengerID, String from, String to, String email){
         Pair pair = new Pair(from,to);
@@ -70,6 +78,8 @@ public class Service {
             if(flight.from.equals(from) && flight.to.equals(to))
                 possibleFlights.add(flight);
         }
+        //ar trebui createReservation daca nu sunt possibeFlight si altfel sa fie create!!
+        // Sa returneze o rezervare
         return possibleFlights;
     }
 
