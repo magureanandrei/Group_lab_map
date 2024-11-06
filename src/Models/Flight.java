@@ -1,12 +1,12 @@
 package Models;
 
 public class Flight implements HasID{
-    public Integer flightID;
+    public int flightID;
     public String from;
     public String to;
     public Pilot pilot;
 
-    public Flight(Integer flightID, String from, String to, Pilot pilot) {
+    public Flight(int flightID, String from, String to, Pilot pilot) {
         this.flightID = flightID;
         this.from = from;
         this.to = to;
@@ -14,8 +14,17 @@ public class Flight implements HasID{
     }
 
     @Override
-    public Integer getID() {
-        return flightID;
+    public String toString() {
+        return "Flight{" +
+                "flightID=" + flightID +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", pilot=" + pilot +
+                '}';
     }
 
+    @Override
+    public int getID() {
+        return flightID;
+    }
 }
