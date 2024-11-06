@@ -34,14 +34,7 @@ public class Controller {
         }
     }
     public void viewPassengersByFlight(Integer flightID){
-        Flight f=null;
-        for(Flight flight : flightService.getAllFlights()){
-            if(flight.getID().equals(flightID)){
-                f=flight;
-            }
-        }
-
-        List<Passenger> allPassengersByFlight = flightService.getPassengersByFlight(f);
+        List<Passenger> allPassengersByFlight = flightService.getPassengersByFlight(flightID);
         System.out.println("Passengers By Flight:\n");
         for (Passenger passenger : allPassengersByFlight) {
             System.out.println(passenger.toString() + " \n");
@@ -164,5 +157,109 @@ public class Controller {
     public void createPassenger(String passengerName, String from, String to, String email){
         flightService.createPassenger(passengerName, from, to, email);
         System.out.println("Passenger was created");
+    }
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID) {
+        flightService.createFlight(from, to, pilotID, airplaneID);
+        System.out.println("Flight was created");
+    }
+
+    public void createReservation(String date, Integer paymentID, Integer passengerID, Integer flightID) {
+        flightService.createReservation(date, paymentID, passengerID, flightID);
+        System.out.println("Reservation was created");
+    }
+
+    public void createPayment(String description, double amount, Integer passengerID) {
+        flightService.createPayment(description, amount, passengerID);
+        System.out.println("Payment was created");
+    }
+
+    public void createTicket(String title, String description, Integer paymentID) {
+        flightService.createTicket(title, description, paymentID);
+        System.out.println("Ticket was created");
+    }
+
+    public void createAirplane(String model, Integer capacity, Boolean available) {
+        flightService.createAirplane(model, capacity, available);
+        System.out.println("Airplane was created");
+    }
+
+    public void deleteReservation(Integer reservationID) {
+        Reservation r = null;
+        for (Reservation reservation : flightService.getAllReservations()) {
+            if (reservation.getID().equals(reservationID)) {
+                r = reservation;
+            }
+        }
+        if (r != null) {
+            flightService.deleteReservation(reservationID);
+            System.out.println("Removed Reservation " + r + ".");
+        } else {
+            System.out.println("Reservation not found.");
+        }
+    }
+
+    public void deletePayment(Integer paymentID) {
+        Payment p = null;
+        for (Payment payment : flightService.getAllPayments()) {
+            if (payment.getID().equals(paymentID)) {
+                p = payment;
+            }
+        }
+        if (p != null) {
+            flightService.deletePayment(paymentID);
+            System.out.println("Removed Payment " + p + ".");
+        } else {
+            System.out.println("Payment not found.");
+        }
+    }
+
+    public void deleteTicket(Integer ticketID) {
+        Ticket t = null;
+        for (Ticket ticket : flightService.getAllTickets()) {
+            if (ticket.getID().equals(ticketID)) {
+                t = ticket;
+            }
+        }
+        if (t != null) {
+            flightService.deleteTicket(ticketID);
+            System.out.println("Removed Ticket " + t + ".");
+        } else {
+            System.out.println("Ticket not found.");
+        }
+    }
+
+    public void deleteAirplane(Integer airplaneID) {
+        Airplane a = null;
+        for (Airplane airplane : flightService.getAllAirplanes()) {
+            if (airplane.getID().equals(airplaneID)) {
+                a = airplane;
+            }
+        }
+        if (a != null) {
+            flightService.deleteAirplane(airplaneID);
+            System.out.println("Removed Airplane " + a + ".");
+        } else {
+            System.out.println("Airplane not found.");
+        }
+    }
+
+    public void updateReservation(Integer reservationID, String newDate) {
+        flightService.updateReservation(reservationID, newDate);
+        System.out.println("Updated Reservation: " + newDate + ".");
+    }
+
+    public void updatePayment(Integer paymentID, String newDescription, double newAmount) {
+        flightService.updatePayment(paymentID, newDescription, newAmount);
+        System.out.println("Updated Payment: " + newDescription + ".");
+    }
+
+    public void updateTicket(Integer ticketID, String newTitle, String newDescription) {
+        flightService.updateTicket(ticketID, newTitle, newDescription);
+        System.out.println("Updated Ticket: " + newTitle + ".");
+    }
+
+    public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity, Boolean newAvailable) {
+        flightService.updateAirplane(airplaneID, newModel, newCapacity, newAvailable);
+        System.out.println("Updated Airplane: " + newModel + ".");
     }
 }
