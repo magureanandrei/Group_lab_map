@@ -3,9 +3,9 @@ package Models;
 import java.util.List;
 
 public class Airport {
-    String location;
-    Integer number_of_airstrips;
-    List<Integer> length_of_airstrips;
+    private String location;
+    private Integer number_of_airstrips;
+    private List<Integer> length_of_airstrips;
 
     public Airport(String location, Integer number_of_airstrips, List<Integer> length_of_airstrips) {
         this.location = location;
@@ -46,4 +46,5 @@ public class Airport {
     public void setLength_of_airstrips(List<Integer> length_of_airstrips) {
         this.length_of_airstrips = length_of_airstrips;
     }
+
 }

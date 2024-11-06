@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 // did the implementation for all, delete, update, get Functions
 //create functions from passenger, pilot and cabin crew are done
-//we still need to do the create functions for Flight, reservation and ticket
+//we still need to do the create functions for Flight, reservation, payment and ticket
 public class Controller {
     private final Service flightService;
 
@@ -110,8 +110,8 @@ public class Controller {
         flightService.updateCabinCrew(cabinID, newName, newEmail, newProfesion);
         System.out.println("Updated Cabin Crew: " + newName + ".");
     }
-    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID){
-        flightService.updateFlight(flightID, newFrom, newTo, pilotID);
+    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID,Integer airplaneID){
+        flightService.updateFlight(flightID, newFrom, newTo, pilotID,airplaneID);
         System.out.println("Updated Flight " + newFrom + ","+ newTo + ".");
     }
     public void updatePilot(Integer pilotID,String newName, String newEmail){
@@ -126,7 +126,7 @@ public class Controller {
         flightService.createCabinCrew(nume, email, profession);
         System.out.println("Cabin Crew was created");
     }
-    public void cretePassenger(String passengerName, String from, String to, String email){
+    public void createPassenger(String passengerName, String from, String to, String email){
         flightService.createPassenger(passengerName, from, to, email);
         System.out.println("Passenger was created");
     }

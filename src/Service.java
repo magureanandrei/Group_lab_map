@@ -14,6 +14,7 @@ public class Service {
     private final Repository<Payment> paymentRepo;
     private final Repository<Reservation> reservationRepo;
     private final Repository<Ticket> ticketRepo;
+    private final Repository<Airplane> airplaneRepo;
 
     Integer counterPassengerID=0;
     Integer counterPilotID=0;
@@ -22,6 +23,8 @@ public class Service {
     Integer counterPaymentID=0;
     Integer counterReservationID=0;
     Integer counterTicketID=0;
+    Integer counterAirplaneID=0;
+
     public Integer createPilotID() {
         counterPilotID++;
         return counterPilotID;
@@ -50,10 +53,14 @@ public class Service {
         counterPassengerID+=1;
         return counterPassengerID;
     }
+    public Integer createAirplaneID() {
+        counterAirplaneID+=1;
+        return counterAirplaneID;
+    }
 
 
 
-    public Service(Repository<Pilot> pilotsRepo, Repository<Passenger> passengerRepo, Repository<CabinCrew> cabinCrewRepo, Repository<Flight> flightRepo, Repository<Payment> paymentRepo, Repository<Reservation> reservationRepo, Repository<Ticket> ticketRepo) {
+    public Service(Repository<Pilot> pilotsRepo, Repository<Passenger> passengerRepo, Repository<CabinCrew> cabinCrewRepo, Repository<Flight> flightRepo, Repository<Payment> paymentRepo, Repository<Reservation> reservationRepo, Repository<Ticket> ticketRepo, Repository<Airplane> airplaneRepo) {
         this.pilotsRepo = pilotsRepo;
         this.passengerRepo = passengerRepo;
         this.cabinCrewRepo = cabinCrewRepo;
@@ -61,6 +68,7 @@ public class Service {
         this.paymentRepo = paymentRepo;
         this.reservationRepo = reservationRepo;
         this.ticketRepo = ticketRepo;
+        this.airplaneRepo = airplaneRepo;
     }
 
     public List<Pilot> getPilots() {return pilotsRepo.getAll();}
@@ -70,7 +78,7 @@ public class Service {
     public List<Passenger> getPassengersByFlight(Flight flightPara) {
         ArrayList<Passenger> passengerByFlight = new ArrayList<Passenger>();
         for( Passenger passenger: passengerRepo.getAll())
-            for(Pair pair: passenger.flight)
+            for(Pair pair: passenger.getFlight())
             {
                 if(pair.getFrom().equals(flightPara.from) && pair.getTo().equals(flightPara.to))
                     passengerByFlight.add(passenger);
@@ -86,13 +94,20 @@ public class Service {
 
     public List<Ticket> getAllTickets() {return ticketRepo.getAll();}
 
-    public void createFlight(String from, String to, Integer pilotID){
+    public List<Airplane> getAllAirplanes() {return airplaneRepo.getAll();}
+
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID){
         Integer flightID=createFlightID();
         Pilot p=null;
+        Airplane a=null;
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilotID.equals(pilot.getID()))
                 p=pilot;
-        Flight flight = new Flight(flightID,from,to,p);
+        for(Airplane airplane: airplaneRepo.getAll())
+            if(airplaneID.equals(airplane.getID()))
+                a=airplane;
+
+        Flight flight = new Flight(flightID,from,to,p,a);
         flightRepo.create(flight);// verify in controller if the pilot is available and everything
     }
     public void createPassenger(String passengerName, String from, String to, String email){
@@ -178,7 +193,7 @@ public class Service {
                 Pair pair= new Pair(newFrom,newTo);
                 ArrayList<Pair> newFlight=new ArrayList<>();
                 newFlight.add(pair);
-                passenger.flight=newFlight;
+                passenger.setFlight(newFlight);
                 break;
             }
     }
@@ -189,16 +204,20 @@ public class Service {
             {
                 cabinCrew.setNume(newName);
                 cabinCrew.setEmail(newEmail);
-                cabinCrew.profession=newProfesion;
+                cabinCrew.setProfession(newProfesion);
                 break;
             }
     }
 
-    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID){
+    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID){
         Pilot p=null;
+        Airplane a=null;
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilot.getID().equals(pilotID))
                 p=pilot;
+        for(Airplane airplane: airplaneRepo.getAll())
+            if(airplane.getID().equals(airplaneID))
+                a=airplane;
 
         for (Flight flight: flightRepo.getAll())
             if(flight.getID().equals(flightID))
@@ -206,6 +225,7 @@ public class Service {
                 flight.to=newTo;
                 flight.from=newFrom;
                 flight.pilot=p;
+                flight.airplane=a;
                 break;
             }
     }
@@ -237,8 +257,8 @@ public class Service {
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))
             {
-                payment.Amount=newAmount;
-                payment.Description=newDescription;
+                payment.setAmount(newAmount);
+                payment.setDescription(newDescription);
                 break;
             }
 
@@ -279,7 +299,7 @@ public class Service {
     public void updateReservation(Integer reservationID,String newDate){
         for(Reservation reservation: reservationRepo.getAll())
             if(reservation.getID().equals(reservationID)) {
-                reservation.date = newDate;
+                reservation.setDate(newDate);
                 break;
             }
 
@@ -305,8 +325,8 @@ public class Service {
     public void updateTicket(Integer ticketID, String newTitle, String newDescription){
         for(Ticket ticket: ticketRepo.getAll())
             if(ticket.getID().equals(ticketID)) {
-                ticket.title = newTitle;
-                ticket.description = newDescription;
+                ticket.setTitle(newTitle);
+                ticket.setDescription(newDescription);
                 break;
             }
     }
@@ -314,10 +334,33 @@ public class Service {
     public ArrayList<Pilot> getAvailablePilots() {
         ArrayList<Pilot> pilots= new ArrayList<Pilot>();
         for(Pilot pilot: pilotsRepo.getAll())
-            if(pilot.availability.equals(true))
+            if(pilot.getAvailability().equals(true))
                 pilots.add(pilot);
         return pilots;
     }
 
+    public void createAirplane(String model, Integer capacity, Boolean avaliable){
+        Integer airplaneID=createAirplaneID();
+        Airplane newaAirplane=new Airplane(airplaneID,model,capacity,avaliable);
+        airplaneRepo.create(newaAirplane);
+    }
+
+    public void deleteAirplane(Integer airplaneID){
+        for(Airplane airplane: airplaneRepo.getAll())
+            if(airplane.getID().equals(airplaneID))
+                airplaneRepo.delete(airplaneID);
+    }
+
+    public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity,Boolean newAvaliable){
+
+        for(Airplane airplane: airplaneRepo.getAll())
+            if(airplane.getID().equals(airplaneID)) {
+                airplane.setModel(newModel);
+                airplane.setAvailable(newAvaliable);
+                airplane.setCapacity(newCapacity);
+            }
+
+
+    }
 
 }
