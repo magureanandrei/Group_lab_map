@@ -1,7 +1,4 @@
-import Models.CabinCrew;
-import Models.Flight;
-import Models.Passenger;
-import Models.Pilot;
+import Models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +54,28 @@ public class Controller {
             System.out.println(flight.toString() + " \n");
         }
     }
+    public void viewAllReservation(){
+        List<Reservation> allReservations = flightService.getAllReservations();
+        System.out.println("All Reservations:\n");
+        for (Reservation reservation : allReservations) {
+            System.out.println(reservation.toString() + " \n");
+        }
+    }
+
+    public void viewAllTickets(){
+        List<Ticket> allTickets = flightService.getAllTickets();
+        System.out.println("All Tickets:\n");
+        for (Ticket ticket : allTickets) {
+            System.out.println(ticket.toString() + " \n");
+        }
+    }
+    public void viewAllPayments(){
+        List<Payment> allPayments = flightService.getAllPayments();
+        System.out.println("All Payments:\n");
+        for (Payment payment : allPayments) {
+            System.out.println(payment.toString() + " \n");
+        }
+    }
 
     public void deletePassenger(Integer passengerID) {
         Passenger p = null;
@@ -65,9 +84,13 @@ public class Controller {
                 p=passenger;
             }
         }
-        //aici trebe un error handling ca daca nu gaseste pasagerul sa dea eroare
-        flightService.deletePassenger(passengerID);
-        System.out.println("Removed Passenger " + p.toString() + ".");
+        if(p!=null){
+            flightService.deletePassenger(passengerID);
+            System.out.println("Removed Passenger " + p + ".");
+        }
+        else
+            System.out.println("Passenger not found.");
+
     }
     public void deleteCabinCrew(Integer cabinID) {
 
@@ -77,9 +100,13 @@ public class Controller {
                 c=cabinCrew;
             }
         }
-        //aici la fel
-        flightService.deleteCabinCrew(cabinID);
-        System.out.println("Removed Cabin Crew " + c.toString() + ".");
+        if(c!=null){
+            flightService.deleteCabinCrew(cabinID);
+            System.out.println("Removed Cabin Crew " + c + ".");
+        }
+        else
+            System.out.println("Cabin crew not found.");
+
     }
     public void deleteFlight(Integer flightID) {
         Flight f = null;
@@ -88,9 +115,13 @@ public class Controller {
                 f=flight;
             }
         }
-        //si aici
-        flightService.deleteFlight(flightID);
-        System.out.println("Removed Flight " + f.toString() + ".");
+        if(f!=null){
+            flightService.deleteFlight(flightID);
+            System.out.println("Removed Flight " + f + ".");
+        }
+        else
+            System.out.println("Flight not found.");
+
     }
     public void deletePilot(Integer pilotID) {
         Pilot p = null;
@@ -98,9 +129,13 @@ public class Controller {
             if(pilot.getID().equals(pilotID)){
                 p=pilot;
             }
-        //si aici
-        flightService.deletePilot(pilotID);
-        System.out.println("Removed Pilot " + p.toString() + ".");
+        if(p!=null){
+            flightService.deletePilot(pilotID);
+            System.out.println("Removed Pilot " + p + ".");
+        }
+        else
+            System.out.println("Pilot not found.");
+
     }
     public void updatePassenger(Integer passengerID,String newName, String newEmail, String newTo, String newFrom){
         flightService.updatePassenger(passengerID, newName, newEmail, newTo, newFrom);
@@ -110,8 +145,8 @@ public class Controller {
         flightService.updateCabinCrew(cabinID, newName, newEmail, newProfesion);
         System.out.println("Updated Cabin Crew: " + newName + ".");
     }
-    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID,Integer airplaneID){
-        flightService.updateFlight(flightID, newFrom, newTo, pilotID,airplaneID);
+    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID){
+        flightService.updateFlight(flightID, newFrom, newTo, pilotID, airplaneID);
         System.out.println("Updated Flight " + newFrom + ","+ newTo + ".");
     }
     public void updatePilot(Integer pilotID,String newName, String newEmail){

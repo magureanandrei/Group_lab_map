@@ -1,6 +1,15 @@
+import Models.Pilot;
+import Repo.Repository;
+
 import java.util.Scanner;
 
 public class UI {
+    private final Controller flightController;
+
+    public UI(Controller flightController) {
+        this.flightController = flightController;
+    }
+
     public void greeting() {
         System.out.println("Welcome to Airplane Management System! \n");
     }
