@@ -16,14 +16,14 @@ public class Service {
     private final Repository<Ticket> ticketRepo;
     private final Repository<Airplane> airplaneRepo;
 
-    Integer counterPassengerID=0;
-    Integer counterPilotID=0;
-    Integer counterCabincrewID=0;
-    Integer counterFlightID=0;
-    Integer counterPaymentID=0;
-    Integer counterReservationID=0;
-    Integer counterTicketID=0;
-    Integer counterAirplaneID=0;
+    Integer counterPassengerID=5;
+    Integer counterPilotID=5;
+    Integer counterCabincrewID=5;
+    Integer counterFlightID=5;
+    Integer counterPaymentID=5;
+    Integer counterReservationID=5;
+    Integer counterTicketID=5;
+    Integer counterAirplaneID=5;
 
     public Integer createPilotID() {
         counterPilotID++;
@@ -75,14 +75,18 @@ public class Service {
 
     public List<Passenger> getAllPassengers() {return passengerRepo.getAll();}
 
-    public List<Passenger> getPassengersByFlight(Flight flightPara) {
+    public List<Passenger> getPassengersByFlight(Integer flightID) {
         ArrayList<Passenger> passengerByFlight = new ArrayList<Passenger>();
-        for( Passenger passenger: passengerRepo.getAll())
-            for(Pair pair: passenger.getFlight())
-            {
-                if(pair.getFrom().equals(flightPara.from) && pair.getTo().equals(flightPara.to))
-                    passengerByFlight.add(passenger);
+        Flight f=null;
+        for(Flight flight : flightRepo.getAll()) {
+            if(flight.getID().equals(flightID)) {
+                f=flight;
             }
+        }
+        for( Passenger passenger: passengerRepo.getAll())
+                if(passenger.getFlight().getFrom().equals(f.from) && passenger.getFlight().getTo().equals(f.to)) {
+                    passengerByFlight.add(passenger);
+                }
         return passengerByFlight;
     }
 
@@ -115,9 +119,7 @@ public class Service {
         //ceva nu pare bine aici dar nu stiu exact ce
         Pair pair = new Pair(from,to);
         Integer passengerID=createPassengerID();
-        ArrayList<Pair> passengerFlights = new ArrayList<Pair>();
-        passengerFlights.add(pair);
-        Passenger passenger = new Passenger(passengerName,passengerID,email,passengerFlights);
+        Passenger passenger = new Passenger(passengerName,passengerID,email,pair);
         passengerRepo.create(passenger);
     }
     public void createPilot(String nume, String email, Boolean availibility){
@@ -191,9 +193,7 @@ public class Service {
                 passenger.setNume(newName);
                 passenger.setEmail(newEmail);
                 Pair pair= new Pair(newFrom,newTo);
-                ArrayList<Pair> newFlight=new ArrayList<>();
-                newFlight.add(pair);
-                passenger.setFlight(newFlight);
+                passenger.setFlight(pair);
                 break;
             }
     }

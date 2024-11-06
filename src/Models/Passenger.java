@@ -3,18 +3,18 @@ package Models;
 import java.util.ArrayList;
 
 public class Passenger extends Person implements HasID {
-    private ArrayList<Pair> flight;
+    private Pair flight;
 
-    public Passenger(String nume, Integer id, String email, ArrayList<Pair> flight) {
+    public Passenger(String nume, Integer id, String email, Pair flight) {
         super(nume, id, email);
         this.flight=flight;
     }
 
-    public ArrayList<Pair> getFlight() {
+    public Pair getFlight() {
         return flight;
     }
 
-    public void setFlight(ArrayList<Pair> flight) {
+    public void setFlight(Pair flight) {
         this.flight = flight;
     }
 
