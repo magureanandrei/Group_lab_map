@@ -311,5 +311,13 @@ public class Service {
             }
     }
 
+    public ArrayList<Pilot> getAvailablePilots() {
+        ArrayList<Pilot> pilots= new ArrayList<Pilot>();
+        for(Pilot pilot: pilotsRepo.getAll())
+            if(pilot.availability.equals(true))
+                pilots.add(pilot);
+        return pilots;
+    }
+
 
 }
