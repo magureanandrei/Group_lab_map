@@ -1,11 +1,21 @@
 package Models;
-
+/**
+ * Represents a ticket associated with a payment.
+ */
 public class Ticket implements HasID{
     private Integer id;
     private String title;
     private String description;
     private Payment payment;
 
+    /**
+     * Constructs a new Ticket with the specified details.
+     *
+     * @param id          The unique identifier for the ticket.
+     * @param title       The title of the ticket.
+     * @param description The description of the ticket.
+     * @param payment     The payment associated with the ticket.
+     */
     public Ticket(Integer id, String title, String description, Payment payment) {
         this.id = id;
         this.title = title;
@@ -13,30 +23,65 @@ public class Ticket implements HasID{
         this.payment = payment;
     }
 
+    /**
+     * Gets the title of the ticket.
+     *
+     * @return The title of the ticket.
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the title of the ticket.
+     *
+     * @param title The title to set.
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Gets the description of the ticket.
+     *
+     * @return The description of the ticket.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the description of the ticket.
+     *
+     * @param description The description to set.
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the payment associated with the ticket.
+     *
+     * @return The payment associated with the ticket.
+     */
     public Payment getPayment() {
         return payment;
     }
 
+    /**
+     * Sets the payment associated with the ticket.
+     *
+     * @param payment The payment to set.
+     */
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
 
+    /**
+     * Gets the unique identifier of the ticket.
+     *
+     * @return The ticket ID.
+     */
     @Override
     public Integer getID() {
         return id;

@@ -5,10 +5,18 @@ import Repo.Repository;
 
 import java.util.ArrayList;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+/**
+ * Main class that initializes the flight management system, including repositories, services, controllers, and the UI.
+ */
 public class Main {
 
+    /**
+     * The entry point of the application.
+     * Initializes repositories, services, controllers, and starts the UI.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
         Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
@@ -26,6 +34,12 @@ public class Main {
         consoleApp.run();
 
     }
+
+    /**
+     * Creates an in-memory repository for pilots and populates it with some initial data.
+     *
+     * @return The in-memory repository for pilots.
+     */
     private static Repository<Pilot> createInMemoryPilotRepository(){
         Repository<Pilot> pilotRepository = new InMemoryRepo<>();
         pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
@@ -36,6 +50,11 @@ public class Main {
         return pilotRepository;
     }
 
+    /**
+     * Creates an in-memory repository for passengers and populates it with some initial data.
+     *
+     * @return The in-memory repository for passengers.
+     */
     private static Repository<Passenger> createInMemoryPassengerRepository(){
         Repository<Passenger> passengerRepository = new InMemoryRepo<>();
         passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
@@ -46,6 +65,11 @@ public class Main {
         return passengerRepository;
     }
 
+    /**
+     * Creates an in-memory repository for cabin crew and populates it with some initial data.
+     *
+     * @return The in-memory repository for cabin crew.
+     */
     private static Repository<CabinCrew> createInMemoryCabinCrewRepository(){
         Repository<CabinCrew> cabinCrewRepository = new InMemoryRepo<>();
         cabinCrewRepository.create(new CabinCrew("John Doe", 1, "john.doe@gmail.com", "Steward"));
@@ -56,6 +80,11 @@ public class Main {
         return cabinCrewRepository;
     }
 
+    /**
+     * Creates an in-memory repository for flights and populates it with some initial data.
+     *
+     * @return The in-memory repository for flights.
+     */
     private static Repository<Flight> createInMemoryFlightRepository(){
         Repository<Flight> flightRepository = new InMemoryRepo<>();
         Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
@@ -68,6 +97,11 @@ public class Main {
         return flightRepository;
     }
 
+    /**
+     * Creates an in-memory repository for payments and populates it with some initial data.
+     *
+     * @return The in-memory repository for payments.
+     */
     private static Repository<Payment> createInMemoryPaymentRepository(){
         Repository<Payment> paymentRepository = new InMemoryRepo<>();
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -80,6 +114,11 @@ public class Main {
         return paymentRepository;
     }
 
+    /**
+     * Creates an in-memory repository for reservations and populates it with some initial data.
+     *
+     * @return The in-memory repository for reservations.
+     */
     private static Repository<Reservation> createInMemoryReservationRepository(){
         Repository<Reservation> reservationRepository = new InMemoryRepo<>();
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -96,6 +135,11 @@ public class Main {
         return reservationRepository;
     }
 
+    /**
+     * Creates an in-memory repository for tickets and populates it with some initial data.
+     *
+     * @return The in-memory repository for tickets.
+     */
     private static Repository<Ticket> createInMemoryTicketRepository(){
         Repository<Ticket> ticketRepository = new InMemoryRepo<>();
         Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
@@ -108,6 +152,11 @@ public class Main {
         return ticketRepository;
     }
 
+    /**
+     * Creates an in-memory repository for airplanes and populates it with some initial data.
+     *
+     * @return The in-memory repository for airplanes.
+     */
     private static Repository<Airplane> createInMemoryAirplaneRepository(){
         Repository<Airplane> airplaneRepository = new InMemoryRepo<>();
         airplaneRepository.create(new Airplane(1, "Boeing 737", 180, Boolean.TRUE));

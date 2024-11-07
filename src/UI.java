@@ -2,17 +2,33 @@ import Models.Pilot;
 import Repo.Repository;
 
 import java.util.Scanner;
-
+/**
+ * The UI class provides a command-line interface for interacting with the flight management system.
+ */
 public class UI {
     private final Controller flightController;
 
+    /**
+     * Constructs a new UI with the given Controller.
+     *
+     * @param flightController The controller that handles the business logic for the flight system.
+     */
     public UI(Controller flightController) {
         this.flightController = flightController;
     }
 
+    /**
+     * Displays a greeting message to the user.
+     */
     public void greeting() {
         System.out.println("Welcome to Airplane Management System! \n");
     }
+
+    /**
+     * Displays the menu options available for the operator.
+     *
+     * @return The menu options for the operator as a formatted string.
+     */
     public String operatorMenu(){
         return """
                 Operator Options:
@@ -21,6 +37,11 @@ public class UI {
                 """;
     }
 
+    /**
+     * Displays the menu options available for the passenger.
+     *
+     * @return The menu options for the passenger as a formatted string.
+     */
     public String passengerMenu(){
         return """
                 Passenger Options:
@@ -29,6 +50,10 @@ public class UI {
                 0. Exit Program
                 """;
     }
+
+    /**
+     * Starts the UI and handles user input, providing appropriate options for operator and passenger modes.
+     */
     public void run() {
         Scanner scanner = new Scanner(System.in);
         greeting();

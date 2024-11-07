@@ -5,12 +5,23 @@ import java.util.List;
 // did the implementation for all, delete, update, get Functions
 //create functions from passenger, pilot and cabin crew are done
 //we still need to do the create functions for Flight, reservation, payment and ticket
+/**
+ * A controller class that handles the business logic for the  flight system.
+ */
 public class Controller {
     private final Service flightService;
 
+    /**
+     * Constructs a new Controller with the given Service.
+     *
+     * @param flightService The service that provides the business logic for the flight system.
+     */
     public Controller(Service flightService) {
         this.flightService = flightService;
     }
+    /**
+     * Displays all available pilots.
+     */
     public void viewAvailablePilots() {
         //1- availible 2- not available
         ArrayList<Pilot> availablePilots = flightService.getAvailablePilots();
@@ -19,6 +30,9 @@ public class Controller {
             System.out.println(pilot.toString() + " \n");
         }
     }
+    /**
+     * Displays all passengers.
+     */
     public void viewPassengers() {
         List<Passenger> allPassengers = flightService.getAllPassengers();
         System.out.println("Passengers:\n");
@@ -26,6 +40,9 @@ public class Controller {
             System.out.println(passenger.toString() + " \n");
         }
     }
+    /**
+     * Displays all cabin crew members.
+     */
     public void viewCabinCrew() {
         List<CabinCrew> allCabinCrew = flightService.getAllCabinCrews();
         System.out.println("Cabin Crew:\n");
@@ -33,6 +50,11 @@ public class Controller {
             System.out.println(cabinCrew.toString() + " \n");
         }
     }
+    /**
+     * Displays all passengers for a specific flight.
+     *
+     * @param flightID The unique identifier of the flight.
+     */
     public void viewPassengersByFlight(Integer flightID){
         List<Passenger> allPassengersByFlight = flightService.getPassengersByFlight(flightID);
         System.out.println("Passengers By Flight:\n");
@@ -40,6 +62,9 @@ public class Controller {
             System.out.println(passenger.toString() + " \n");
         }
     }
+    /**
+     * Displays all flights.
+     */
     public void viewAllFlights(){
         List<Flight> allFlights = flightService.getAllFlights();
         System.out.println("All Flights:\n");
@@ -47,6 +72,9 @@ public class Controller {
             System.out.println(flight.toString() + " \n");
         }
     }
+    /**
+     * Displays all reservations.
+     */
     public void viewAllReservation(){
         List<Reservation> allReservations = flightService.getAllReservations();
         System.out.println("All Reservations:\n");
@@ -55,6 +83,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Displays all tickets.
+     */
     public void viewAllTickets(){
         List<Ticket> allTickets = flightService.getAllTickets();
         System.out.println("All Tickets:\n");
@@ -62,6 +93,9 @@ public class Controller {
             System.out.println(ticket.toString() + " \n");
         }
     }
+    /**
+     * Displays all payments.
+     */
     public void viewAllPayments(){
         List<Payment> allPayments = flightService.getAllPayments();
         System.out.println("All Payments:\n");
@@ -70,6 +104,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a passenger.
+     *
+     * @param passengerID The unique identifier of the passenger to delete.
+     */
     public void deletePassenger(Integer passengerID) {
         Passenger p = null;
         for(Passenger passenger : flightService.getAllPassengers()){
@@ -85,6 +124,11 @@ public class Controller {
             System.out.println("Passenger not found.");
 
     }
+    /**
+     * Deletes a cabin crew member.
+     *
+     * @param cabinID The unique identifier of the cabin crew member to delete.
+     */
     public void deleteCabinCrew(Integer cabinID) {
 
         CabinCrew c = null;
@@ -101,6 +145,11 @@ public class Controller {
             System.out.println("Cabin crew not found.");
 
     }
+    /**
+     * Deletes a flight.
+     *
+     * @param flightID The unique identifier of the flight to delete.
+     */
     public void deleteFlight(Integer flightID) {
         Flight f = null;
         for(Flight flight : flightService.getAllFlights()){
@@ -116,6 +165,11 @@ public class Controller {
             System.out.println("Flight not found.");
 
     }
+    /**
+     * Deletes a pilot.
+     *
+     * @param pilotID The unique identifier of the pilot to delete.
+     */
     public void deletePilot(Integer pilotID) {
         Pilot p = null;
         for(Pilot pilot: flightService.getPilots())
@@ -130,59 +184,157 @@ public class Controller {
             System.out.println("Pilot not found.");
 
     }
+    /**
+     * Updates a passenger's details.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @param newName     The new name of the passenger.
+     * @param newEmail    The new email of the passenger.
+     * @param newTo       The new destination of the passenger.
+     * @param newFrom     The new origin of the passenger.
+     */
     public void updatePassenger(Integer passengerID,String newName, String newEmail, String newTo, String newFrom){
         flightService.updatePassenger(passengerID, newName, newEmail, newTo, newFrom);
         System.out.println("Updated Passenger: " + newName + ".");
     }
+    /**
+     * Updates a cabin crew member's details.
+     *
+     * @param cabinID      The unique identifier of the cabin crew.
+     * @param newName      The new name of the cabin crew member.
+     * @param newEmail     The new email of the cabin crew member.
+     * @param newProfesion The new profession of the cabin crew member.
+     */
     public void updateCabinCrew(Integer cabinID, String newName, String newEmail, String newProfesion){
         flightService.updateCabinCrew(cabinID, newName, newEmail, newProfesion);
         System.out.println("Updated Cabin Crew: " + newName + ".");
     }
+    /**
+     * Updates a flight's details.
+     *
+     * @param flightID  The unique identifier of the flight.
+     * @param newFrom   The new origin location of the flight.
+     * @param newTo     The new destination location of the flight.
+     * @param pilotID   The ID of the new pilot assigned to the flight.
+     * @param airplaneID The ID of the airplane for the flight.
+     */
     public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID){
         flightService.updateFlight(flightID, newFrom, newTo, pilotID, airplaneID);
         System.out.println("Updated Flight " + newFrom + ","+ newTo + ".");
     }
+
+    /**
+     * Updates a pilot's details.
+     *
+     * @param pilotID   The unique identifier of the pilot.
+     * @param newName   The new name of the pilot.
+     * @param newEmail  The new email of the pilot.
+     */
     public void updatePilot(Integer pilotID,String newName, String newEmail){
         flightService.updatePilot(pilotID, newName, newEmail);
         System.out.println("Updated Pilot " + newName + ".");
     }
+    /**
+     * Creates a new pilot.
+     *
+     * @param nume       The name of the pilot.
+     * @param email      The email of the pilot.
+     * @param availibility  The availability status of the pilot.
+     */
     public void createPilot(String nume, String email, Boolean availibility){
         flightService.createPilot(nume, email, availibility);
         System.out.println("Pilot was created");
     }
+    /**
+     * Creates a new cabin crew member.
+     *
+     * @param nume       The name of the cabin crew member.
+     * @param email      The email of the cabin crew member.
+     * @param profession The profession of the cabin crew member (e.g., flight attendant).
+     */
     public void createCabinCrew(String nume, String email, String profession){
         flightService.createCabinCrew(nume, email, profession);
         System.out.println("Cabin Crew was created");
     }
+    /**
+     * Creates a new passenger.
+     *
+     * @param passengerName The name of the passenger.
+     * @param from          The origin location of the passenger's trip.
+     * @param to            The destination location of the passenger's trip.
+     * @param email         The email of the passenger.
+     */
     public void createPassenger(String passengerName, String from, String to, String email){
         flightService.createPassenger(passengerName, from, to, email);
         System.out.println("Passenger was created");
     }
+    /**
+     * Creates a new flight.
+     *
+     * @param from       The origin location of the flight.
+     * @param to         The destination location of the flight.
+     * @param pilotID    The ID of the pilot for the flight.
+     * @param airplaneID The ID of the airplane used for the flight.
+     */
     public void createFlight(String from, String to, Integer pilotID, Integer airplaneID) {
         flightService.createFlight(from, to, pilotID, airplaneID);
         System.out.println("Flight was created");
     }
 
+    /**
+     * Creates a new reservation.
+     *
+     * @param date        The date of the reservation.
+     * @param paymentID   The unique identifier of the payment associated with the reservation.
+     * @param passengerID The unique identifier of the passenger associated with the reservation.
+     * @param flightID    The unique identifier of the flight associated with the reservation.
+     */
     public void createReservation(String date, Integer paymentID, Integer passengerID, Integer flightID) {
         flightService.createReservation(date, paymentID, passengerID, flightID);
         System.out.println("Reservation was created");
     }
 
+    /**
+     * Creates a new payment.
+     *
+     * @param description The description of the payment (e.g., ticket purchase, baggage fee).
+     * @param amount      The amount of the payment.
+     * @param passengerID The unique identifier of the passenger associated with the payment.
+     */
     public void createPayment(String description, double amount, Integer passengerID) {
         flightService.createPayment(description, amount, passengerID);
         System.out.println("Payment was created");
     }
 
+    /**
+     * Creates a new ticket.
+     *
+     * @param title       The title or type of the ticket (e.g., Economy, Business).
+     * @param description The description of the ticket, including details like seating class or privileges.
+     * @param paymentID   The unique identifier of the payment associated with the ticket.
+     */
     public void createTicket(String title, String description, Integer paymentID) {
         flightService.createTicket(title, description, paymentID);
         System.out.println("Ticket was created");
     }
 
+    /**
+     * Creates a new airplane.
+     *
+     * @param model     The model of the airplane (e.g., Boeing 737).
+     * @param capacity  The seating capacity of the airplane.
+     * @param available The availability status of the airplane (true if available for flights, false otherwise).
+     */
     public void createAirplane(String model, Integer capacity, Boolean available) {
         flightService.createAirplane(model, capacity, available);
         System.out.println("Airplane was created");
     }
 
+    /**
+     * Deletes a reservation.
+     *
+     * @param reservationID The unique identifier of the reservation to delete.
+     */
     public void deleteReservation(Integer reservationID) {
         Reservation r = null;
         for (Reservation reservation : flightService.getAllReservations()) {
@@ -198,6 +350,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a payment.
+     *
+     * @param paymentID The unique identifier of the payment to delete.
+     */
     public void deletePayment(Integer paymentID) {
         Payment p = null;
         for (Payment payment : flightService.getAllPayments()) {
@@ -213,6 +370,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a ticket.
+     *
+     * @param ticketID The unique identifier of the ticket to delete.
+     */
     public void deleteTicket(Integer ticketID) {
         Ticket t = null;
         for (Ticket ticket : flightService.getAllTickets()) {
@@ -228,6 +390,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Deletes a airplane.
+     *
+     * @param airplaneID The unique identifier of the airplane to delete.
+     */
     public void deleteAirplane(Integer airplaneID) {
         Airplane a = null;
         for (Airplane airplane : flightService.getAllAirplanes()) {
@@ -243,21 +410,49 @@ public class Controller {
         }
     }
 
+    /**
+     * Updates a reservation's details.
+     *
+     * @param reservationID The unique identifier of the reservation.
+     * @param newDate       The new date for the reservation.
+     */
     public void updateReservation(Integer reservationID, String newDate) {
         flightService.updateReservation(reservationID, newDate);
         System.out.println("Updated Reservation: " + newDate + ".");
     }
 
+    /**
+     * Updates a payment's details.
+     *
+     * @param paymentID       The unique identifier of the payment.
+     * @param newDescription  The new description for the payment (e.g., ticket fee, upgrade fee).
+     * @param newAmount       The new amount for the payment.
+     */
     public void updatePayment(Integer paymentID, String newDescription, double newAmount) {
         flightService.updatePayment(paymentID, newDescription, newAmount);
         System.out.println("Updated Payment: " + newDescription + ".");
     }
 
+    /**
+     * Updates a ticket's details.
+     *
+     * @param ticketID       The unique identifier of the ticket.
+     * @param newTitle       The new title or class for the ticket (e.g., Economy, Business).
+     * @param newDescription The new description of the ticket, including details like privileges or restrictions.
+     */
     public void updateTicket(Integer ticketID, String newTitle, String newDescription) {
         flightService.updateTicket(ticketID, newTitle, newDescription);
         System.out.println("Updated Ticket: " + newTitle + ".");
     }
 
+    /**
+     * Updates an airplane's details.
+     *
+     * @param airplaneID   The unique identifier of the airplane.
+     * @param newModel     The new model of the airplane (e.g., Airbus A320).
+     * @param newCapacity  The new seating capacity of the airplane.
+     * @param newAvailable The new availability status of the airplane (true if available for flights, false otherwise).
+     */
     public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity, Boolean newAvailable) {
         flightService.updateAirplane(airplaneID, newModel, newCapacity, newAvailable);
         System.out.println("Updated Airplane: " + newModel + ".");
