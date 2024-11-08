@@ -15,6 +15,8 @@ public class Service {
     private final Repository<Reservation> reservationRepo;
     private final Repository<Ticket> ticketRepo;
     private final Repository<Airplane> airplaneRepo;
+//    private final ArrayList<Airport> airports = new ArrayList<Airport>();
+//    bagat repo normal aici ca sa fie ok
 
     Integer counterPassengerID=5;
     Integer counterPilotID=5;
@@ -100,23 +102,25 @@ public class Service {
 
     public List<Airplane> getAllAirplanes() {return airplaneRepo.getAll();}
 
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID){
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID){
         Integer flightID=createFlightID();
         Pilot p=null;
         Airplane a=null;
         for(Pilot pilot: pilotsRepo.getAll())
-            if(pilotID.equals(pilot.getID()))
+            if(pilotID.equals(pilot.getID()) && pilot.getAvailability().equals(true))
                 p=pilot;
         for(Airplane airplane: airplaneRepo.getAll())
-            if(airplaneID.equals(airplane.getID()))
+            if(airplaneID.equals(airplane.getID()) && airplane.getAvailable().equals(true))
                 a=airplane;
+        //for pt airport dupa id
+        //verificat avalibility pt airport
+        //
 
         Flight flight = new Flight(flightID,from,to,p,a);
         flightRepo.create(flight);// verify if the pilot and airplane are available and everything+ adauga airport
     }
     public void createPassenger(String passengerName, String from, String to, String email){
 
-        //ceva nu pare bine aici dar nu stiu exact ce
         Pair pair = new Pair(from,to);
         Integer passengerID=createPassengerID();
         Passenger passenger = new Passenger(passengerName,passengerID,email,pair);
@@ -135,6 +139,8 @@ public class Service {
 
 
     public ArrayList<Flight> bookSeat(String from, String to){
+        //un if mare aici
+
         ArrayList<Flight> possibleFlights= new ArrayList<Flight>();
         for(Flight flight: flightRepo.getAll()){
             if(flight.from.equals(from) && flight.to.equals(to))
@@ -142,6 +148,7 @@ public class Service {
             //aici ar trebui si date dat ca paramentu pt ca o sa folosim create reservation aici si trebe si o data
         }
         return possibleFlights;
+
         //aici ar trebui sa ne gandim intai la ui-ul la aceasta functie. pt ca o sa fie mai multe chestii de facut
         //dupa ce apar possible flights(ales un flight/ daca nu sunt possible flights, sa intre in createreservation
         //si sa fie bagata rezervarea in lista aia a operatorului cand creaza zborul

@@ -4,10 +4,13 @@ import java.util.List;
 /**
  * Represents an airport with a specific location, number of airstrips, and their lengths.
  */
-public class Airport {
+public class Airport implements HasID {
+    private Integer id;
+    private String name;
     private String location;
     private Integer number_of_airstrips;
     private List<Integer> length_of_airstrips;
+    private Boolean avaliable;
 
     /**
      * Constructs a new Airport with the specified details.
@@ -16,10 +19,28 @@ public class Airport {
      * @param number_of_airstrips The number of airstrips at the airport.
      * @param length_of_airstrips A list containing the lengths of each airstrip.
      */
-    public Airport(String location, Integer number_of_airstrips, List<Integer> length_of_airstrips) {
+    public Airport(String name,String location, Integer number_of_airstrips, List<Integer> length_of_airstrips) {
+        this.name=name;
         this.location = location;
         this.number_of_airstrips = number_of_airstrips;
         this.length_of_airstrips = length_of_airstrips;
+    }
+    /**
+     * Gets the name of the airport.
+     *
+     * @return The name of the airport.
+     */
+    public String getName() {
+        return name;
+    }
+    /**
+     /**
+     * Sets the name of the airport.
+     *
+     * @param name The new name of the airport.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
