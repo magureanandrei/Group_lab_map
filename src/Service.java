@@ -112,7 +112,7 @@ public class Service {
                 a=airplane;
 
         Flight flight = new Flight(flightID,from,to,p,a);
-        flightRepo.create(flight);// verify in controller if the pilot is available and everything
+        flightRepo.create(flight);// verify if the pilot and airplane are available and everything+ adauga airport
     }
     public void createPassenger(String passengerName, String from, String to, String email){
 
@@ -266,20 +266,18 @@ public class Service {
 
     // ar trebui sa facem o lista de reservations( si asta ar fi data si ca lista pt operator, dar filtrata cumva
     //undeva, nu-s sigur unde)
-    public void createReservation(String date, Integer paymentID, Integer passengerID, Integer flightID){
+    public void createReservation(String date, Integer paymentID, Integer passengerID, String from, String to){
 
         Passenger p=null;
         Payment pay = null;
-        Flight fl=null;
+        Pair fl= new Pair(from,to);
         Integer resID=createReservationID();
 
         for(Passenger passenger: passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
 
-        for(Flight flight: flightRepo.getAll())
-            if(flight.getID().equals(flightID))
-                fl=flight;
+
 
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))

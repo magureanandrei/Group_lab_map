@@ -287,10 +287,11 @@ public class Controller {
      * @param date        The date of the reservation.
      * @param paymentID   The unique identifier of the payment associated with the reservation.
      * @param passengerID The unique identifier of the passenger associated with the reservation.
-     * @param flightID    The unique identifier of the flight associated with the reservation.
+     * @param from        The location of the departure.
+     * @param to          The destination.
      */
-    public void createReservation(String date, Integer paymentID, Integer passengerID, Integer flightID) {
-        flightService.createReservation(date, paymentID, passengerID, flightID);
+    public void createReservation(String date, Integer paymentID, Integer passengerID,String from,String to ) {
+        flightService.createReservation(date, paymentID, passengerID, from,to);
         System.out.println("Reservation was created");
     }
 

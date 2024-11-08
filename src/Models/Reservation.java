@@ -7,7 +7,8 @@ public class Reservation implements HasID {
     private String date;
     private Payment payment;
     private Passenger passenger;
-    private Flight flight;
+    private Pair flight;
+
 
     /**
      * Constructs a new Reservation with the specified details.
@@ -18,7 +19,7 @@ public class Reservation implements HasID {
      * @param passenger The passenger who made the reservation.
      * @param flight    The flight associated with the reservation.
      */
-    public Reservation(Integer id, String date, Payment payment, Passenger passenger, Flight flight) {
+    public Reservation(Integer id, String date, Payment payment, Passenger passenger, Pair flight) {
         this.id = id;
         this.date = date;
         this.payment = payment;
@@ -31,7 +32,7 @@ public class Reservation implements HasID {
      *
      * @return The flight.
      */
-    public Flight getFlight() {
+    public Pair getFlight() {
         return flight;
     }
 
@@ -40,7 +41,7 @@ public class Reservation implements HasID {
      *
      * @param flight The flight to set.
      */
-    public void setFlight(Flight flight) {
+    public void setFlight(Pair flight) {
         this.flight = flight;
     }
 

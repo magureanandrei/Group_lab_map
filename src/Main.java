@@ -125,13 +125,11 @@ public class Main {
         Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
         Payment payment1 = new Payment(1, "Flight payment", 200.0, passenger1);
         Payment payment2 = new Payment(3, "Flight payment", 300.0, passenger2);
-        Flight flight1 = new Flight(1, "Barcelona", "Madrid", new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE), new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
-        Flight flight2 = new Flight(2, "New York", "Los Angeles", new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE), new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
-        reservationRepository.create(new Reservation(1, "2023-10-01", payment1, passenger1, flight1));
-        reservationRepository.create(new Reservation(2, "2023-10-02", payment1, passenger1, flight2));
-        reservationRepository.create(new Reservation(3, "2023-10-03", payment2, passenger2, flight1));
-        reservationRepository.create(new Reservation(4, "2023-10-04", payment2, passenger2, flight2));
-        reservationRepository.create(new Reservation(5, "2023-10-05", payment2, passenger2, flight1));
+        reservationRepository.create(new Reservation(1, "2023-10-01", payment1, passenger1, new Pair("Barcelona", "Madrid")));
+        reservationRepository.create(new Reservation(2, "2023-10-02", payment1, passenger1, new Pair("New York", "Los Angeles")));
+        reservationRepository.create(new Reservation(3, "2023-10-03", payment2, passenger2, new Pair("Barcelona", "Madrid")));
+        reservationRepository.create(new Reservation(4, "2023-10-04", payment2, passenger2, new Pair("New York", "Los Angeles")));
+        reservationRepository.create(new Reservation(5, "2023-10-05", payment2, passenger2, new Pair("Barcelona", "Madrid")));
         return reservationRepository;
     }
 
