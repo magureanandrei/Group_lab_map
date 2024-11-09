@@ -86,4 +86,19 @@ public class Ticket implements HasID{
     public Integer getID() {
         return id;
     }
+
+    /**
+     * Returns a string representation of the Ticket.
+     *
+     * @return A string representing the ticket details.
+     */
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", payment=" + payment +
+                '}';
+    }
 }

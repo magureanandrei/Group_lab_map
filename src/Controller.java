@@ -105,6 +105,17 @@ public class Controller {
     }
 
     /**
+     * Displays all airplanes.
+     */
+    public void viewAllAirplanes(){
+        List<Airplane> allPlanes = flightService.getAllAirplanes();
+        System.out.println("All Airplanes:\n");
+        for(Airplane airplane : allPlanes){
+            System.out.println(airplane.toString() + " \n");
+        }
+    }
+
+    /**
      * Deletes a passenger.
      *
      * @param passengerID The unique identifier of the passenger to delete.
@@ -457,5 +468,25 @@ public class Controller {
     public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity, Boolean newAvailable) {
         flightService.updateAirplane(airplaneID, newModel, newCapacity, newAvailable);
         System.out.println("Updated Airplane: " + newModel + ".");
+    }
+
+    /**
+     * Gets a ticket by the ID given from the user
+     *
+     * @param ticketID The unique identifier of the ticket.
+     */
+    public void getTicket(Integer ticketID){
+        Ticket ticket = flightService.getTicket(ticketID);
+        System.out.println(ticket.toString());
+    }
+
+    /**
+     * Gets a reservation by the ID given from the user
+     *
+     * @param reservationID The unique identifier of the reservation.
+     */
+    public void getReservation(Integer reservationID){
+        Reservation reservation = flightService.getReservation(reservationID);
+        System.out.println(reservation.toString());
     }
 }
