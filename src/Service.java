@@ -368,4 +368,20 @@ public class Service {
 
     }
 
+    public Ticket getTicket(Integer ticketID){
+        for(Ticket ticket: ticketRepo.getAll()){
+            if(ticket.getID().equals(ticketID))
+                return ticket;
+        }
+        return null;
+    }
+
+    public Reservation getReservation(Integer reservationID){
+        for(Reservation reservation: reservationRepo.getAll()) {
+            if(reservation.getID().equals(reservationID))
+                return reservation;
+        }
+        return null;
+    }
+
 }

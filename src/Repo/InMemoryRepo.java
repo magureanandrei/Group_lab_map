@@ -1,5 +1,6 @@
 package Repo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import Repo.Repository;
@@ -12,7 +13,7 @@ import Models.HasID;
  */
 public class InMemoryRepo<T extends HasID> implements Repository<T> {
 
-    Map<Integer,T> data;
+    Map<Integer,T> data = new HashMap<>();;
 
     /**
      * {@inheritDoc}
