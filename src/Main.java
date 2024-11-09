@@ -26,8 +26,9 @@ public class Main {
         Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
         Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
         Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
+        Repository<Airport> airportRepo = createInMemoryAirportRepository();
 
-        Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository);
+        Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
 
         UI consoleApp = new UI(flightController);
@@ -163,5 +164,14 @@ public class Main {
         airplaneRepository.create(new Airplane(4, "Airbus A380", 500, Boolean.FALSE));
         airplaneRepository.create(new Airplane(5, "Boeing 777", 300, Boolean.TRUE));
         return airplaneRepository;
+    }
+    private static Repository<Airport> createInMemoryAirportRepository(){
+        Repository<Airport> airportRepository = new InMemoryRepo<>();
+        airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2));
+        airportRepository.create(new Airport(2, "Baneasa", "Bucharest", 1));
+        airportRepository.create(new Airport(3, "Heathrow", "London", 4));
+        airportRepository.create(new Airport(4, "Gatwick", "London", 3));
+        airportRepository.create(new Airport(5, "Charles de Gaulle", "Paris", 3));
+        return airportRepository;
     }
 }

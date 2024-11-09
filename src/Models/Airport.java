@@ -9,7 +9,6 @@ public class Airport implements HasID {
     private String name;
     private String location;
     private Integer number_of_airstrips;
-    private List<Integer> length_of_airstrips;
     private Boolean avaliable;
 
     /**
@@ -17,14 +16,42 @@ public class Airport implements HasID {
      *
      * @param location            The location of the airport.
      * @param number_of_airstrips The number of airstrips at the airport.
-     * @param length_of_airstrips A list containing the lengths of each airstrip.
      */
-    public Airport(String name,String location, Integer number_of_airstrips, List<Integer> length_of_airstrips) {
+    public Airport(Integer id,String name,String location, Integer number_of_airstrips,Boolean avaliable) {
+
+        this.id=id;
         this.name=name;
         this.location = location;
         this.number_of_airstrips = number_of_airstrips;
-        this.length_of_airstrips = length_of_airstrips;
+        this.avaliable=avaliable;
     }
+
+    /**
+     * Returns the unique identifier of the airport
+     *
+     * @return the unique identifier of the airport
+     */
+    @Override
+    public Integer getID() {
+        return id;
+    }
+    /**
+    *Returns the availability of the airport
+     *
+    * @return the availability of the airport
+    */
+    public Boolean getAvaliable() {
+        return avaliable;
+    }
+    /**
+     * Sets the availability of the airport
+     *
+     * @param avaliable The availability of the airport to set.
+     */
+    public void setAvaliable(Boolean avaliable) {
+        this.avaliable = avaliable;
+    }
+
     /**
      * Gets the name of the airport.
      *
@@ -42,6 +69,7 @@ public class Airport implements HasID {
     public void setName(String name) {
         this.name = name;
     }
+
 
     /**
      * Gets the location of the airport.
@@ -79,22 +107,5 @@ public class Airport implements HasID {
         this.number_of_airstrips = number_of_airstrips;
     }
 
-    /**
-     * Gets the list of airstrip lengths at the airport.
-     *
-     * @return A list of integers representing the lengths of each airstrip.
-     */
-    public List<Integer> getLength_of_airstrips() {
-        return length_of_airstrips;
-    }
-
-    /**
-     * Sets the lengths of the airstrips at the airport.
-     *
-     * @param length_of_airstrips A list of integers representing the new lengths of each airstrip.
-     */
-    public void setLength_of_airstrips(List<Integer> length_of_airstrips) {
-        this.length_of_airstrips = length_of_airstrips;
-    }
 
 }

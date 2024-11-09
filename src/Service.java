@@ -15,8 +15,7 @@ public class Service {
     private final Repository<Reservation> reservationRepo;
     private final Repository<Ticket> ticketRepo;
     private final Repository<Airplane> airplaneRepo;
-//    private final ArrayList<Airport> airports = new ArrayList<Airport>();
-//    bagat repo normal aici ca sa fie ok
+    private final Repository<Airport> airportRepo;
 
     Integer counterPassengerID=5;
     Integer counterPilotID=5;
@@ -26,6 +25,7 @@ public class Service {
     Integer counterReservationID=5;
     Integer counterTicketID=5;
     Integer counterAirplaneID=5;
+    Integer counterAirportID=5;
 
     public Integer createPilotID() {
         counterPilotID++;
@@ -59,10 +59,14 @@ public class Service {
         counterAirplaneID+=1;
         return counterAirplaneID;
     }
+    public Integer createAirportID() {
+        counterAirportID+=1;
+        return counterAirportID;
+    }
 
 
 
-    public Service(Repository<Pilot> pilotsRepo, Repository<Passenger> passengerRepo, Repository<CabinCrew> cabinCrewRepo, Repository<Flight> flightRepo, Repository<Payment> paymentRepo, Repository<Reservation> reservationRepo, Repository<Ticket> ticketRepo, Repository<Airplane> airplaneRepo) {
+    public Service(Repository<Pilot> pilotsRepo, Repository<Passenger> passengerRepo, Repository<CabinCrew> cabinCrewRepo, Repository<Flight> flightRepo, Repository<Payment> paymentRepo, Repository<Reservation> reservationRepo, Repository<Ticket> ticketRepo, Repository<Airplane> airplaneRepo, Repository<Airport> airportRepo) {
         this.pilotsRepo = pilotsRepo;
         this.passengerRepo = passengerRepo;
         this.cabinCrewRepo = cabinCrewRepo;
@@ -71,6 +75,7 @@ public class Service {
         this.reservationRepo = reservationRepo;
         this.ticketRepo = ticketRepo;
         this.airplaneRepo = airplaneRepo;
+        this.airportRepo = airportRepo;
     }
 
     public List<Pilot> getPilots() {return pilotsRepo.getAll();}
@@ -102,22 +107,25 @@ public class Service {
 
     public List<Airplane> getAllAirplanes() {return airplaneRepo.getAll();}
 
+    public List<Airport> getAllAirports() {return airportRepo.getAll();}
+
     public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID){
         Integer flightID=createFlightID();
         Pilot p=null;
         Airplane a=null;
+        Airport ap=null;
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilotID.equals(pilot.getID()) && pilot.getAvailability().equals(true))
                 p=pilot;
         for(Airplane airplane: airplaneRepo.getAll())
             if(airplaneID.equals(airplane.getID()) && airplane.getAvailable().equals(true))
                 a=airplane;
-        //for pt airport dupa id
-        //verificat avalibility pt airport
-        //
+        for(Airport airport: airportRepo.getAll())
+            if(airportID.equals(airport.getID()) && airport.getAvaliable().equals(true) && airport.getLocation().equals(to))
+                ap=airport;
 
-        Flight flight = new Flight(flightID,from,to,p,a);
-        flightRepo.create(flight);// verify if the pilot and airplane are available and everything+ adauga airport
+        Flight flight = new Flight(flightID,from,to,p,a/*,ap*/);
+        flightRepo.create(flight);
     }
     public void createPassenger(String passengerName, String from, String to, String email){
 
@@ -138,16 +146,44 @@ public class Service {
     }
 
 
-    public ArrayList<Flight> bookSeat(String from, String to){
-        //un if mare aici
+    public ArrayList<Flight> bookSeat(String date, Integer passengerID){
+        //asta e o functie care e folosita doar de pasager(in ui ar trebui sa se autentifice cu id-ul sau si asa luam from si to)
+        String from=null;
+        String to=null;
+
+        for(Passenger passenger: passengerRepo.getAll())
+            if(passenger.getID().equals(passengerID))
+            {
+                from=passenger.getFlight().getFrom();
+                to=passenger.getFlight().getTo();
+                break;
+            }
+
 
         ArrayList<Flight> possibleFlights= new ArrayList<Flight>();
         for(Flight flight: flightRepo.getAll()){
             if(flight.from.equals(from) && flight.to.equals(to))
                 possibleFlights.add(flight);
-            //aici ar trebui si date dat ca paramentu pt ca o sa folosim create reservation aici si trebe si o data
         }
-        return possibleFlights;
+        if(possibleFlights.size()==0)
+        {   ArrayList <ArrayList<String>> flightsForOperator= new ArrayList<ArrayList<String>>();
+            //aici ar trebui sa intram in createReservation si sa bagam rezervarea in lista aia a operatorului cand creaza zborul
+            //ii dam si o notificare pasagerului ca nu sunt zboruri posibile
+            //intai trebe realizat payment-ul(
+            ArrayList<String>flightToAdd=new ArrayList<String>();
+            flightToAdd.add(from);
+            flightToAdd.add(to);
+            flightsForOperator.add(flightToAdd);
+
+
+            createPayment("Reservation",0,passengerID);
+            createReservation(date,0,passengerID,from,to);
+
+        }
+        else {
+            //aici ar trebui sa intram in ui si sa alegem unul din zborurile posibile
+            //si dupa aia intram in creataticket sau createreservation
+        }
 
         //aici ar trebui sa ne gandim intai la ui-ul la aceasta functie. pt ca o sa fie mai multe chestii de facut
         //dupa ce apar possible flights(ales un flight/ daca nu sunt possible flights, sa intre in createreservation
@@ -284,8 +320,6 @@ public class Service {
             if(passenger.getID().equals(passengerID))
                 p=passenger;
 
-
-
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))
                 pay=payment;
@@ -382,6 +416,28 @@ public class Service {
                 return reservation;
         }
         return null;
+    }
+
+    public void createAirport(String name, String location, Integer number_of_airstrips, Boolean avaliable){
+        Integer airportID=createAirportID();
+        Airport newAirport=new Airport(airportID,name,location,number_of_airstrips,avaliable);
+        airportRepo.create(newAirport);
+    }
+
+    public void deleteAirport(Integer airportID){
+        for(Airport airport: airportRepo.getAll())
+            if(airport.getID().equals(airportID))
+                airportRepo.delete(airportID);
+    }
+
+    public void updateAirport(Integer airportID, String newName, String newLocation,Integer newNumberOfAirstrips, Boolean newAvaliable){
+        for(Airport airport: airportRepo.getAll())
+            if(airport.getID().equals(airportID)) {
+                airport.setName(newName);
+                airport.setNumber_of_airstrips(newNumberOfAirstrips);
+                airport.setLocation(newLocation);
+                airport.setAvaliable(newAvaliable);
+            }
     }
 
 }

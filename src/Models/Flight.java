@@ -8,7 +8,8 @@ public class Flight implements HasID{
     public String to;
     public Pilot pilot;
     public Airplane airplane;
-
+    //public Airport airport; asta ar fi aeroportul de sosire
+    //public String date;
     /**
      * Constructs a new Flight with the specified details.
      *
