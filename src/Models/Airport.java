@@ -14,8 +14,10 @@ public class Airport implements HasID {
     /**
      * Constructs a new Airport with the specified details.
      *
+     * @param id                  The unique identifier for the airport.
      * @param location            The location of the airport.
      * @param number_of_airstrips The number of airstrips at the airport.
+     * @param avaliable           The availability status of the airport.
      */
     public Airport(Integer id,String name,String location, Integer number_of_airstrips,Boolean avaliable) {
 
@@ -107,5 +109,19 @@ public class Airport implements HasID {
         this.number_of_airstrips = number_of_airstrips;
     }
 
-
+    /**
+     * Returns a string representation of the Airport object, including airport information, ID, name, and availability.
+     *
+     * @return A string representation of the Airport.
+     */
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", number_of_airstrips=" + number_of_airstrips +
+                ", avaliable=" + avaliable +
+                '}';
+    }
 }

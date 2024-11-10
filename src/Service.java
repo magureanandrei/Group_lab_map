@@ -188,6 +188,7 @@ public class Service {
         //aici ar trebui sa ne gandim intai la ui-ul la aceasta functie. pt ca o sa fie mai multe chestii de facut
         //dupa ce apar possible flights(ales un flight/ daca nu sunt possible flights, sa intre in createreservation
         //si sa fie bagata rezervarea in lista aia a operatorului cand creaza zborul
+    return null;
     }
 
 

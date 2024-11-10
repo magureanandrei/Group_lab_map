@@ -165,13 +165,19 @@ public class Main {
         airplaneRepository.create(new Airplane(5, "Boeing 777", 300, Boolean.TRUE));
         return airplaneRepository;
     }
+
+    /**
+     * Creates an in-memory repository for airports and populates it with some initial data.
+     *
+     * @return The in-memory repository for airports.
+     */
     private static Repository<Airport> createInMemoryAirportRepository(){
         Repository<Airport> airportRepository = new InMemoryRepo<>();
-        airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2));
-        airportRepository.create(new Airport(2, "Baneasa", "Bucharest", 1));
-        airportRepository.create(new Airport(3, "Heathrow", "London", 4));
-        airportRepository.create(new Airport(4, "Gatwick", "London", 3));
-        airportRepository.create(new Airport(5, "Charles de Gaulle", "Paris", 3));
+        airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2,true));
+        airportRepository.create(new Airport(2, "Baneasa", "Bucharest", 1,true));
+        airportRepository.create(new Airport(3, "Heathrow", "London", 4,true));
+        airportRepository.create(new Airport(4, "Gatwick", "London", 3,true));
+        airportRepository.create(new Airport(5, "Charles de Gaulle", "Paris", 3,true));
         return airportRepository;
     }
 }

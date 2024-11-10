@@ -118,7 +118,10 @@ public class UI {
                                 String departure = scanner.nextLine();
                                 System.out.print("Enter the destination: ");
                                 String destination = scanner.nextLine();
-                                flightController.createFlight(departure,destination,pilotID,airplaneID);
+                                System.out.print("Enter the Airport ID: ");
+                                Integer airportID = scanner.nextInt();
+                                scanner.nextLine();
+                                flightController.createFlight(departure,destination,pilotID,airplaneID,airportID);
                                 break;
                             case 2:
                                 System.out.print("Enter a Flight ID to update: ");
@@ -363,14 +366,39 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice8) {
                             case 1:
+                                System.out.print("Enter Airport Name: ");
+                                String airportName = scanner.nextLine();
+                                System.out.print("Enter the location of the Airport: ");
+                                String location = scanner.nextLine();
+                                System.out.print("Enter the number of airstrips of the Airport: ");
+                                Integer airstrips = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.print("Is the airport available? (true/false): ");
+                                Boolean availability = scanner.nextBoolean();
+                                scanner.nextLine();
+                                flightController.createAirport(airportName, location, airstrips, availability);
                                 break;
                             case 2:
+                                System.out.print("Enter Airport ID to update: ");
+                                Integer airportID = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.print("Enter the new Airport Name: ");
+                                String newAirportName = scanner.nextLine();
+                                System.out.print("Enter the new location of the Airport: ");
+                                String newLocation = scanner.nextLine();
+                                System.out.print("Enter the new number of airstrips of the Airport: ");
+                                Integer newAirstrips = scanner.nextInt();
+                                scanner.nextLine();
+                                System.out.print("Is the airport available? (true/false): ");
+                                Boolean newAvailability = scanner.nextBoolean();
+                                scanner.nextLine();
+                                flightController.updateAirport(airportID,newAirportName,newLocation,newAirstrips,newAvailability);
                                 break;
                             case 3:
-
+                                flightController.deleteAirport(readId(scanner));
                                 break;
                             case 4:
-
+                                flightController.viewAllAirports();
                                 break;
                         }
                         break;
@@ -432,7 +460,12 @@ public class UI {
                         System.out.println("Exiting Passenger mode.");
                         break;
                     case 1:
-                        //flightController.bookSeat();
+                        System.out.print("Enter the date when you would like to fly: ");
+                        String date = scanner.nextLine();
+                        System.out.print("Enter your ID as passenger: ");
+                        Integer passengerID = scanner.nextInt();
+                        scanner.nextLine();
+                        //flightController.bookSeat(date,passengerID);
                         break;
                     case 2:
                         flightController.deleteTicket(readId(scanner));

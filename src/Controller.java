@@ -116,6 +116,17 @@ public class Controller {
     }
 
     /**
+     * Displays all airports.
+     */
+    public void viewAllAirports(){
+        List<Airport> allAirports = flightService.getAllAirports();
+        System.out.println("All Airports:\n");
+        for(Airport airport : allAirports){
+            System.out.println(airport.toString() + " \n");
+        }
+    }
+
+    /**
      * Deletes a passenger.
      *
      * @param passengerID The unique identifier of the passenger to delete.
@@ -286,9 +297,10 @@ public class Controller {
      * @param to         The destination location of the flight.
      * @param pilotID    The ID of the pilot for the flight.
      * @param airplaneID The ID of the airplane used for the flight.
+     * @param airportID  The ID of the airport of the flight.
      */
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID) {
-        flightService.createFlight(from, to, pilotID, airplaneID);
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID) {
+        flightService.createFlight(from, to, pilotID, airplaneID,airportID);
         System.out.println("Flight was created");
     }
 
@@ -341,6 +353,20 @@ public class Controller {
         flightService.createAirplane(model, capacity, available);
         System.out.println("Airplane was created");
     }
+
+    /**
+     *  Creates a new airport.
+     *
+     * @param name                   The name of the airport.
+     * @param location               The location of the airport.
+     * @param number_of_airstrips    The number of Airstrips on the airport.
+     * @param avaliable             The availability status of the airport (true if available for flights, false otherwise).
+     */
+    public void createAirport(String name, String location, Integer number_of_airstrips, Boolean avaliable){
+        flightService.createAirport(name,location,number_of_airstrips,avaliable);
+        System.out.println("Airport was created");
+    }
+
 
     /**
      * Deletes a reservation.
@@ -423,6 +449,26 @@ public class Controller {
     }
 
     /**
+     * Deletes an airport.
+     *
+     * @param airportID The unique identifier of the airport to delete.
+     */
+    public void deleteAirport(Integer airportID) {
+        Airport a = null;
+        for (Airport airport : flightService.getAllAirports()) {
+            if (airport.getID().equals(airportID)) {
+                a = airport;
+            }
+        }
+        if (a != null) {
+            flightService.deleteAirport(airportID);
+            System.out.println("Removed Airport " + a + ".");
+        } else {
+            System.out.println("Airport not found.");
+        }
+    }
+
+    /**
      * Updates a reservation's details.
      *
      * @param reservationID The unique identifier of the reservation.
@@ -468,6 +514,19 @@ public class Controller {
     public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity, Boolean newAvailable) {
         flightService.updateAirplane(airplaneID, newModel, newCapacity, newAvailable);
         System.out.println("Updated Airplane: " + newModel + ".");
+    }
+
+    /**
+     *
+     * @param airportID                 The unique identifier of the airport.
+     * @param newName                   The new name of the airport.
+     * @param newLocation               The new location of the airport.
+     * @param newNumberOfAirstrips      The new number of Airstrips of the airport.
+     * @param newAvaliable               The new availability status of the airport (true if available for flights, false otherwise).
+     */
+    public void updateAirport(Integer airportID, String newName, String newLocation,Integer newNumberOfAirstrips, Boolean newAvaliable){
+        flightService.updateAirport(airportID,newName,newLocation,newNumberOfAirstrips,newAvaliable);
+        System.out.println("Updated Airport: " + newName + ".");
     }
 
     /**
