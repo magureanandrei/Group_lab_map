@@ -102,6 +102,7 @@ public class Service {
         return counterAirportID;
     }
 
+    ArrayList<Flight> flightArrayList= new ArrayList<Flight>();
 
     /**
      * The service constructor
@@ -262,50 +263,34 @@ public class Service {
         cabinCrewRepo.create(cabin);
     }
 
+    public Boolean chooseIfPayNow(String choice){
+        if (choice.equals("yes"))
+            return Boolean.TRUE;
+        if(choice.equals("no"))
+            return Boolean.FALSE;
+        return null;
+    }
+    public void optionNoflight(String choice)
+    {
 
-    public ArrayList<Flight> bookSeat(String date, Integer passengerID){
+    }
+
+    public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType){
         //asta e o functie care e folosita doar de pasager(in ui ar trebui sa se autentifice cu id-ul sau si asa luam from si to)
-        String from=null;
-        String to=null;
-
-        for(Passenger passenger: passengerRepo.getAll())
+        Passenger p=null;
+        Flight f=null;
+        for(Passenger passenger:passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
-            {
-                from=passenger.getFlight().getFrom();
-                to=passenger.getFlight().getTo();
-                break;
-            }
+                p=passenger;
 
+        for(Flight flight: flightRepo.getAll())
+            if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0)
+                f=flight;
 
-        ArrayList<Flight> possibleFlights= new ArrayList<Flight>();
-        for(Flight flight: flightRepo.getAll()){
-            if(flight.from.equals(from) && flight.to.equals(to))
-                possibleFlights.add(flight);
-        }
-        if(possibleFlights.size()==0)
-        {   ArrayList <ArrayList<String>> flightsForOperator= new ArrayList<ArrayList<String>>();
-            //aici ar trebui sa intram in createReservation si sa bagam rezervarea in lista aia a operatorului cand creaza zborul
-            //ii dam si o notificare pasagerului ca nu sunt zboruri posibile
-            //intai trebe realizat payment-ul(
-            ArrayList<String>flightToAdd=new ArrayList<String>();
-            flightToAdd.add(from);
-            flightToAdd.add(to);
-            flightsForOperator.add(flightToAdd);
+        f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
+        Payment pay=createPayment(paymentType,f.getAmount(),p.getID());
 
-
-            createPayment("Reservation",0,passengerID);
-            createReservation(date,0,passengerID,from,to);
-
-        }
-        else {
-            //aici ar trebui sa intram in ui si sa alegem unul din zborurile posibile
-            //si dupa aia intram in creataticket sau createreservation
-        }
-
-        //aici ar trebui sa ne gandim intai la ui-ul la aceasta functie. pt ca o sa fie mai multe chestii de facut
-        //dupa ce apar possible flights(ales un flight/ daca nu sunt possible flights, sa intre in createreservation
-        //si sa fie bagata rezervarea in lista aia a operatorului cand creaza zborul
-    return null;
+    return createTicket("Ticket"+" "+ f.getFrom().toString()+" "+f.getTo().toString(),paymentType,pay.getID());
     }
 
     /**
@@ -446,7 +431,7 @@ public class Service {
      * @param amount The amount of the payment.
      * @param passengerID The passenger identifier.
      */
-    public void createPayment(String description, double amount,Integer passengerID){
+    public Payment createPayment(String description, double amount,Integer passengerID){
         //trebe scris si o descriere din UI cumva si data ca parametru
         Integer payID=createPaymentID();
         Passenger p=null;
@@ -458,6 +443,7 @@ public class Service {
             }
         Payment newpay=new Payment(payID,description,amount,p);
         paymentRepo.create(newpay);
+        return newpay;
     }
 
     /**
@@ -496,15 +482,13 @@ public class Service {
     /**
      * Creates a new reservation.
      * @param date The date of the reservation.
-     * @param paymentID The payment identifier.
      * @param passengerID The passenger identifier.
      * @param from The departure location.
      * @param to The arrival location.
      */
-    public void createReservation(String date, Integer paymentID, Integer passengerID, String from, String to){
+    public void createReservation(String date, Integer passengerID, String from, String to){
 
         Passenger p=null;
-        Payment pay = null;
         Pair fl= new Pair(from,to);
         Integer resID=createReservationID();
 
@@ -512,11 +496,7 @@ public class Service {
             if(passenger.getID().equals(passengerID))
                 p=passenger;
 
-        for(Payment payment: paymentRepo.getAll())
-            if(payment.getID().equals(paymentID))
-                pay=payment;
-
-        Reservation newReservation= new Reservation(resID,date,pay,p,fl);
+        Reservation newReservation= new Reservation(resID,date,p,fl);
         reservationRepo.create(newReservation);
 
     }
@@ -551,7 +531,7 @@ public class Service {
      * @param description The description of the ticket.
      * @param paymentID The payment identifier.
      */
-    public void createTicket(String title, String description, Integer paymentID){
+    public Ticket createTicket(String title, String description, Integer paymentID){
         Integer ticketID=createTicketID();
         Payment p=null;
         for(Payment payment: paymentRepo.getAll())
@@ -559,7 +539,7 @@ public class Service {
                 p=payment;
         Ticket newTicket=new Ticket(ticketID,title,description,p);
         ticketRepo.create(newTicket);
-
+        return newTicket;
     }
 
     /**
@@ -598,6 +578,8 @@ public class Service {
                 pilots.add(pilot);
         return pilots;
     }
+
+
 
     /**
      * Gets all the available cabin crew.
@@ -702,5 +684,35 @@ public class Service {
                 airport.setAvaliable(newAvaliable);
             }
     }
+
+    public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date){
+        String from=null;
+        String to=null;
+
+        for(Passenger passenger: passengerRepo.getAll())
+            if(passenger.getID().equals(passengerID))
+            {
+                from=passenger.getFlight().getFrom();
+                to=passenger.getFlight().getTo();
+            }
+
+        for(Flight flight: flightRepo.getAll())
+            if(flight.getFrom().equals(from) && flight.getTo().equals(to) && flight.getDate().equals(date))
+                flightArrayList.add(flight);
+
+        return flightArrayList;
+    }
+
+    public Passenger getPassengerByID(Integer passengerID){
+        Passenger p =null;
+        for(Passenger passenger: passengerRepo.getAll())
+            if(passenger.getID().equals(passengerID)) {
+                p=passenger;
+                break;
+            }
+        return p;
+    }
+
+
 
 }

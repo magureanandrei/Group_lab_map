@@ -58,7 +58,7 @@ public class Main {
      */
     private static Repository<Passenger> createInMemoryPassengerRepository(){
         Repository<Passenger> passengerRepository = new InMemoryRepo<>();
-        passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
+        passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Barcelona","Madrid")));
         passengerRepository.create(new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
         passengerRepository.create(new Passenger("Johnson Jr", 3, "johnson.jr@gmail.com", new Pair("Miami", "Houston")));
         passengerRepository.create(new Passenger("Alice Johnson", 4, "alice.johnson@gmail.com", new Pair("Seattle", "Denver")));
@@ -125,13 +125,12 @@ public class Main {
         Repository<Reservation> reservationRepository = new InMemoryRepo<>();
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
         Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
-        Payment payment1 = new Payment(1, "Flight payment", 200.0, passenger1);
-        Payment payment2 = new Payment(3, "Flight payment", 300.0, passenger2);
-        reservationRepository.create(new Reservation(1, "2023-10-01", payment1, passenger1, new Pair("Barcelona", "Madrid")));
-        reservationRepository.create(new Reservation(2, "2023-10-02", payment1, passenger1, new Pair("New York", "Los Angeles")));
-        reservationRepository.create(new Reservation(3, "2023-10-03", payment2, passenger2, new Pair("Barcelona", "Madrid")));
-        reservationRepository.create(new Reservation(4, "2023-10-04", payment2, passenger2, new Pair("New York", "Los Angeles")));
-        reservationRepository.create(new Reservation(5, "2023-10-05", payment2, passenger2, new Pair("Barcelona", "Madrid")));
+
+        reservationRepository.create(new Reservation(1, "2023-10-01", passenger1, new Pair("Barcelona", "Madrid")));
+        reservationRepository.create(new Reservation(2, "2023-10-02", passenger1, new Pair("New York", "Los Angeles")));
+        reservationRepository.create(new Reservation(3, "2023-10-03", passenger2, new Pair("Barcelona", "Madrid")));
+        reservationRepository.create(new Reservation(4, "2023-10-04", passenger2, new Pair("New York", "Los Angeles")));
+        reservationRepository.create(new Reservation(5, "2023-10-05", passenger2, new Pair("Barcelona", "Madrid")));
         return reservationRepository;
     }
 

@@ -5,7 +5,6 @@ package Models;
 public class Reservation implements HasID {
     private Integer id;
     private String date;
-    private Payment payment;
     private Passenger passenger;
     private Pair flight;
 
@@ -15,14 +14,12 @@ public class Reservation implements HasID {
      *
      * @param id        The unique identifier of the reservation.
      * @param date      The date of the reservation.
-     * @param payment   The payment associated with the reservation.
      * @param passenger The passenger who made the reservation.
      * @param flight    The flight associated with the reservation.
      */
-    public Reservation(Integer id, String date, Payment payment, Passenger passenger, Pair flight) {
+    public Reservation(Integer id, String date, Passenger passenger, Pair flight) {
         this.id = id;
         this.date = date;
-        this.payment = payment;
         this.passenger = passenger;
         this.flight = flight;
     }
@@ -43,24 +40,6 @@ public class Reservation implements HasID {
      */
     public void setFlight(Pair flight) {
         this.flight = flight;
-    }
-
-    /**
-     * Gets the payment associated with the reservation.
-     *
-     * @return The payment.
-     */
-    public Payment getPayment() {
-        return payment;
-    }
-
-    /**
-     * Sets the payment associated with the reservation.
-     *
-     * @param payment The payment to set.
-     */
-    public void setPayment(Payment payment) {
-        this.payment = payment;
     }
 
     /**
@@ -119,7 +98,6 @@ public class Reservation implements HasID {
         return "Reservation{" +
                 "id=" + id +
                 ", date='" + date + '\'' +
-                ", payment=" + payment +
                 ", passenger=" + passenger +
                 ", flight=" + flight +
                 '}';

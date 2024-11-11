@@ -310,13 +310,12 @@ public class Controller {
      * Creates a new reservation.
      *
      * @param date        The date of the reservation.
-     * @param paymentID   The unique identifier of the payment associated with the reservation.
      * @param passengerID The unique identifier of the passenger associated with the reservation.
      * @param from        The location of the departure.
      * @param to          The destination.
      */
-    public void createReservation(String date, Integer paymentID, Integer passengerID,String from,String to ) {
-        flightService.createReservation(date, paymentID, passengerID, from,to);
+    public void createReservation(String date, Integer passengerID,String from,String to ) {
+        flightService.createReservation(date, passengerID, from,to);
         System.out.println("Reservation was created");
     }
 
@@ -550,4 +549,31 @@ public class Controller {
         Reservation reservation = flightService.getReservation(reservationID);
         System.out.println(reservation.toString());
     }
+
+    public Boolean getAllAvalibleFlightsForPassenger(Integer passengerID, String date)
+    {   //error handling necesar
+        ArrayList<Flight> possibleFlights=flightService.getAllAvalibleFlightsForPassenger(passengerID,date);
+        if(possibleFlights.isEmpty()) {
+            System.out.println("Unfortunately there aren't any flights with your requirements available." + "\n" +
+                    " A reservation has been made and you will be notified once a flight is available");
+            return Boolean.FALSE;
+        }
+        else {
+            System.out.println("All possible flights: ");
+            for (Flight flight : possibleFlights)
+                System.out.println(flight.toString() + "\n");
+            return Boolean.TRUE;
+        }
+
+    }
+
+    public void bookseat(Integer passengerID,String date,Integer flightID,String paymentType){
+        Ticket t=flightService.bookSeat(date,passengerID,flightID,paymentType);
+        System.out.println("Your Ticket Information: "+"\n"+t.toString());
+    }
+
+    public Passenger getPassengerByID(Integer passengerID){
+        return flightService.getPassengerByID(passengerID);
+    }
+
 }

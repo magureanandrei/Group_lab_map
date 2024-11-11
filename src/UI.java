@@ -1,6 +1,8 @@
+import Models.Passenger;
 import Models.Pilot;
 import Repo.Repository;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 /**
  * The UI class provides a command-line interface for interacting with the flight management system.
@@ -161,16 +163,13 @@ public class UI {
                                 System.out.print("Enter Passenger ID: ");
                                 Integer passengerID = scanner.nextInt();
                                 scanner.nextLine();
-                                System.out.print("Enter Payment ID: ");
-                                Integer paymentID = scanner.nextInt();
-                                scanner.nextLine();
                                 System.out.print("Enter Reservation Date: ");
                                 String date = scanner.nextLine();
                                 System.out.print("Enter Reservation Departure Location: ");
                                 String departure = scanner.nextLine();
                                 System.out.print("Enter Reservation Destination: ");
                                 String destination = scanner.nextLine();
-                                flightController.createReservation(date,paymentID,passengerID,departure,destination);
+                                flightController.createReservation(date,passengerID,departure,destination);
                                 break;
                             case 2:
                                 System.out.print("Enter Reservation ID to update: ");
@@ -470,7 +469,23 @@ public class UI {
                         System.out.print("Enter your ID as passenger: ");
                         Integer passengerID = scanner.nextInt();
                         scanner.nextLine();
-                        //flightController.bookSeat(date,passengerID);
+                        System.out.println("How do you want to pay? (credit card/debit card)");
+                        String paymentType=scanner.nextLine();
+                        Boolean ans=flightController.getAllAvalibleFlightsForPassenger(passengerID,date);
+                        if(ans.equals(Boolean.FALSE)) {
+                            Passenger pas=flightController.getPassengerByID(passengerID);
+                            flightController.createReservation(date,passengerID,pas.getFlight().getFrom(),pas.getFlight().getTo());
+                            break;
+                        }
+                        else {
+                            System.out.println("Choose the ID of your flight");
+                            Integer flightID = scanner.nextInt();
+                            scanner.nextLine();
+                            flightController.bookseat(passengerID,date,flightID,paymentType);
+                            System.out.println();
+                        }
+
+
                         break;
                     case 2:
                         flightController.deleteTicket(readId(scanner));
