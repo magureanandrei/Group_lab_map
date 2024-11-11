@@ -263,18 +263,16 @@ public class Service {
         cabinCrewRepo.create(cabin);
     }
 
-    public Boolean chooseIfPayNow(String choice){
-        if (choice.equals("yes"))
-            return Boolean.TRUE;
-        if(choice.equals("no"))
-            return Boolean.FALSE;
-        return null;
-    }
-    public void optionNoflight(String choice)
-    {
-
-    }
-
+    /**
+     * Books a seat for a passenger on a specified flight.
+     * This is the complex function.
+     *
+     * @param date        The date of the flight.
+     * @param passengerID The unique identifier of the passenger.
+     * @param flightID    The unique identifier of the flight.
+     * @param paymentType The type of payment used for the booking (e.g., credit card, cash).
+     * @return A new Ticket object representing the booking.
+     */
     public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType){
         //asta e o functie care e folosita doar de pasager(in ui ar trebui sa se autentifice cu id-ul sau si asa luam from si to)
         Passenger p=null;
@@ -685,6 +683,13 @@ public class Service {
             }
     }
 
+    /**
+     * Retrieves all available flights for a passenger on a specified date.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @param date        The date for which to retrieve available flights.
+     * @return A list of flights that match the passenger's destination and departure location.
+     */
     public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date){
         String from=null;
         String to=null;
@@ -703,6 +708,12 @@ public class Service {
         return flightArrayList;
     }
 
+    /**
+     * Retrieves a passenger by their unique identifier.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @return The passenger with the specified ID, or null if not found.
+     */
     public Passenger getPassengerByID(Integer passengerID){
         Passenger p =null;
         for(Passenger passenger: passengerRepo.getAll())

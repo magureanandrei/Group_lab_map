@@ -550,6 +550,13 @@ public class Controller {
         System.out.println(reservation.toString());
     }
 
+    /**
+     * Retrieves and displays all available flights for a passenger on a specified date.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @param date        The date for which to retrieve available flights.
+     * @return            TRUE if flights matching the requirements are found;FALSE if no flights are available.
+     */
     public Boolean getAllAvalibleFlightsForPassenger(Integer passengerID, String date)
     {   //error handling necesar
         ArrayList<Flight> possibleFlights=flightService.getAllAvalibleFlightsForPassenger(passengerID,date);
@@ -567,11 +574,25 @@ public class Controller {
 
     }
 
+    /**
+     * Books a seat for a passenger on a specific flight and displays the ticket information.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @param date        The date of the flight.
+     * @param flightID    The unique identifier of the flight.
+     * @param paymentType The type of payment used for the booking (e.g., credit card, cash).
+     */
     public void bookseat(Integer passengerID,String date,Integer flightID,String paymentType){
         Ticket t=flightService.bookSeat(date,passengerID,flightID,paymentType);
         System.out.println("Your Ticket Information: "+"\n"+t.toString());
     }
 
+    /**
+     * Retrieves a passenger by their unique identifier.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @return The {@code Passenger} object with the specified ID, or {@code null} if no such passenger exists.
+     */
     public Passenger getPassengerByID(Integer passengerID){
         return flightService.getPassengerByID(passengerID);
     }
