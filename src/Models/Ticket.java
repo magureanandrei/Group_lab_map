@@ -7,6 +7,7 @@ public class Ticket implements HasID{
     private String title;
     private String description;
     private Payment payment;
+    private String date;
 
     /**
      * Constructs a new Ticket with the specified details.
@@ -15,12 +16,14 @@ public class Ticket implements HasID{
      * @param title       The title of the ticket.
      * @param description The description of the ticket.
      * @param payment     The payment associated with the ticket.
+     * @param date        The date associated with the ticket.
      */
-    public Ticket(Integer id, String title, String description, Payment payment) {
+    public Ticket(Integer id, String title, String description, Payment payment, String date) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.payment = payment;
+        this.date = date;
     }
 
     /**
@@ -99,6 +102,25 @@ public class Ticket implements HasID{
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", payment=" + payment +
+                ", date='" + date + '\'' +
                 '}';
+    }
+
+    /**
+     * Gets the date of the ticket.
+     *
+     * @return The ticket date.
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Sets the date associated with the ticket.
+     *
+     * @param date The date to set.
+     */
+    public void setDate(String date) {
+        this.date = date;
     }
 }

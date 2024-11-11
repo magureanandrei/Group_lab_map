@@ -143,11 +143,11 @@ public class Main {
         Repository<Ticket> ticketRepository = new InMemoryRepo<>();
         Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
         Payment payment2 = new Payment(3, "Flight payment", 300.0, new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
-        ticketRepository.create(new Ticket(1, "Economy Class", "Seat 12A", payment1));
-        ticketRepository.create(new Ticket(2, "Business Class", "Seat 1A", payment1));
-        ticketRepository.create(new Ticket(3, "First Class", "Seat 2A", payment2));
-        ticketRepository.create(new Ticket(4, "Economy Class", "Seat 14B", payment2));
-        ticketRepository.create(new Ticket(5, "Business Class", "Seat 3A", payment2));
+        ticketRepository.create(new Ticket(1, "Economy Class", "Seat 12A", payment1,"2023-10-01"));
+        ticketRepository.create(new Ticket(2, "Business Class", "Seat 1A", payment1,"2023-10-01"));
+        ticketRepository.create(new Ticket(3, "First Class", "Seat 2A", payment2,"2023-10-01"));
+        ticketRepository.create(new Ticket(4, "Economy Class", "Seat 14B", payment2,"2023-10-01"));
+        ticketRepository.create(new Ticket(5, "Business Class", "Seat 3A", payment2,"2023-10-01"));
         return ticketRepository;
     }
 

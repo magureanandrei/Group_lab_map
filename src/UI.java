@@ -235,7 +235,9 @@ public class UI {
                                 String title = scanner.nextLine();
                                 System.out.print("Enter Ticket Description: ");
                                 String description = scanner.nextLine();
-                                flightController.createTicket(title, description, paymentID);
+                                System.out.print("Enter the Flight date associated with the Ticket: ");
+                                String date = scanner.nextLine();
+                                flightController.createTicket(title, description, paymentID, date);
                                 break;
                             case 2:
                                 System.out.print("Enter Ticket ID to update: ");

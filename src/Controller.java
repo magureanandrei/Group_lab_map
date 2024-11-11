@@ -337,9 +337,10 @@ public class Controller {
      * @param title       The title or type of the ticket (e.g., Economy, Business).
      * @param description The description of the ticket, including details like seating class or privileges.
      * @param paymentID   The unique identifier of the payment associated with the ticket.
+     * @param date        The date of the fkight.
      */
-    public void createTicket(String title, String description, Integer paymentID) {
-        flightService.createTicket(title, description, paymentID);
+    public void createTicket(String title, String description, Integer paymentID, String date) {
+        flightService.createTicket(title, description, paymentID, date);
         System.out.println("Ticket was created");
     }
 

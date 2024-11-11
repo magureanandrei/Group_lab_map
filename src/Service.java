@@ -288,7 +288,7 @@ public class Service {
         f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
         Payment pay=createPayment(paymentType,f.getAmount(),p.getID());
 
-    return createTicket("Ticket"+" "+ f.getFrom().toString()+" "+f.getTo().toString(),paymentType,pay.getID());
+    return createTicket("Ticket"+" "+ f.getFrom().toString()+" "+f.getTo().toString(),paymentType,pay.getID(),f.getDate());
     }
 
     /**
@@ -528,14 +528,16 @@ public class Service {
      * @param title The title of the ticket.
      * @param description The description of the ticket.
      * @param paymentID The payment identifier.
+     * @param date The date .
+     *
      */
-    public Ticket createTicket(String title, String description, Integer paymentID){
+    public Ticket createTicket(String title, String description, Integer paymentID, String date){
         Integer ticketID=createTicketID();
         Payment p=null;
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))
                 p=payment;
-        Ticket newTicket=new Ticket(ticketID,title,description,p);
+        Ticket newTicket=new Ticket(ticketID,title,description,p,date);
         ticketRepo.create(newTicket);
         return newTicket;
     }
