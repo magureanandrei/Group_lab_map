@@ -201,8 +201,10 @@ public class Service {
      * @param pilotID The pilot identifier.
      * @param airplaneID The airplane identifier.
      * @param airportID The airport identifier.
+     * @param date The date of the flight.
+     * @param amount     The amount of the flight.
      */
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID){
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date,double amount){
         Integer flightID=createFlightID();
         Pilot p=null;
         Airplane a=null;
@@ -217,7 +219,7 @@ public class Service {
             if(airportID.equals(airport.getID()) && airport.getAvaliable().equals(true) && airport.getLocation().equals(to))
                 ap=airport;
 
-        Flight flight = new Flight(flightID,from,to,p,a/*,ap*/);
+        Flight flight = new Flight(flightID,from,to,p,a,ap,date,amount);
         flightRepo.create(flight);
     }
 

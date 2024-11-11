@@ -55,7 +55,7 @@ public class UI {
         return """
                 Passenger Options:
                     1. Book Seat
-                    2. Cancel Booking
+                    2. Cancel Ticket(Booking)
                     3. Cancel Reservation
                     4. Update Booking
                     5. Update Reservation
@@ -121,7 +121,12 @@ public class UI {
                                 System.out.print("Enter the Airport ID: ");
                                 Integer airportID = scanner.nextInt();
                                 scanner.nextLine();
-                                flightController.createFlight(departure,destination,pilotID,airplaneID,airportID);
+                                System.out.print("Enter the date of form (\"2023-10-01\"): ");
+                                String date = scanner.nextLine();
+                                System.out.print("Enter Payment Amount: ");
+                                double amount = scanner.nextDouble();
+                                scanner.nextLine();
+                                flightController.createFlight(departure,destination,pilotID,airplaneID,airportID,date,amount);
                                 break;
                             case 2:
                                 System.out.print("Enter a Flight ID to update: ");

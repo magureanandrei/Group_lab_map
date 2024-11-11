@@ -90,11 +90,12 @@ public class Main {
         Repository<Flight> flightRepository = new InMemoryRepo<>();
         Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
         Airplane a1 = new Airplane(1, "Boeing 737", 180, Boolean.TRUE);
-        flightRepository.create(new Flight(1, "Barcelona", "Madrid", p1, a1));
-        flightRepository.create(new Flight(2, "New York", "Los Angeles", p1, a1));
-        flightRepository.create(new Flight(3, "San Francisco", "Chicago", p1, a1));
-        flightRepository.create(new Flight(4, "Miami", "Houston", p1, a1));
-        flightRepository.create(new Flight(5, "Seattle", "Denver", p1, a1));
+        Airport airport=new Airport(1, "Henri Coanda", "Otopeni", 2,true);
+        flightRepository.create(new Flight(1, "Barcelona", "Madrid", p1, a1,airport,"2023-10-01",100));
+        flightRepository.create(new Flight(2, "New York", "Los Angeles", p1, a1,airport,"2023-10-02",200));
+        flightRepository.create(new Flight(3, "San Francisco", "Chicago", p1, a1,airport,"2023-10-03",300));
+        flightRepository.create(new Flight(4, "Miami", "Houston", p1, a1,airport,"2023-10-04",400));
+        flightRepository.create(new Flight(5, "Seattle", "Denver", p1, a1,airport,"2023-10-05",500));
         return flightRepository;
     }
 

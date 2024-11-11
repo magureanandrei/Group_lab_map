@@ -298,9 +298,11 @@ public class Controller {
      * @param pilotID    The ID of the pilot for the flight.
      * @param airplaneID The ID of the airplane used for the flight.
      * @param airportID  The ID of the airport of the flight.
+     * @param date       The date of the flight.
+     * @param amount     The amount of the flight.
      */
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID) {
-        flightService.createFlight(from, to, pilotID, airplaneID,airportID);
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date, double amount) {
+        flightService.createFlight(from, to, pilotID, airplaneID,airportID,date, amount);
         System.out.println("Flight was created");
     }
 

@@ -8,8 +8,9 @@ public class Flight implements HasID{
     public String to;
     public Pilot pilot;
     public Airplane airplane;
-    //public Airport airport; asta ar fi aeroportul de sosire
-    //public String date;
+    public Airport airport;
+    public String date;
+    public double amount;
     /**
      * Constructs a new Flight with the specified details.
      *
@@ -18,13 +19,19 @@ public class Flight implements HasID{
      * @param to       The destination location of the flight.
      * @param pilot    The pilot assigned to the flight.
      * @param airplane The airplane assigned to the flight.
+     * @param airport  The airport of the flight
+     * @param date     The date of the flight.
+     * @param amount     The amount of the flight.
      */
-    public Flight(Integer flightID, String from, String to, Pilot pilot,Airplane airplane) {
+    public Flight(Integer flightID, String from, String to, Pilot pilot,Airplane airplane,Airport airport, String date, double amount) {
         this.flightID = flightID;
         this.from = from;
         this.to = to;
         this.pilot = pilot;
         this.airplane = airplane;
+        this.airport = airport;
+        this.date=date;
+        this.amount=amount;
     }
 
     /**
@@ -40,6 +47,7 @@ public class Flight implements HasID{
                 ", to='" + to + '\'' +
                 ", pilot=" + pilot +
                 ", airplane=" + airplane +
+                ", date='" + date + '\'' +
                 '}';
     }
 
@@ -124,4 +132,59 @@ public class Flight implements HasID{
     public Integer getID() {
         return flightID;
     }
+
+    /**
+     * Gets the date of the flight.
+     *
+     * @return The flight date.
+     */
+    public String getDate() {
+        return date;
+    }
+
+    /**
+     * Sets the date assigned to the flight.
+     *
+     * @param date The new date for the flight.
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
+     * Gets the airport of the flight.
+     *
+     * @return The flight airport.
+     */
+    public Airport getAirport() {
+        return airport;
+    }
+
+    /**
+     * Sets the airport assigned to the flight.
+     *
+     * @param airport The new date for the flight.
+     */
+    public void setAirport(Airport airport) {
+        this.airport = airport;
+    }
+
+    /**
+     * Gets the amount of the flight.
+     *
+     * @return The flight amount.
+     */
+    public double getAmount() {
+        return amount;
+    }
+
+    /**
+     * Sets the amount of the flight.
+     *
+     * @param amount The new amount for the flight.
+     */
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 }
+
