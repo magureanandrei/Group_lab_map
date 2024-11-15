@@ -97,13 +97,15 @@ public class Ticket implements HasID{
      */
     @Override
     public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", payment=" + payment +
-                ", date='" + date + '\'' +
-                '}';
+        return "Ticket Details:\n" +
+                "-----------------------------\n" +
+                "Ticket ID   : " + id + "\n" +
+                "Title       : " + title + "\n" +
+                "Description : " + description + "\n" +
+                "-----------------------------\n" +
+                "Payment     : " + payment + "\n" +
+                "Date        : " + date + "\n" +
+                "-----------------------------";
     }
 
     /**

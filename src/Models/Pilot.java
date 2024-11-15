@@ -43,12 +43,12 @@ public class Pilot extends Person implements HasID{
      */
     @Override
     public String toString() {
-        return "Pilot{" +
-                "availability=" + availability +
-                ", id=" + id +
-                ", nume='" + nume + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "Pilot Details:\n" +
+                "Pilot ID     : " + id + "\n" +
+                "Name         : " + nume + "\n" +
+                "Email        : " + email + "\n" +
+                "Availability : " + (availability ? "Available" : "Not Available") + "\n" +
+                "-----------------------------";
     }
 
     /**

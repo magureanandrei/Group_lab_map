@@ -85,12 +85,12 @@ public class Airplane implements HasID{
      */
     @Override
     public String toString() {
-        return "Airplane{" +
-                "id=" + id +
-                ", model='" + model + '\'' +
-                ", capacity=" + capacity +
-                ", available=" + available +
-                '}';
+        return "Airplane Details:\n" +
+                "Airplane ID: " + id + "\n" +
+                "Model      : " + model + "\n" +
+                "Capacity   : " + capacity + " seats\n" +
+                "Available  : " + (available ? "Yes" : "No") + "\n" +
+                "-----------------------------";
     }
 
     /**

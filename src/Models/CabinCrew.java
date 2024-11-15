@@ -44,12 +44,12 @@ public class CabinCrew extends Person implements HasID{
      */
     @Override
     public String toString() {
-        return "CabinCrew{" +
-                "profession='" + profession + '\'' +
-                ", id=" + id +
-                ", nume='" + nume + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "Cabin Crew Details:\n" +
+                "Cabin Crew ID: " + id + "\n" +
+                "Name       : " + nume + "\n" +
+                "Email      : " + email + "\n" +
+                "Profession : " + profession + "\n" +
+                "-----------------------------";
     }
 
     /**

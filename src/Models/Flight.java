@@ -41,14 +41,15 @@ public class Flight implements HasID{
      */
     @Override
     public String toString() {
-        return "Flight{" +
-                "flightID=" + flightID +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", pilot=" + pilot +
-                ", airplane=" + airplane +
-                ", date='" + date + '\'' +
-                '}';
+        return "Flight Details:\n" +
+                "Flight ID  : " + flightID + "\n" +
+                "From       : " + from + "\n" +
+                "To         : " + to + "\n" +
+                "-----------------------------\n" +
+                "Pilot      : " + pilot + "\n" +
+                "Airplane   : " + airplane + "\n" +
+                "Date       : " + date + "\n" +
+                "-----------------------------";
     }
 
     /**

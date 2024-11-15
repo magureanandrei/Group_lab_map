@@ -116,12 +116,12 @@ public class Airport implements HasID {
      */
     @Override
     public String toString() {
-        return "Airport{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", number_of_airstrips=" + number_of_airstrips +
-                ", avaliable=" + avaliable +
-                '}';
+        return "Airport Details:\n" +
+                "Airport ID       : " + id + "\n" +
+                "Name             : " + name + "\n" +
+                "Location         : " + location + "\n" +
+                "Number of Airstrips: " + number_of_airstrips + "\n" +
+                "Available        : " + (avaliable ? "Yes" : "No") + "\n" +
+                "-----------------------------";
     }
 }

@@ -541,7 +541,7 @@ public class UI {
      */
     private static int readId(Scanner scanner) {
         System.out.println("Enter an ID: ");
-        return Integer.parseInt(scanner.nextLine());
+        return Integer.parseInt(scanner.nextLine());//citește întreaga linie de text introdusă de utilizator și o convertește într-un int
     }
 
 }

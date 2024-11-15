@@ -95,12 +95,14 @@ public class Reservation implements HasID {
      */
     @Override
     public String toString() {
-        return "Reservation{" +
-                "id=" + id +
-                ", date='" + date + '\'' +
-                ", passenger=" + passenger +
-                ", flight=" + flight +
-                '}';
+        return "Reservation Details:\n" +
+                "-----------------------------\n" +
+                "Reservation ID : " + id + "\n" +
+                "Date        : " + date + "\n" +
+                "-----------------------------\n" +
+                "Passenger   : " + passenger + "\n" +
+                "Flight      : " + flight + "\n" +
+                "-----------------------------";
     }
 
 }

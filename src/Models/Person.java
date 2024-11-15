@@ -79,10 +79,10 @@ public abstract class Person{
      */
     @Override
     public String toString() {
-        return "Models.Person{" +
-                "id=" + id +
-                ", nume='" + nume + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "Person Details:\n" +
+                "Person ID    : " + id + "\n" +
+                "Name  : " + nume + "\n" +
+                "Email : " + email + "\n" +
+                "-----------------------------";
     }
 }

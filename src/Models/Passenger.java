@@ -45,12 +45,12 @@ public class Passenger extends Person implements HasID {
      */
     @Override
     public String toString() {
-        return "Passenger{" +
-                "flight=" + flight +
-                ", id=" + id +
-                ", nume='" + nume + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "Passenger Details:\n" +
+                "Passenger ID : " + id + "\n" +
+                "Name     : " + nume + "\n" +
+                "Email    : " + email + "\n" +
+                "Flight   : " + flight + "\n" +
+                "-----------------------------";
     }
 
     /**

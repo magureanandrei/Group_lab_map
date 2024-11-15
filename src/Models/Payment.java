@@ -85,14 +85,14 @@ public class Payment implements HasID{
      */
     @Override
     public String toString() {
-        return "Payment{" +
-                "id=" + id +
-                ", Description='" + Description + '\'' +
-                ", Amount=" + Amount +
-                ", passenger=" + passenger +
-                '}';
+        return "Payment Details:\n" +
+                "Payment ID  : " + id + "\n" +
+                "Description : " + Description + "\n" +
+                "Amount      : " + Amount + "\n" +
+                "-----------------------------\n" +
+                "Passenger   : " + passenger + "\n" +
+                "-----------------------------";
     }
-
     /**
      * Gets the unique identifier for the payment.
      *
