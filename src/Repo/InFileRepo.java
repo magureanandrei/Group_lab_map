@@ -87,7 +87,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                T obj = T.fromCSV(line);
+                T obj = T.fromCSV(line );
                 objects.put(obj.getID(), obj);
             }
             return objects;

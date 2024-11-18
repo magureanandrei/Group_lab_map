@@ -44,6 +44,8 @@ public class UI {
                     8. Manage Airports
                     9. Manage Cabin Crew
                     10. View Passenger by a specific Flight
+                    11. View Airplanes sorted after capacity
+                    12. View Flights filtered after one given amount
                     0. Exit Program
                 """;
     }
@@ -448,6 +450,14 @@ public class UI {
                         scanner.nextLine();
                         flightController.viewPassengersByFlight(flightID);
                         break;
+                    case 11:
+                        flightController.sortAirplanesByCapacity();
+                        double flightAmount = scanner.nextDouble();
+                        scanner.nextLine();
+                        flightController.filterFlightsByAmount(flightAmount);
+                        break;
+                    case 12:
+                        System.out.print("Enter the amount for your Flight: ");
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         break;

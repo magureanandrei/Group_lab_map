@@ -18,25 +18,25 @@ public class Main {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        //Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
-        //Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
-        //Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
-       // Repository<Flight> flightRepo = createInMemoryFlightRepository();
-        //Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
-        //Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
-        //Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
-        //Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
-        //Repository<Airport> airportRepo = createInMemoryAirportRepository();
+        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
+        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
+        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
+        Repository<Flight> flightRepo = createInMemoryFlightRepository();
+        Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
+        Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
+        Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
+        Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
+        Repository<Airport> airportRepo = createInMemoryAirportRepository();
 
-        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
-        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
-        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
-        Repository<Flight> flightRepo = createInFileFlightRepository();
-        Repository<Payment> paymentRepo = createInFilePaymentRepository();
-        Repository<Reservation> reservationRepo = createInFileReservationRepository();
-        Repository<Ticket> ticketRepo = createInFileTicketRepository();
-        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
-        Repository<Airport> airportRepo = createInFileAirportRepository();
+//        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
+//        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
+//        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
+//        Repository<Flight> flightRepo = createInFileFlightRepository();
+//        Repository<Payment> paymentRepo = createInFilePaymentRepository();
+//        Repository<Reservation> reservationRepo = createInFileReservationRepository();
+//        Repository<Ticket> ticketRepo = createInFileTicketRepository();
+//        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
+//        Repository<Airport> airportRepo = createInFileAirportRepository();
         Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
 

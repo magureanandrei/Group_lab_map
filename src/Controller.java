@@ -617,4 +617,20 @@ public class Controller {
         System.out.println("Your Ticket Information: "+"\n"+t.toString());
     }
 
+    public void sortAirplanesByCapacity(){
+        ArrayList<Airplane> sortedAirplanes = flightService.sortAirplanesByCapacity();
+        System.out.println("Sorted Airplanes by capacity:\n");
+        for (Airplane airplane : sortedAirplanes) {
+            System.out.println(airplane.toString() + " \n");
+        }
+    }
+
+    public void filterFlightsByAmount(double amount){
+        ArrayList<Flight> filteredFlights=flightService.filterFlightsByAmount(amount);
+        System.out.println("Filtered Flights by amount:\n");
+        for (Flight flight : filteredFlights) {
+            System.out.println(flight.toString() + " \n");
+        }
+    }
+
 }

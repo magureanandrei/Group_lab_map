@@ -2,6 +2,7 @@ import Models.*;
 import Repo.Repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -727,6 +728,18 @@ public class Service {
         return p;
     }
 
+    public ArrayList<Airplane> sortAirplanesByCapacity(){
+        ArrayList<Airplane> sortedAirplanes= new ArrayList<Airplane>();
+        sortedAirplanes.addAll(airplaneRepo.getAll());
+        sortedAirplanes.sort((Airplane airplane1, Airplane airplane2)->airplane1.getCapacity().compareTo(airplane2.getCapacity()));
+       return sortedAirplanes;
+    }
+
+    public ArrayList<Flight> filterFlightsByAmount(double amount){
+        ArrayList<Flight> filteredFlights = new ArrayList<Flight>();
+        filteredFlights.addAll(flightRepo.getAll().stream().filter(flight -> flight.getAmount() > amount).toList());
+        return filteredFlights;
+    }
 
     public ArrayList<Flight> sortFlightsByDate(){
         ArrayList<Flight> sortedFlights= new ArrayList<Flight>();
