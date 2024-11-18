@@ -105,18 +105,31 @@ public class Payment implements HasID{
         return id;
     }
 
+    /**
+     *  Returns the header of the CSV file.
+     * @return The header of the CSV file.
+     *
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "description", "amount", "passenger"};
     }
 
+    /**
+     * Returns the object in CSV format.
+     * @return The object in CSV format.
+     */
     @Override
     public String toCSV() {
         return String.join(",", String.valueOf(id), Description, String.valueOf(Amount),
                 passenger != null ? passenger.toCSV() : "");
     }
 
-
+    /**
+     * Creates a new Payment object from a CSV string.
+     * @param csvLine The CSV string to create the object from.
+     * @return A new Payment object.
+     */
     public static  Payment fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Passenger passenger = parts[3].isEmpty() ? null : Passenger.fromCSV(parts[3]);

@@ -108,11 +108,19 @@ public class Reservation implements HasID{
                 "-----------------------------";
     }
 
+    /**
+     * Returns the header of the CSV file.
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "date", "passenger", "flight"};
     }
 
+    /**
+     * Returns the CSV representation of the reservation.
+     * @return The CSV representation of the reservation.
+     */
     @Override
     public String toCSV() {
         return String.join(",",
@@ -122,7 +130,11 @@ public class Reservation implements HasID{
                 flight != null ? flight.toCSV() : "");
     }
 
-
+    /**
+     * Creates a reservation from the CSV line.
+     * @param csvLine The CSV line to create the reservation from.
+     * @return The reservation created from the CSV line.
+     */
     public static Reservation fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);

@@ -65,16 +65,29 @@ public class CabinCrew extends Person implements HasID{
         return getId();
     }
 
+    /**
+     * The header of the CSV file.
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"nume", "id", "email", "profession"};
     }
 
+    /**
+     * The CSV representation of the CabinCrew object.
+     * @return The CSV representation of the CabinCrew object.
+     */
     @Override
     public String toCSV() {
         return String.join(",", nume,  String.valueOf(id),  email,  profession);
     }
 
+    /**
+     * Creates a CabinCrew object from a CSV line.
+     * @param csvLine The CSV line to be converted.
+     * @return The CabinCrew object created from the CSV line.
+     */
     public static CabinCrew fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         CabinCrew cabinCrew = new CabinCrew(parts[0], Integer.parseInt(parts[1]), parts[2], parts[3]);

@@ -106,17 +106,29 @@ public class Airplane implements HasID{
         return id;
     }
 
+    /**
+     * Returns the header of the CSV file.
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "model", "capacity", "available"};
     }
 
+    /**
+     * Returns the object as a CSV string.
+     * @return The object as a CSV string.
+     */
     @Override
     public String toCSV() {
         return String.join(",", String.valueOf(id), model, String.valueOf(capacity),  String.valueOf(available));
     }
 
-
+    /**
+     * Creates an Airplane object from a CSV string.
+     * @param csvLine The CSV string to create the object from.
+     * @return The Airplane object created from the CSV string.
+     */
     public static Airplane fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Airplane airplane = new Airplane(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]),  Boolean.parseBoolean(parts[3]));

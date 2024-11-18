@@ -598,6 +598,9 @@ public class Controller {
         return flightService.getPassengerByID(passengerID);
     }
 
+    /**
+     * Retrieves a pilot by their unique identifier.
+     */
     public void sortFlightsByDate(){
         ArrayList<Flight> sortedFlights=flightService.sortFlightsByDate();
         System.out.println("All Flights sorted by date: ");
@@ -605,18 +608,31 @@ public class Controller {
             System.out.println(flight.toString() + "\n");
     }
 
+    /**
+     * Filters cabin crew members by profession.
+     * @param profession The profession to filter cabin crew members by.
+     */
     public void filterCabinCrewByProfession(String profession){
         ArrayList<CabinCrew> filteredCabinCrew=flightService.filterCabinCrewByProfession(profession);
         System.out.println("All Cabin Crew filtered by profession: ");
         for (CabinCrew cabinCrew : filteredCabinCrew)
             System.out.println(cabinCrew.toString() + "\n");
     }
-
+    /**
+     * Retrieves and displays all available flights for a passenger on a specified date.
+     *
+     * @param passengerID The unique identifier of the passenger.
+     * @param date        The date for which to retrieve available flights.
+     * @return            TRUE if flights matching the requirements are found;FALSE if no flights are available.
+     */
     public void bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to){
-        Ticket t=flightService.bookSeat(date,passengerID,flightID,paymentType);
+        Ticket t=flightService.bookSeatByFlight(date,passengerID,flightID,paymentType,from,to);
         System.out.println("Your Ticket Information: "+"\n"+t.toString());
     }
 
+    /**
+     * Sorts airplanes by capacity.
+     */
     public void sortAirplanesByCapacity(){
         ArrayList<Airplane> sortedAirplanes = flightService.sortAirplanesByCapacity();
         System.out.println("Sorted Airplanes by capacity:\n");
@@ -625,6 +641,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Filters flights by amount.
+     * @param amount The amount to filter flights by.
+     */
     public void filterFlightsByAmount(double amount){
         ArrayList<Flight> filteredFlights=flightService.filterFlightsByAmount(amount);
         System.out.println("Filtered Flights by amount:\n");

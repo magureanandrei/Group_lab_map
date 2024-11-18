@@ -126,16 +126,31 @@ public class Airport implements HasID{
                 "-----------------------------";
     }
 
+    /**
+     * Returns the header of the CSV file for the Airport object.
+     *
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "name", "location", "number_of_airstrips", "avaliable"};
     }
 
+    /**
+     * Returns the Airport object as a CSV string.
+     *
+     * @return The Airport object as a CSV string.
+     */
     @Override
     public String toCSV() {
         return String.join(",", String.valueOf(id), name, location, String.valueOf(number_of_airstrips),  String.valueOf(avaliable));
     }
 
+    /**
+     * Returns the Airport object as a CSV string.
+     *
+     * @return The Airport object as a CSV string.
+     */
     public static Airport fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Airport airport = new Airport(Integer.parseInt(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]),  Boolean.parseBoolean(parts[4]));

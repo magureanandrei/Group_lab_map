@@ -192,12 +192,20 @@ public class Flight implements HasID{
         this.amount = amount;
     }
 
+    /**
+     * Gets the header for the CSV representation of the Flight object.
+     * @return  The header for the CSV representation of the Flight object.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"flightID", "from", "to", "pilot", "airplane", "airport", "date", "amount"};
     }
 
-
+    /**
+     * Returns a CSV representation of the Flight object, including flight ID, departure, destination, pilot, and airplane.
+     *
+     * @return A CSV representation of the Flight.
+     */
     @Override
     public String toCSV() {
         return String.join(",",
@@ -211,7 +219,12 @@ public class Flight implements HasID{
                 String.valueOf(amount));
     }
 
-
+    /**
+     * Creates a new Flight object from a CSV representation.
+     *
+     * @param csvLine The CSV representation of the Flight.
+     * @return A new Flight object.
+     */
     public static Flight fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Pilot pilot = parts[3].isEmpty() ? null : Pilot.fromCSV(parts[3]);

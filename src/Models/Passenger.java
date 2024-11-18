@@ -64,18 +64,30 @@ public class Passenger extends Person implements HasID {
         return getId();
     }
 
+    /**
+     *  Returns the header of the CSV file.
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "nume", "email", "flight"};
     }
 
+    /**
+     * Returns the values of the Passenger class.
+     * @return The values of the Passenger class.
+     */
     @Override
     public String toCSV() {
         return String.join(",", String.valueOf(id), nume, email,
                 flight != null ? flight.toCSV() : "");
     }
 
-
+    /**
+     * Creates a new Passenger from a CSV line.
+     * @param csvLine The CSV line to create the Passenger from.
+     * @return The Passenger created from the CSV line.
+     */
     public static Passenger fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);

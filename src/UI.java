@@ -46,6 +46,8 @@ public class UI {
                     10. View Passenger by a specific Flight
                     11. View Airplanes sorted after capacity
                     12. View Flights filtered after one given amount
+                    13. View Flights sorted after date
+                    14. View Cabin Crew filtered after profession
                     0. Exit Program
                 """;
     }
@@ -65,6 +67,8 @@ public class UI {
                     5. Update Reservation
                     6. View Ticket(Booking)
                     7. View Reservation
+                    8. View Flights sorted after date
+                    9. Book Seat by Flight
                     0. Exit Program
                 """;
     }
@@ -458,6 +462,15 @@ public class UI {
                         double flightAmount = scanner.nextDouble();
                         scanner.nextLine();
                         flightController.filterFlightsByAmount(flightAmount);
+                        break;
+                    case 13: //sort flight by date
+                        flightController.sortFlightsByDate();
+                        break;
+                    case 14: //filter cabincrew by profession
+                        System.out.println("Enter the profession of the cabin crew you want to filter by: ");
+                        String profession = scanner.nextLine();
+                        flightController.filterCabinCrewByProfession(profession);
+                        break;
 
                     default:
                         System.out.println("Invalid choice. Please try again.");
@@ -532,6 +545,36 @@ public class UI {
                     case 7:
                         flightController.getReservation(readId(scanner));
                         break;
+                    case 8: //sort flight by date
+                        flightController.sortFlightsByDate();
+                        break;
+                    case 9: //bookseatByflight
+                        System.out.print("Enter the date when you would like to fly: ");
+                        String date1 = scanner.nextLine();
+                        System.out.print("Enter your ID as passenger: ");
+                        Integer passengerID1 = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("How do you want to pay? (credit card/debit card)");
+                        String paymentType1=scanner.nextLine();
+                        System.out.println("Enter the departure location for your flight: ");
+                        String departure = scanner.nextLine();
+                        System.out.println("Enter the destination: ");
+                        String destination = scanner.nextLine();
+                        Boolean ans1=flightController.getAllAvalibleFlightsForPassenger(passengerID1,date1);
+                        if(ans1.equals(Boolean.FALSE)) {
+                            Passenger pas=flightController.getPassengerByID(passengerID1);
+                            flightController.createReservation(date1,passengerID1,departure,destination);
+                            break;
+                        }
+                        else {
+                            System.out.println("Choose the ID of your flight");
+                            Integer flightID = scanner.nextInt();
+                            scanner.nextLine();
+                            flightController.bookSeatByFlight(date1,passengerID1,flightID,paymentType1,departure,destination);
+                            System.out.println();
+                        }
+                        break;
+
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         break;

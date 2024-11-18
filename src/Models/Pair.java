@@ -64,24 +64,39 @@ public class Pair implements HasID{
         return "(" + first + ", " + second + ")";
     }
 
+    /**
+     * Returns the header for the Pair class.
+     * @return The header for the Pair class.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"first", "second"};
     }
 
+    /**
+     * Returns the values of the Pair class.
+     * @return The values of the Pair class.
+     */
     @Override
     public String toCSV() {
         return String.join(",", first, second);
     }
 
-
+    /**
+     * Creates a new Pair from a CSV line.
+     * @param csvLine The CSV line to create the Pair from.
+     * @return The Pair created from the CSV line.
+     */
     public static Pair fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Pair pair = new Pair(parts[0], parts[1]);
         return pair;
     }
 
-
+    /**
+     * Returns the ID of the Pair.
+     * @return The ID of the Pair.
+     */
     @Override
     public Integer getID() {
         return 0;

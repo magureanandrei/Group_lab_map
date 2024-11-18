@@ -728,19 +728,31 @@ public class Service {
         return p;
     }
 
+    /**
+     * Retrieves a pilot by their unique identifier.
+     * @return The pilot with the specified ID, or null if not found.
+     */
     public ArrayList<Airplane> sortAirplanesByCapacity(){
         ArrayList<Airplane> sortedAirplanes= new ArrayList<Airplane>();
         sortedAirplanes.addAll(airplaneRepo.getAll());
         sortedAirplanes.sort((Airplane airplane1, Airplane airplane2)->airplane1.getCapacity().compareTo(airplane2.getCapacity()));
        return sortedAirplanes;
     }
-
+    /**
+     * Filters the flights by amount.
+     * @param amount The amount of the flight.
+     * @return The list of flights filtered by amount.
+     */
     public ArrayList<Flight> filterFlightsByAmount(double amount){
         ArrayList<Flight> filteredFlights = new ArrayList<Flight>();
         filteredFlights.addAll(flightRepo.getAll().stream().filter(flight -> flight.getAmount() <= amount).toList());
         return filteredFlights;
     }
 
+    /**
+     * Sorts the flights by date.
+     * @return The list of flights sorted by date.
+     */
     public ArrayList<Flight> sortFlightsByDate(){
         ArrayList<Flight> sortedFlights= new ArrayList<Flight>();
         sortedFlights.addAll(flightRepo.getAll());
@@ -748,6 +760,11 @@ public class Service {
         return sortedFlights;
     }
 
+    /**
+     * Filters the cabin crew by profession.
+     * @param profession The profession of the cabin crew.
+     * @return The list of cabin crew filtered by profession.
+     */
     public ArrayList<CabinCrew> filterCabinCrewByProfession(String profession){
         ArrayList<CabinCrew> filteredCabinCrew= new ArrayList<CabinCrew>();
         filteredCabinCrew.addAll(cabinCrewRepo.getAll().stream()
@@ -755,6 +772,17 @@ public class Service {
                 .toList());
         return filteredCabinCrew;
     }
+
+    /**
+     * Books a seat for a passenger on a specified flight.
+     * @param date The date of the flight.
+     * @param passengerID The unique identifier of the passenger.
+     * @param flightID The unique identifier of the flight.
+     * @param paymentType The type of payment used for the booking (e.g., credit card, cash).
+     * @param from  The departure location.
+     * @param to The arrival location.
+     * @return A new Ticket object representing the booking.
+     */
     public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to){
         Passenger p=null;
         Flight f=null;

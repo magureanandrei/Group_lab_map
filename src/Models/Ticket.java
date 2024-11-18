@@ -129,10 +129,18 @@ public class Ticket implements HasID{
         this.date = date;
     }
 
+    /**
+     * Gets the header for the ticket.
+     * @return The header for the ticket.
+     */
     public String[] getHeader() {
         return new String[]{"id", "title", "description", "payment", "date"};
     }
 
+    /**
+     * Converts the ticket to a CSV string.
+     * @return The ticket as a CSV string.
+     */
     public String toCSV() {
         return String.join(",",
                 String.valueOf(id),
@@ -141,6 +149,11 @@ public class Ticket implements HasID{
                 payment != null ? payment.toCSV() : "",
                 date);
     }
+    /**
+     * Converts a CSV string to a ticket.
+     * @param csvLine The CSV string to convert.
+     * @return The ticket object.
+     */
     public static Ticket fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         Payment payment = parts[3].isEmpty() ? null : Payment.fromCSV(parts[3]);

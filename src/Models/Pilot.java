@@ -64,16 +64,29 @@ public class Pilot extends Person implements HasID{
         return getId();
     }
 
+    /**
+     * Returns the header of the CSV file.
+     * @return The header of the CSV file.
+     */
     @Override
     public String[] getHeader() {
         return new String[]{"id", "nume", "email", "availability"};
     }
 
+    /**
+     * Returns the CSV representation of the object.
+     * @return The CSV representation of the object.
+     */
     @Override
     public String toCSV() {
         return String.join(",", nume, String.valueOf(id), email, String.valueOf(availability));
     }
 
+    /**
+     * Creates a new object from the CSV representation.
+     * @param csvLine The CSV representation of the object.
+     * @return A new object created from the CSV representation.
+     */
     public static Pilot fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         return new Pilot(
