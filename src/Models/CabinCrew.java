@@ -1,4 +1,7 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents a cabin crew member with a specific profession, inheriting general details from the Person class.
  */
@@ -61,4 +64,22 @@ public class CabinCrew extends Person implements HasID{
     public Integer getID() {
         return getId();
     }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"nume", "id", "email", "profession"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", nume,  String.valueOf(id),  email,  profession);
+    }
+
+    public static CabinCrew fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        CabinCrew cabinCrew = new CabinCrew(parts[0], Integer.parseInt(parts[1]), parts[2], parts[3]);
+        return cabinCrew;
+    }
+
+
 }

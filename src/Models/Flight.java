@@ -1,4 +1,7 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents a flight with a unique identifier, assigned pilot and airplane, as well as the departure and destination locations.
  */
@@ -186,6 +189,45 @@ public class Flight implements HasID{
      */
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"flightID", "from", "to", "pilot", "airplane", "airport", "date", "amount"};
+    }
+
+
+    @Override
+    public String toCSV() {
+        return String.join(",",
+                String.valueOf(flightID),
+                from,
+                to,
+                pilot != null ? pilot.toCSV() : "",
+                airplane != null ? airplane.toCSV() : "",
+                airport != null ? airport.toCSV() : "",
+                date,
+                String.valueOf(amount));
+    }
+
+
+    public static Flight fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Pilot pilot = parts[3].isEmpty() ? null : Pilot.fromCSV(parts[3]);
+        Airplane airplane = parts[4].isEmpty() ? null : Airplane.fromCSV(parts[4]);
+        Airport airport = parts[5].isEmpty() ? null : Airport.fromCSV(parts[5]);
+
+        return new Flight(
+                Integer.parseInt(parts[0]),
+                parts[1],
+                parts[2],
+                pilot,
+                airplane,
+                airport,
+                parts[6],
+                Double.parseDouble(parts[7])
+            );
+
     }
 }
 

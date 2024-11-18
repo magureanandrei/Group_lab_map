@@ -1,5 +1,6 @@
 package Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Represents a passenger with flight information.
@@ -62,5 +63,29 @@ public class Passenger extends Person implements HasID {
     public Integer getID() {
         return getId();
     }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"id", "nume", "email", "flight"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", String.valueOf(id), nume, email,
+                flight != null ? flight.toCSV() : "");
+    }
+
+
+    public static Passenger fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);
+
+        return new Passenger(
+                parts[0],
+                Integer.parseInt(parts[1]),
+                parts[2],
+                flight);
+    }
+
 
 }

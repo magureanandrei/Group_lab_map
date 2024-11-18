@@ -1,4 +1,7 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents an airplane.
  */
@@ -101,5 +104,22 @@ public class Airplane implements HasID{
     @Override
     public Integer getID() {
         return id;
+    }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"id", "model", "capacity", "available"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", String.valueOf(id), model, String.valueOf(capacity),  String.valueOf(available));
+    }
+
+
+    public static Airplane fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Airplane airplane = new Airplane(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]),  Boolean.parseBoolean(parts[3]));
+        return airplane;
     }
 }

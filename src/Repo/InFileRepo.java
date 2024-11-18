@@ -3,6 +3,7 @@ package Repo;
 import Models.HasID;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -13,22 +14,23 @@ import java.util.function.Consumer;
  * @param <T> The type of objects stored in the repository, which must implement HasId.
  */
 public class InFileRepo<T extends HasID> implements Repository<T> {
-    private final String filename;
+    private final String filePath;
 
     /**
      * Constructs a new FileRepository with the specified file path.
      *
-     * @param filename The path to the file where data will be stored.
+     * @param filePath The path to the file where data will be stored.
      */
-    public InFileRepo(String filename){
-        this.filename=filename;
+    public InFileRepo(String filePath) {
+        this.filePath = filePath;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void create(T obj) {
-        doInFile(map->map.putIfAbsent(obj.getID(),obj));
+        doInFile(data -> data.putIfAbsent(obj.getID(), obj));
     }
 
     /**
@@ -36,7 +38,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
      */
     @Override
     public T get(Integer id) {
-        return read().get(id);
+        return readDataFromFile().get(id);
     }
 
     /**
@@ -44,7 +46,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
      */
     @Override
     public void update(T obj) {
-        doInFile(map->map.replace(obj.getID(),obj));
+        doInFile(data -> data.replace(obj.getID(), obj));
     }
 
     /**
@@ -52,7 +54,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
      */
     @Override
     public void delete(Integer id) {
-        doInFile(map->map.remove(id));
+        doInFile(data -> data.remove(id));
     }
 
     /**
@@ -60,7 +62,18 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
      */
     @Override
     public List<T> getAll() {
-        return read().values().stream().toList();
+        return readDataFromFile().values().stream().toList();
+    }
+
+    /**
+     * Performs an operation on the data stored in the file.
+     *
+     * @param function The function to apply to the data.
+     */
+    private void doInFile(Consumer<Map<Integer, T>> function) {
+        Map<Integer, T> objects = readDataFromFile();
+        function.accept(objects);
+        writeDataToFile(objects);
     }
 
     /**
@@ -68,35 +81,40 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
      *
      * @return The data stored in the file, or an empty map if the file is empty or does not exist.
      */
-    private Map<Integer,T> read(){
-        try(ObjectInputStream input=new ObjectInputStream(new FileInputStream(filename))){
-            return  (Map<Integer,T>)input.readObject();
-        }catch (IOException | ClassNotFoundException e){
-            return Map.of();
+    private Map<Integer, T> readDataFromFile() {
+        Map<Integer, T> objects = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line = reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                T obj = T.fromCSV(line);
+                objects.put(obj.getID(), obj);
+            }
+            return objects;
+        } catch (IOException e) {
+            return new HashMap<>();
         }
     }
 
     /**
      * Writes the data to the file.
      *
-     * @param map The data to write to the file.
+     * @param objects The data to write to the file.
      */
-    private void write(Map<Integer, T> map){
-        try(ObjectOutputStream output=new ObjectOutputStream(new FileOutputStream(filename))){
-            output.writeObject(map);
-        }catch (IOException e){
-            e.printStackTrace();
+    private void writeDataToFile(Map<Integer, T> objects) {
+        if(objects.isEmpty()) return;
+
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write(String.join(",", objects.get(1).getHeader()) + "\n");
+
+            for(Map.Entry<Integer, T> entry : objects.entrySet()){
+                writer.write(entry.getValue().toCSV() + "\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error while writing to file: " + e.getMessage());
         }
     }
 
-    /**
-     * Performs an operation on the data stored in the file.
-     *
-     * @param consumer The function to apply to the data.
-     */
-    private void doInFile(Consumer<Map<Integer,T>> consumer){
-        Map<Integer,T> map=read();
-        consumer.accept(map);
-        write(map);
-    }
 }
+
+

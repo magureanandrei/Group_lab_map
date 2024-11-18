@@ -1,4 +1,7 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents a pilot and his availability status.
  */
@@ -59,6 +62,25 @@ public class Pilot extends Person implements HasID{
     @Override
     public Integer getID() {
         return getId();
+    }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"id", "nume", "email", "availability"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", nume, String.valueOf(id), email, String.valueOf(availability));
+    }
+
+    public static Pilot fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        return new Pilot(
+                parts[0],
+                Integer.parseInt(parts[1]),
+                parts[2],
+                Boolean.parseBoolean(parts[4]));
     }
 
 }

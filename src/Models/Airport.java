@@ -1,10 +1,11 @@
 package Models;
 
+import java.io.Serializable;
 import java.util.List;
 /**
  * Represents an airport with a specific location, number of airstrips, and their lengths.
  */
-public class Airport implements HasID {
+public class Airport implements HasID{
     private Integer id;
     private String name;
     private String location;
@@ -124,4 +125,23 @@ public class Airport implements HasID {
                 "Available        : " + (avaliable ? "Yes" : "No") + "\n" +
                 "-----------------------------";
     }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"id", "name", "location", "number_of_airstrips", "avaliable"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", String.valueOf(id), name, location, String.valueOf(number_of_airstrips),  String.valueOf(avaliable));
+    }
+
+    public static Airport fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Airport airport = new Airport(Integer.parseInt(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]),  Boolean.parseBoolean(parts[4]));
+        return airport;
+    }
+
+
+
 }

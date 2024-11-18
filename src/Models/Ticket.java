@@ -1,4 +1,7 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents a ticket associated with a payment.
  */
@@ -125,4 +128,32 @@ public class Ticket implements HasID{
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String[] getHeader() {
+        return new String[]{"id", "title", "description", "payment", "date"};
+    }
+
+    public String toCSV() {
+        return String.join(",",
+                String.valueOf(id),
+                title,
+                description,
+                payment != null ? payment.toCSV() : "",
+                date);
+    }
+    public static Ticket fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Payment payment = parts[3].isEmpty() ? null : Payment.fromCSV(parts[3]);
+
+        return new Ticket(
+                Integer.parseInt(parts[0]),
+                parts[1],
+                parts[2],
+                payment,
+                parts[3]
+        );
+
+    }
+
+
 }

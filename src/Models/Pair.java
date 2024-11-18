@@ -1,8 +1,9 @@
 package Models;
-/**
+
+import java.io.Serializable; /**
  * Represents a custom Pair class for storing two related strings, such as locations.
  */
-public class Pair {
+public class Pair implements HasID{
     private String first;
     private String second;
 
@@ -61,6 +62,29 @@ public class Pair {
     @Override
     public String toString() {
         return "(" + first + ", " + second + ")";
+    }
+
+    @Override
+    public String[] getHeader() {
+        return new String[]{"first", "second"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",", first, second);
+    }
+
+
+    public static Pair fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Pair pair = new Pair(parts[0], parts[1]);
+        return pair;
+    }
+
+
+    @Override
+    public Integer getID() {
+        return 0;
     }
 }
 

@@ -1,8 +1,11 @@
 package Models;
+
+import java.io.Serializable;
+
 /**
  * Represents a reservation for a flight.
  */
-public class Reservation implements HasID {
+public class Reservation implements HasID{
     private Integer id;
     private String date;
     private Passenger passenger;
@@ -105,4 +108,32 @@ public class Reservation implements HasID {
                 "-----------------------------";
     }
 
+    @Override
+    public String[] getHeader() {
+        return new String[]{"id", "date", "passenger", "flight"};
+    }
+
+    @Override
+    public String toCSV() {
+        return String.join(",",
+                String.valueOf(id),
+                date,
+                passenger != null ? passenger.toCSV() : "",
+                flight != null ? flight.toCSV() : "");
+    }
+
+
+    public static Reservation fromCSV(String csvLine) {
+        String[] parts = csvLine.split(",");
+        Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);
+        Passenger passenger = parts[2].isEmpty() ? null : Passenger.fromCSV(parts[2]);
+
+        return new Reservation(
+                Integer.parseInt(parts[0]),
+                parts[1],
+                passenger,
+                flight
+        );
+
+    }
 }
