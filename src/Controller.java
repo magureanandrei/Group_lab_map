@@ -598,4 +598,23 @@ public class Controller {
         return flightService.getPassengerByID(passengerID);
     }
 
+    public void sortFlightsByDate(){
+        ArrayList<Flight> sortedFlights=flightService.sortFlightsByDate();
+        System.out.println("All Flights sorted by date: ");
+        for (Flight flight : sortedFlights)
+            System.out.println(flight.toString() + "\n");
+    }
+
+    public void filterCabinCrewByProfession(String profession){
+        ArrayList<CabinCrew> filteredCabinCrew=flightService.filterCabinCrewByProfession(profession);
+        System.out.println("All Cabin Crew filtered by profession: ");
+        for (CabinCrew cabinCrew : filteredCabinCrew)
+            System.out.println(cabinCrew.toString() + "\n");
+    }
+
+    public void bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to){
+        Ticket t=flightService.bookSeat(date,passengerID,flightID,paymentType);
+        System.out.println("Your Ticket Information: "+"\n"+t.toString());
+    }
+
 }

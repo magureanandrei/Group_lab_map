@@ -3,6 +3,7 @@ import Repo.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents the service class that handles the flight system logic.
@@ -726,6 +727,37 @@ public class Service {
         return p;
     }
 
+
+    public ArrayList<Flight> sortFlightsByDate(){
+        ArrayList<Flight> sortedFlights= new ArrayList<Flight>();
+        sortedFlights.addAll(flightRepo.getAll());
+        sortedFlights.sort((Flight f1, Flight f2) -> f1.getDate().compareTo(f2.getDate()));
+        return sortedFlights;
+    }
+
+    public ArrayList<CabinCrew> filterCabinCrewByProfession(String profession){
+        ArrayList<CabinCrew> filteredCabinCrew= new ArrayList<CabinCrew>();
+        filteredCabinCrew.addAll(cabinCrewRepo.getAll().stream()
+                .filter(cabinCrew -> cabinCrew.getProfession().equals(profession))
+                .toList());
+        return filteredCabinCrew;
+    }
+    public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to){
+        Passenger p=null;
+        Flight f=null;
+        for(Passenger passenger:passengerRepo.getAll())
+            if(passenger.getID().equals(passengerID))
+                p=passenger;
+
+        for(Flight flight: flightRepo.getAll())
+            if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0 && flight.getFrom().equals(from) && flight.getTo().equals(to))
+                f=flight;
+
+        f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
+        Payment pay=createPayment(paymentType,f.getAmount(),p.getID());
+
+        return createTicket("Ticket"+" "+ from+" "+to,paymentType,pay.getID(),f.getDate());
+    }
 
 
 }
