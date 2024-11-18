@@ -452,12 +452,13 @@ public class UI {
                         break;
                     case 11:
                         flightController.sortAirplanesByCapacity();
-                        double flightAmount = scanner.nextDouble();
-                        scanner.nextLine();
-                        flightController.filterFlightsByAmount(flightAmount);
                         break;
                     case 12:
                         System.out.print("Enter the amount for your Flight: ");
+                        double flightAmount = scanner.nextDouble();
+                        scanner.nextLine();
+                        flightController.filterFlightsByAmount(flightAmount);
+
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         break;

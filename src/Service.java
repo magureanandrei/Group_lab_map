@@ -737,7 +737,7 @@ public class Service {
 
     public ArrayList<Flight> filterFlightsByAmount(double amount){
         ArrayList<Flight> filteredFlights = new ArrayList<Flight>();
-        filteredFlights.addAll(flightRepo.getAll().stream().filter(flight -> flight.getAmount() > amount).toList());
+        filteredFlights.addAll(flightRepo.getAll().stream().filter(flight -> flight.getAmount() <= amount).toList());
         return filteredFlights;
     }
 

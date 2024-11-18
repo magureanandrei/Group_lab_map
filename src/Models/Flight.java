@@ -48,6 +48,7 @@ public class Flight implements HasID{
                 "Flight ID  : " + flightID + "\n" +
                 "From       : " + from + "\n" +
                 "To         : " + to + "\n" +
+                "Amount     : " + amount + "\n" +
                 "-----------------------------\n" +
                 "Pilot      : " + pilot + "\n" +
                 "Airplane   : " + airplane + "\n" +
