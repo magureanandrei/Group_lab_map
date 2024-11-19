@@ -1,0 +1,6 @@
+id,date,passenger,flight
+1,2023-10-01,Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles,Barcelona;Madrid
+2,2023-10-02,Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles,New York;Los Angeles
+3,2023-10-03,Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,Barcelona;Madrid
+4,2023-10-04,Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,New York;Los Angeles
+5,2023-10-05,Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,Barcelona;Madrid
