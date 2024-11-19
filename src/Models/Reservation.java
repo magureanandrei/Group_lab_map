@@ -1,6 +1,6 @@
 package Models;
 
-import java.io.Serializable;
+
 
 /**
  * Represents a reservation for a flight.
@@ -135,10 +135,21 @@ public class Reservation implements HasID{
      * @param csvLine The CSV line to create the reservation from.
      * @return The reservation created from the CSV line.
      */
+
     public static Reservation fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
-        Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);
-        Passenger passenger = parts[2].isEmpty() ? null : Passenger.fromCSV(parts[2]);
+        Pair flight=null;
+        Passenger passenger=null;
+        if (!parts[3].isEmpty()) {
+            String[] pairParts = parts[3].split(";");
+            if (pairParts.length == 2) {
+                flight = Pair.fromCSV(parts[3]);
+            }
+        }
+        if (!parts[2].isEmpty()) {
+            String[] passengerParts = parts[2].split(":");
+                passenger = Passenger.fromCSV(parts[2]);
+            }
 
         return new Reservation(
                 Integer.parseInt(parts[0]),
@@ -148,4 +159,5 @@ public class Reservation implements HasID{
         );
 
     }
+
 }

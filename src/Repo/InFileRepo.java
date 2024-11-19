@@ -1,12 +1,12 @@
 package Repo;
 
-import Models.HasID;
-
+import Models.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A repository implementation that stores data in a file.
@@ -15,14 +15,16 @@ import java.util.function.Consumer;
  */
 public class InFileRepo<T extends HasID> implements Repository<T> {
     private final String filePath;
+    private Function<String, T> fromCSV;
 
     /**
      * Constructs a new FileRepository with the specified file path.
      *
      * @param filePath The path to the file where data will be stored.
      */
-    public InFileRepo(String filePath) {
+    public InFileRepo(String filePath, Function<String, T> fromCSV) {
         this.filePath = filePath;
+        this.fromCSV=fromCSV;
     }
 
     /**
@@ -87,7 +89,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
-                T obj = T.fromCSV(line );
+                T obj = fromCSV.apply(line);
                 objects.put(obj.getID(), obj);
             }
             return objects;

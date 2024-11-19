@@ -88,6 +88,7 @@ public class CabinCrew extends Person implements HasID{
      * @param csvLine The CSV line to be converted.
      * @return The CabinCrew object created from the CSV line.
      */
+
     public static CabinCrew fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
         CabinCrew cabinCrew = new CabinCrew(parts[0], Integer.parseInt(parts[1]), parts[2], parts[3]);

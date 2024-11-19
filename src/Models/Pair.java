@@ -79,7 +79,7 @@ public class Pair implements HasID{
      */
     @Override
     public String toCSV() {
-        return String.join(",", first, second);
+        return String.join(";", first, second);
     }
 
     /**
@@ -87,8 +87,9 @@ public class Pair implements HasID{
      * @param csvLine The CSV line to create the Pair from.
      * @return The Pair created from the CSV line.
      */
+
     public static Pair fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
+        String[] parts = csvLine.split(";");
         Pair pair = new Pair(parts[0], parts[1]);
         return pair;
     }
@@ -101,6 +102,8 @@ public class Pair implements HasID{
     public Integer getID() {
         return 0;
     }
+
+
 }
 
 

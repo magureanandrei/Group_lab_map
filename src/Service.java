@@ -799,6 +799,5 @@ public class Service {
 
         return createTicket("Ticket"+" "+ from+" "+to,paymentType,pay.getID(),f.getDate());
     }
-
-
 }
+

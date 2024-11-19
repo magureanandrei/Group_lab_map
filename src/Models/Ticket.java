@@ -1,6 +1,5 @@
 package Models;
 
-import java.io.Serializable;
 
 /**
  * Represents a ticket associated with a payment.
@@ -154,19 +153,23 @@ public class Ticket implements HasID{
      * @param csvLine The CSV string to convert.
      * @return The ticket object.
      */
+
     public static Ticket fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
-        Payment payment = parts[3].isEmpty() ? null : Payment.fromCSV(parts[3]);
+        Payment payment=null;
+        if (!parts[3].isEmpty()) {
+            String[] paymentParts = parts[3].split("&");
+            payment = Payment.fromCSV(parts[3]);
+        }
 
         return new Ticket(
                 Integer.parseInt(parts[0]),
                 parts[1],
                 parts[2],
                 payment,
-                parts[3]
+                parts[4]
         );
 
     }
-
 
 }

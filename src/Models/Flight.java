@@ -53,6 +53,7 @@ public class Flight implements HasID{
                 "Pilot      : " + pilot + "\n" +
                 "Airplane   : " + airplane + "\n" +
                 "Date       : " + date + "\n" +
+                "Airport    : " + airport + "\n" +
                 "-----------------------------";
     }
 
@@ -225,11 +226,25 @@ public class Flight implements HasID{
      * @param csvLine The CSV representation of the Flight.
      * @return A new Flight object.
      */
+
     public static Flight fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
-        Pilot pilot = parts[3].isEmpty() ? null : Pilot.fromCSV(parts[3]);
-        Airplane airplane = parts[4].isEmpty() ? null : Airplane.fromCSV(parts[4]);
-        Airport airport = parts[5].isEmpty() ? null : Airport.fromCSV(parts[5]);
+        Pilot pilot = null;
+        Airplane airplane =null;
+        Airport airport=null;
+        if (!parts[3].isEmpty()) {
+            String[] pilotParts = parts[3].split(":");
+            pilot = Pilot.fromCSV(parts[3]);
+        }
+        if (!parts[4].isEmpty()) {
+            String[] airplaneParts = parts[4].split(";");
+            airplane = Airplane.fromCSV(parts[4]);
+        }
+
+        if (!parts[5].isEmpty()) {
+            String[] airportParts = parts[5].split("%");
+            airport = Airport.fromCSV(parts[5]);
+        }
 
         return new Flight(
                 Integer.parseInt(parts[0]),

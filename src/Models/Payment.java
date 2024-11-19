@@ -1,6 +1,5 @@
 package Models;
 
-import java.io.Serializable;
 
 /**
  * Represents a payment associated with a passenger.
@@ -121,7 +120,7 @@ public class Payment implements HasID{
      */
     @Override
     public String toCSV() {
-        return String.join(",", String.valueOf(id), Description, String.valueOf(Amount),
+        return String.join("&", String.valueOf(id), Description, String.valueOf(Amount),
                 passenger != null ? passenger.toCSV() : "");
     }
 
@@ -130,9 +129,14 @@ public class Payment implements HasID{
      * @param csvLine The CSV string to create the object from.
      * @return A new Payment object.
      */
-    public static  Payment fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
-        Passenger passenger = parts[3].isEmpty() ? null : Passenger.fromCSV(parts[3]);
+
+    public static Payment fromCSV(String csvLine) {
+        String[] parts = csvLine.split("&");
+        Passenger passenger=null;
+        if (!parts[3].isEmpty()) {
+            String[] passengerParts = parts[3].split(":");
+            passenger = Passenger.fromCSV(parts[3]);
+        }
 
         return new Payment(
                 Integer.parseInt(parts[0]),
@@ -140,4 +144,5 @@ public class Payment implements HasID{
                 Double.parseDouble(parts[2]),
                 passenger);
     }
+
 }

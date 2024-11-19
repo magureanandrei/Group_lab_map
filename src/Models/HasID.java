@@ -26,11 +26,4 @@ public interface HasID extends Serializable{
      */
     String toCSV();
 
-    /**
-     *  Returns the object in CSV format
-     * @return The object in CSV format
-     */
-    public static <T> T fromCSV(String csvLine) {
-        return null;
-    }
 }

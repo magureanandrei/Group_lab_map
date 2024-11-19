@@ -121,7 +121,7 @@ public class Airplane implements HasID{
      */
     @Override
     public String toCSV() {
-        return String.join(",", String.valueOf(id), model, String.valueOf(capacity),  String.valueOf(available));
+        return String.join(";", String.valueOf(id), model, String.valueOf(capacity),  String.valueOf(available));
     }
 
     /**
@@ -130,8 +130,11 @@ public class Airplane implements HasID{
      * @return The Airplane object created from the CSV string.
      */
     public static Airplane fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
+        String[] parts = csvLine.split(";");
         Airplane airplane = new Airplane(Integer.parseInt(parts[0]), parts[1], Integer.parseInt(parts[2]),  Boolean.parseBoolean(parts[3]));
         return airplane;
     }
+
+
+
 }

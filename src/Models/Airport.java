@@ -143,7 +143,7 @@ public class Airport implements HasID{
      */
     @Override
     public String toCSV() {
-        return String.join(",", String.valueOf(id), name, location, String.valueOf(number_of_airstrips),  String.valueOf(avaliable));
+        return String.join("%", String.valueOf(id), name, location, String.valueOf(number_of_airstrips),  String.valueOf(avaliable));
     }
 
     /**
@@ -151,12 +151,12 @@ public class Airport implements HasID{
      *
      * @return The Airport object as a CSV string.
      */
-    public static Airport fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
+
+    public static Airport  fromCSV(String csvLine) {
+        String[] parts = csvLine.split("%");
         Airport airport = new Airport(Integer.parseInt(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]),  Boolean.parseBoolean(parts[4]));
         return airport;
     }
-
 
 
 }

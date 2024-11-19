@@ -4,6 +4,8 @@ import Repo.InMemoryRepo;
 import Repo.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 
 /**
@@ -18,26 +20,26 @@ public class Main {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
-        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
-        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
-        Repository<Flight> flightRepo = createInMemoryFlightRepository();
-        Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
-        Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
-        Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
-        Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
-        Repository<Airport> airportRepo = createInMemoryAirportRepository();
+//        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
+//        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
+//        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
+//        Repository<Flight> flightRepo = createInMemoryFlightRepository();
+//        Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
+//        Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
+//        Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
+//        Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
+//        Repository<Airport> airportRepo = createInMemoryAirportRepository();
 
 
-//      Repository<Pilot> pilotsRepo = createInFilePilotRepository();
-//        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
-//        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
-//        Repository<Flight> flightRepo = createInFileFlightRepository();
-//        Repository<Payment> paymentRepo = createInFilePaymentRepository();
-//        Repository<Reservation> reservationRepo = createInFileReservationRepository();
-//        Repository<Ticket> ticketRepo = createInFileTicketRepository();
-//        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
-//        Repository<Airport> airportRepo = createInFileAirportRepository();
+        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
+        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
+        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
+        Repository<Flight> flightRepo = createInFileFlightRepository();
+        Repository<Payment> paymentRepo = createInFilePaymentRepository();
+        Repository<Reservation> reservationRepo = createInFileReservationRepository();
+        Repository<Ticket> ticketRepo = createInFileTicketRepository();
+        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
+        Repository<Airport> airportRepo = createInFileAirportRepository();
         Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
 
@@ -198,7 +200,7 @@ public class Main {
      */
     private static Repository<Pilot> createInFilePilotRepository() {
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\pilot.csv";
-        Repository<Pilot> pilotRepository = new InFileRepo<>(filePath);
+        Repository<Pilot> pilotRepository = new InFileRepo<>(filePath, Pilot::fromCSV);
         if (pilotRepository.getAll().isEmpty()) {
             pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
             pilotRepository.create(new Pilot("Andrei Iustin", 2, "andrei.iustin@gmail.com", Boolean.FALSE));
@@ -215,7 +217,7 @@ public class Main {
      */
     private static Repository<Passenger> createInFilePassengerRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\passenger.csv";
-        Repository<Passenger> passengerRepository = new InFileRepo<>(filePath);
+        Repository<Passenger> passengerRepository = new InFileRepo<>(filePath, Passenger::fromCSV);
         if (passengerRepository.getAll().isEmpty()) {
             passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Barcelona", "Madrid")));
             passengerRepository.create(new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
@@ -233,7 +235,7 @@ public class Main {
      */
     private static Repository<CabinCrew> createInFileCabinCrewRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\cabinCrew.csv";
-        Repository<CabinCrew> cabinCrewRepository = new InFileRepo<>(filePath);
+        Repository<CabinCrew> cabinCrewRepository = new InFileRepo<>(filePath, CabinCrew::fromCSV);
         if (cabinCrewRepository.getAll().isEmpty()) {
 
             cabinCrewRepository.create(new CabinCrew("John Doe", 1, "john.doe@gmail.com", "Steward"));
@@ -252,7 +254,7 @@ public class Main {
      */
     private static Repository<Flight> createInFileFlightRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\flight.csv";
-        Repository<Flight> flightRepository = new InFileRepo<>(filePath);
+        Repository<Flight> flightRepository = new InFileRepo<>(filePath, Flight::fromCSV);
         if (flightRepository.getAll().isEmpty()) {
             Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
             Airplane a1 = new Airplane(1, "Boeing 737", 180, Boolean.TRUE);
@@ -273,7 +275,7 @@ public class Main {
      */
     private static Repository<Payment> createInFilePaymentRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\payment.csv";
-        Repository<Payment> paymentRepository = new InFileRepo<>(filePath);
+        Repository<Payment> paymentRepository = new InFileRepo<>(filePath, Payment::fromCSV);
         if (paymentRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
             Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
@@ -293,7 +295,7 @@ public class Main {
      */
     private static Repository<Reservation> createInFileReservationRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\reservation.csv";
-        Repository<Reservation> reservationRepository = new InFileRepo<>(filePath);
+        Repository<Reservation> reservationRepository = new InFileRepo<>(filePath, Reservation::fromCSV);
         if (reservationRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
             Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
@@ -314,7 +316,7 @@ public class Main {
      */
     private static Repository<Ticket> createInFileTicketRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\ticket.csv";
-        Repository<Ticket> ticketRepository = new InFileRepo<>(filePath);
+        Repository<Ticket> ticketRepository = new InFileRepo<>(filePath, Ticket::fromCSV);
         if (ticketRepository.getAll().isEmpty()) {
             Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
             Payment payment2 = new Payment(3, "Flight payment", 300.0, new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
@@ -334,7 +336,7 @@ public class Main {
      */
     private static Repository<Airplane> createInFileAirplaneRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\airplane.csv";
-        Repository<Airplane> airplaneRepository = new InFileRepo<>(filePath);
+        Repository<Airplane> airplaneRepository = new InFileRepo<>(filePath, Airplane::fromCSV);
         if (airplaneRepository.getAll().isEmpty()) {
             airplaneRepository.create(new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
             airplaneRepository.create(new Airplane(2, "Airbus A320", 150, Boolean.FALSE));
@@ -352,7 +354,7 @@ public class Main {
      */
     private static Repository<Airport> createInFileAirportRepository(){
         String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\airport.csv";
-        Repository<Airport> airportRepository = new InFileRepo<>(filePath);
+        Repository<Airport> airportRepository = new InFileRepo<>(filePath, Airport::fromCSV);
         if (airportRepository.getAll().isEmpty()) {
             airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2, true));
             airportRepository.create(new Airport(2, "Baneasa", "Bucharest", 1, true));
@@ -362,4 +364,5 @@ public class Main {
         }
         return airportRepository;
     }
+
 }

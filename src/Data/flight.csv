@@ -1,0 +1,6 @@
+flightID,from,to,pilot,airplane,airport,date,amount
+1,Barcelona,Madrid,Mihai Serban:1:mihai.serban@gmail.com:true,1;Boeing 737;180;true,1%Henri Coanda%Otopeni%2%true,2023-10-01,100.0
+2,New York,Los Angeles,Mihai Serban:1:mihai.serban@gmail.com:true,1;Boeing 737;180;true,1%Henri Coanda%Otopeni%2%true,2023-10-02,200.0
+3,San Francisco,Chicago,Mihai Serban:1:mihai.serban@gmail.com:true,1;Boeing 737;180;true,1%Henri Coanda%Otopeni%2%true,2023-10-03,300.0
+4,Miami,Houston,Mihai Serban:1:mihai.serban@gmail.com:true,1;Boeing 737;180;true,1%Henri Coanda%Otopeni%2%true,2023-10-04,400.0
+5,Seattle,Denver,Mihai Serban:1:mihai.serban@gmail.com:true,1;Boeing 737;180;true,1%Henri Coanda%Otopeni%2%true,2023-10-05,500.0

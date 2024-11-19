@@ -1,0 +1,6 @@
+id,model,capacity,available
+1;Boeing 737;180;true
+2;Airbus A320;150;false
+3;Boeing 747;400;true
+4;Airbus A380;500;false
+5;Boeing 777;300;true

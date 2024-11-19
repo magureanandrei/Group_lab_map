@@ -1,6 +1,5 @@
 package Models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Represents a passenger with flight information.
@@ -47,8 +46,8 @@ public class Passenger extends Person implements HasID {
     @Override
     public String toString() {
         return "Passenger Details:\n" +
-                "Passenger ID : " + id + "\n" +
                 "Name     : " + nume + "\n" +
+                "Passenger ID : " + id + "\n" +
                 "Email    : " + email + "\n" +
                 "Flight   : " + flight + "\n" +
                 "-----------------------------";
@@ -79,7 +78,7 @@ public class Passenger extends Person implements HasID {
      */
     @Override
     public String toCSV() {
-        return String.join(",", String.valueOf(id), nume, email,
+        return String.join(":",  nume, String.valueOf(id), email,
                 flight != null ? flight.toCSV() : "");
     }
 
@@ -88,9 +87,17 @@ public class Passenger extends Person implements HasID {
      * @param csvLine The CSV line to create the Passenger from.
      * @return The Passenger created from the CSV line.
      */
+
     public static Passenger fromCSV(String csvLine) {
-        String[] parts = csvLine.split(",");
-        Pair flight = parts[3].isEmpty() ? null : Pair.fromCSV(parts[3]);
+        String[] parts = csvLine.split(":");
+        Pair flight = null;
+        if (!parts[3].isEmpty()) {
+            String[] pairParts = parts[3].split(";");
+            if (pairParts.length == 2) {
+                flight = new Pair(pairParts[0], pairParts[1]);
+            }
+        }
+
 
         return new Passenger(
                 parts[0],
@@ -98,6 +105,5 @@ public class Passenger extends Person implements HasID {
                 parts[2],
                 flight);
     }
-
 
 }

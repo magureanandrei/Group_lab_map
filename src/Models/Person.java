@@ -85,4 +85,7 @@ public abstract class Person{
                 "Email : " + email + "\n" +
                 "-----------------------------";
     }
+
+    public Person() {
+    }
 }

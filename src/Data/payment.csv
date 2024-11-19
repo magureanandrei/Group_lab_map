@@ -1,0 +1,6 @@
+id,description,amount,passenger
+1&Flight payment&200.0&Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles
+2&Baggage fee&50.0&Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles
+3&Flight payment&300.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago
+4&Baggage fee&75.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago
+5&Seat upgrade&100.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago

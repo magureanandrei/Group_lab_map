@@ -1,0 +1,6 @@
+id,title,description,payment,date
+1,Economy Class,Seat 12A,1&Flight payment&200.0&Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles,2023-10-01
+2,Business Class,Seat 1A,1&Flight payment&200.0&Mr Johnson:1:mr.johnson@gmail.com:New York;Los Angeles,2023-10-01
+3,First Class,Seat 2A,3&Flight payment&300.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,2023-10-01
+4,Economy Class,Seat 14B,3&Flight payment&300.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,2023-10-01
+5,Business Class,Seat 3A,3&Flight payment&300.0&Ms Johnson:2:ms.johnson@gmail.com:San Francisco;Chicago,2023-10-01
