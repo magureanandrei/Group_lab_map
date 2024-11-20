@@ -199,7 +199,7 @@ public class Main {
      * @return The in-File repository for pilots.
      */
     private static Repository<Pilot> createInFilePilotRepository() {
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\pilot.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\pilot.csv";
         Repository<Pilot> pilotRepository = new InFileRepo<>(filePath, Pilot::fromCSV);
         if (pilotRepository.getAll().isEmpty()) {
             pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
@@ -216,7 +216,7 @@ public class Main {
      * @return The in-File repository for passengers.
      */
     private static Repository<Passenger> createInFilePassengerRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\passenger.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\passenger.csv";
         Repository<Passenger> passengerRepository = new InFileRepo<>(filePath, Passenger::fromCSV);
         if (passengerRepository.getAll().isEmpty()) {
             passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Barcelona", "Madrid")));
@@ -234,7 +234,7 @@ public class Main {
      * @return The in-File repository for cabin crew.
      */
     private static Repository<CabinCrew> createInFileCabinCrewRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\cabinCrew.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\cabinCrew.csv";
         Repository<CabinCrew> cabinCrewRepository = new InFileRepo<>(filePath, CabinCrew::fromCSV);
         if (cabinCrewRepository.getAll().isEmpty()) {
 
@@ -253,7 +253,7 @@ public class Main {
      * @return The in-File repository for flights.
      */
     private static Repository<Flight> createInFileFlightRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\flight.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\flight.csv";
         Repository<Flight> flightRepository = new InFileRepo<>(filePath, Flight::fromCSV);
         if (flightRepository.getAll().isEmpty()) {
             Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
@@ -274,7 +274,7 @@ public class Main {
      * @return The in-File repository for payments.
      */
     private static Repository<Payment> createInFilePaymentRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\payment.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\payment.csv";
         Repository<Payment> paymentRepository = new InFileRepo<>(filePath, Payment::fromCSV);
         if (paymentRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -294,7 +294,7 @@ public class Main {
      * @return The in-File repository for reservations.
      */
     private static Repository<Reservation> createInFileReservationRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\reservation.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\reservation.csv";
         Repository<Reservation> reservationRepository = new InFileRepo<>(filePath, Reservation::fromCSV);
         if (reservationRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -315,7 +315,7 @@ public class Main {
      * @return The in-File repository for tickets.
      */
     private static Repository<Ticket> createInFileTicketRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\ticket.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\ticket.csv";
         Repository<Ticket> ticketRepository = new InFileRepo<>(filePath, Ticket::fromCSV);
         if (ticketRepository.getAll().isEmpty()) {
             Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
@@ -335,7 +335,7 @@ public class Main {
      * @return The in-File repository for airplanes.
      */
     private static Repository<Airplane> createInFileAirplaneRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\airplane.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\Data\\airplane.csv";
         Repository<Airplane> airplaneRepository = new InFileRepo<>(filePath, Airplane::fromCSV);
         if (airplaneRepository.getAll().isEmpty()) {
             airplaneRepository.create(new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
@@ -353,7 +353,7 @@ public class Main {
      * @return The in-File repository for airports.
      */
     private static Repository<Airport> createInFileAirportRepository(){
-        String filePath = "D:\\Facultate UBB info\\Anul II\\SEM III\\Group_lab_map\\src\\Data\\airport.csv";
+        String filePath =System.getProperty("user.dir") + "\\src\\Data\\airport.csv";
         Repository<Airport> airportRepository = new InFileRepo<>(filePath, Airport::fromCSV);
         if (airportRepository.getAll().isEmpty()) {
             airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2, true));

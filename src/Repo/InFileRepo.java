@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class InFileRepo<T extends HasID> implements Repository<T> {
     private final String filePath;
     private Function<String, T> fromCSV;
-
+    // primește un singur argument de tipul String și returnează un rezultat de tipul generic T care extend HasId.
     /**
      * Constructs a new FileRepository with the specified file path.
      *
