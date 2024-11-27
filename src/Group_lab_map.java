@@ -3,15 +3,11 @@ import Repo.InFileRepo;
 import Repo.InMemoryRepo;
 import Repo.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 
 /**
  * Main class that initializes the flight management system, including repositories, services, controllers, and the UI.
  */
-public class Main {
+public class Group_lab_map {
 
     /**
      * The entry point of the application.
