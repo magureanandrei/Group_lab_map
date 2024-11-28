@@ -1,6 +1,5 @@
 package Models;
 
-import java.util.ArrayList;
 /**
  * Represents a passenger with flight information.
  */

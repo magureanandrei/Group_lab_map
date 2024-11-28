@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A repository implementation that stores data in a file.
+ * A repository implementation that stores main.java.data in a file.
  *
  * @param <T> The type of objects stored in the repository, which must implement HasId.
  */
@@ -20,7 +20,7 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
     /**
      * Constructs a new FileRepository with the specified file path.
      *
-     * @param filePath The path to the file where data will be stored.
+     * @param filePath The path to the file where main.java.data will be stored.
      */
     public InFileRepo(String filePath, Function<String, T> fromCSV) {
         this.filePath = filePath;
@@ -68,9 +68,9 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
     }
 
     /**
-     * Performs an operation on the data stored in the file.
+     * Performs an operation on the main.java.data stored in the file.
      *
-     * @param function The function to apply to the data.
+     * @param function The function to apply to the main.java.data.
      */
     private void doInFile(Consumer<Map<Integer, T>> function) {
         Map<Integer, T> objects = readDataFromFile();
@@ -79,9 +79,9 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
     }
 
     /**
-     * Reads the data from the file.
+     * Reads the main.java.data from the file.
      *
-     * @return The data stored in the file, or an empty map if the file is empty or does not exist.
+     * @return The main.java.data stored in the file, or an empty map if the file is empty or does not exist.
      */
     private Map<Integer, T> readDataFromFile() {
         Map<Integer, T> objects = new HashMap<>();
@@ -99,9 +99,9 @@ public class InFileRepo<T extends HasID> implements Repository<T> {
     }
 
     /**
-     * Writes the data to the file.
+     * Writes the main.java.data to the file.
      *
-     * @param objects The data to write to the file.
+     * @param objects The main.java.data to write to the file.
      */
     private void writeDataToFile(Map<Integer, T> objects) {
         if(objects.isEmpty()) return;

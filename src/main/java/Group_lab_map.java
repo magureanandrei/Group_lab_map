@@ -1,3 +1,5 @@
+
+import Exceptions.ValidationException;
 import Models.*;
 import Repo.InFileRepo;
 import Repo.InMemoryRepo;
@@ -5,17 +7,17 @@ import Repo.Repository;
 
 
 /**
- * Main class that initializes the flight management system, including repositories, services, controllers, and the UI.
+ * Main class that initializes the flight management system, including repositories, services, controllers, and the main.java.UI.
  */
 public class Group_lab_map {
 
     /**
      * The entry point of the application.
-     * Initializes repositories, services, controllers, and starts the UI.
+     * Initializes repositories, services, controllers, and starts the main.java.UI.
      *
      * @param args Command line arguments (not used).
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
 //        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
 //        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
 //        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
@@ -45,7 +47,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for pilots and populates it with some initial data.
+     * Creates an in-memory repository for pilots and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for pilots.
      */
@@ -60,7 +62,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for passengers and populates it with some initial data.
+     * Creates an in-memory repository for passengers and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for passengers.
      */
@@ -75,7 +77,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for cabin crew and populates it with some initial data.
+     * Creates an in-memory repository for cabin crew and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for cabin crew.
      */
@@ -90,7 +92,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for flights and populates it with some initial data.
+     * Creates an in-memory repository for flights and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for flights.
      */
@@ -108,7 +110,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for payments and populates it with some initial data.
+     * Creates an in-memory repository for payments and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for payments.
      */
@@ -125,7 +127,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for reservations and populates it with some initial data.
+     * Creates an in-memory repository for reservations and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for reservations.
      */
@@ -143,7 +145,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for tickets and populates it with some initial data.
+     * Creates an in-memory repository for tickets and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for tickets.
      */
@@ -160,7 +162,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for airplanes and populates it with some initial data.
+     * Creates an in-memory repository for airplanes and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for airplanes.
      */
@@ -175,7 +177,7 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-memory repository for airports and populates it with some initial data.
+     * Creates an in-memory repository for airports and populates it with some initial main.java.data.
      *
      * @return The in-memory repository for airports.
      */
@@ -190,12 +192,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for pilots and populates it with some initial data.
+     * Creates an in-File repository for pilots and populates it with some initial main.java.data.
      *
      * @return The in-File repository for pilots.
      */
     private static Repository<Pilot> createInFilePilotRepository() {
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\pilot.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\pilot.csv";
         Repository<Pilot> pilotRepository = new InFileRepo<>(filePath, Pilot::fromCSV);
         if (pilotRepository.getAll().isEmpty()) {
             pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
@@ -207,12 +209,12 @@ public class Group_lab_map {
         return pilotRepository;
     }
     /**
-     * Creates an in-File repository for passengers and populates it with some initial data.
+     * Creates an in-File repository for passengers and populates it with some initial main.java.data.
      *
      * @return The in-File repository for passengers.
      */
     private static Repository<Passenger> createInFilePassengerRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\passenger.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\passenger.csv";
         Repository<Passenger> passengerRepository = new InFileRepo<>(filePath, Passenger::fromCSV);
         if (passengerRepository.getAll().isEmpty()) {
             passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Barcelona", "Madrid")));
@@ -225,12 +227,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for cabin crew and populates it with some initial data.
+     * Creates an in-File repository for cabin crew and populates it with some initial main.java.data.
      *
      * @return The in-File repository for cabin crew.
      */
     private static Repository<CabinCrew> createInFileCabinCrewRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\cabinCrew.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\cabinCrew.csv";
         Repository<CabinCrew> cabinCrewRepository = new InFileRepo<>(filePath, CabinCrew::fromCSV);
         if (cabinCrewRepository.getAll().isEmpty()) {
 
@@ -244,12 +246,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for flights and populates it with some initial data.
+     * Creates an in-File repository for flights and populates it with some initial main.java.data.
      *
      * @return The in-File repository for flights.
      */
     private static Repository<Flight> createInFileFlightRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\flight.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\flight.csv";
         Repository<Flight> flightRepository = new InFileRepo<>(filePath, Flight::fromCSV);
         if (flightRepository.getAll().isEmpty()) {
             Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
@@ -265,12 +267,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for payments and populates it with some initial data.
+     * Creates an in-File repository for payments and populates it with some initial main.java.data.
      *
      * @return The in-File repository for payments.
      */
     private static Repository<Payment> createInFilePaymentRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\payment.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\payment.csv";
         Repository<Payment> paymentRepository = new InFileRepo<>(filePath, Payment::fromCSV);
         if (paymentRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -285,12 +287,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for reservations and populates it with some initial data.
+     * Creates an in-File repository for reservations and populates it with some initial main.java.data.
      *
      * @return The in-File repository for reservations.
      */
     private static Repository<Reservation> createInFileReservationRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\reservation.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\reservation.csv";
         Repository<Reservation> reservationRepository = new InFileRepo<>(filePath, Reservation::fromCSV);
         if (reservationRepository.getAll().isEmpty()) {
             Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
@@ -306,12 +308,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for tickets and populates it with some initial data.
+     * Creates an in-File repository for tickets and populates it with some initial main.java.data.
      *
      * @return The in-File repository for tickets.
      */
     private static Repository<Ticket> createInFileTicketRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\ticket.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\ticket.csv";
         Repository<Ticket> ticketRepository = new InFileRepo<>(filePath, Ticket::fromCSV);
         if (ticketRepository.getAll().isEmpty()) {
             Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
@@ -326,12 +328,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for airplanes and populates it with some initial data.
+     * Creates an in-File repository for airplanes and populates it with some initial main.java.data.
      *
      * @return The in-File repository for airplanes.
      */
     private static Repository<Airplane> createInFileAirplaneRepository(){
-        String filePath = System.getProperty("user.dir") +"\\src\\Data\\airplane.csv";
+        String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\airplane.csv";
         Repository<Airplane> airplaneRepository = new InFileRepo<>(filePath, Airplane::fromCSV);
         if (airplaneRepository.getAll().isEmpty()) {
             airplaneRepository.create(new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
@@ -344,12 +346,12 @@ public class Group_lab_map {
     }
 
     /**
-     * Creates an in-File repository for airports and populates it with some initial data.
+     * Creates an in-File repository for airports and populates it with some initial main.java.data.
      *
      * @return The in-File repository for airports.
      */
     private static Repository<Airport> createInFileAirportRepository(){
-        String filePath =System.getProperty("user.dir") + "\\src\\Data\\airport.csv";
+        String filePath =System.getProperty("user.dir") + "\\src\\main\\java\\data\\airport.csv";
         Repository<Airport> airportRepository = new InFileRepo<>(filePath, Airport::fromCSV);
         if (airportRepository.getAll().isEmpty()) {
             airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2, true));

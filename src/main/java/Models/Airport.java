@@ -1,7 +1,5 @@
 package Models;
 
-import java.io.Serializable;
-import java.util.List;
 /**
  * Represents an airport with a specific location, number of airstrips, and their lengths.
  */

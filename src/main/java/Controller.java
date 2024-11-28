@@ -12,7 +12,7 @@ public class Controller {
     private final Service flightService;
 
     /**
-     * Constructs a new Controller with the given Service.
+     * Constructs a new main.java.Controller with the given main.java.Service.
      *
      * @param flightService The service that provides the business logic for the flight system.
      */

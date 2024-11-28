@@ -1,7 +1,5 @@
 package Models;
 
-import java.io.Serializable;
-
 /**
  * Represents a flight with a unique identifier, assigned pilot and airplane, as well as the departure and destination locations.
  */

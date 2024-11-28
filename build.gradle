@@ -8,20 +8,56 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-sourceSets {
-    main(({
-        java {
-            srcDirs = ['src']
+task printSourceSetInformation(){
+    description = "Print source set information"
+
+    doLast{
+        sourceSets.each { srcSet ->
+            println "["+srcSet.name+"]"
+            print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
+            print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
+            print "-->Compile classpath:\n"
+            srcSet.compileClasspath.files.each {
+                print "  "+it.path+"\n"
+            }
+            println ""
         }
-    } as String))
-}
-dependencies {
-    implementation("org.junit:junit-bom:5.10.0")
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    }
 }
 
-test {
+sourceSets{
+    itest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
+}
+test{
     useJUnitPlatform()
+    testLogging.showStandardStreams=true
+}
+
+
+task itest(type: Test) {
+    description = "Run integration tests"
+    group = "verification"
+    testClassesDirs = sourceSets.itest.output.classesDirs
+    classpath = sourceSets.itest.runtimeClasspath
+}
+
+itest {
+    testLogging {
+        events "passed","skipped", "failed"
+    }
+}
+
+configurations {
+    itestImplementation.extendsFrom(testImplementation)
+    itestRuntimeOnly.extendsFrom(testRuntimeOnly)
 }

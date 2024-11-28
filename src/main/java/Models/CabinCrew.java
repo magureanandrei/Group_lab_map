@@ -1,7 +1,5 @@
 package Models;
 
-import java.io.Serializable;
-
 /**
  * Represents a cabin crew member with a specific profession, inheriting general details from the Person class.
  */

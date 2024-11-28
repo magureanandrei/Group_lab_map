@@ -1,6 +1,6 @@
 package Models;
 
-import java.io.Serializable; /**
+/**
  * Represents a custom Pair class for storing two related strings, such as locations.
  */
 public class Pair implements HasID{

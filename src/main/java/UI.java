@@ -1,17 +1,17 @@
-import Models.Passenger;
-import Models.Pilot;
-import Repo.Repository;
 
-import java.sql.SQLOutput;
+
+import Exceptions.ValidationException;
+import Models.*;
+
 import java.util.Scanner;
 /**
- * The UI class provides a command-line interface for interacting with the flight management system.
+ * The main.java.UI class provides a command-line interface for interacting with the flight management system.
  */
 public class UI {
     private final Controller flightController;
 
     /**
-     * Constructs a new UI with the given Controller.
+     * Constructs a new main.java.UI with the given main.java.Controller.
      *
      * @param flightController The controller that handles the business logic for the flight system.
      */
@@ -89,9 +89,9 @@ public class UI {
     }
 
     /**
-     * Starts the UI and handles user input, providing appropriate options for operator and passenger modes.
+     * Starts the main.java.UI and handles user input, providing appropriate options for operator and passenger modes.
      */
-    public void run() {
+    public void run()  {
         Scanner scanner = new Scanner(System.in);
         greeting();
         System.out.println("Are you an Operator(1) or a Passenger(2)?");

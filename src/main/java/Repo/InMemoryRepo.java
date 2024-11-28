@@ -3,11 +3,11 @@ package Repo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import Repo.Repository;
+
 import Models.HasID;
 
 /**
- * A repository implementation that stores data in memory.
+ * A repository implementation that stores main.java.data in memory.
  *
  * @param <T> The type of objects stored in the repository, which must implement HasId.
  */

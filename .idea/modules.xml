@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Group_lab_map.iml" filepath="$PROJECT_DIR$/Group_lab_map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/main.java.Group_lab_map.test.iml" filepath="$PROJECT_DIR$/.idea/modules/main.java.Group_lab_map.test.iml" />
     </modules>
   </component>
 </project>

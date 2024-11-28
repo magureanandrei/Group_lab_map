@@ -2,9 +2,7 @@ import Models.*;
 import Repo.Repository;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents the service class that handles the flight system logic.
@@ -432,7 +430,7 @@ public class Service {
      * @param passengerID The passenger identifier.
      */
     public Payment createPayment(String description, double amount,Integer passengerID){
-        //trebe scris si o descriere din UI cumva si data ca parametru
+        //trebe scris si o descriere din main.java.UI cumva si main.java.data ca parametru
         Integer payID=createPaymentID();
         Passenger p=null;
         for( Passenger passenger: passengerRepo.getAll())
@@ -476,7 +474,7 @@ public class Service {
 
     }
 
-    // ar trebui sa facem o lista de reservations( si asta ar fi data si ca lista pt operator, dar filtrata cumva
+    // ar trebui sa facem o lista de reservations( si asta ar fi main.java.data si ca lista pt operator, dar filtrata cumva
     //undeva, nu-s sigur unde)
 
     /**

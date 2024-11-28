@@ -1,7 +1,5 @@
 package Models;
 
-import java.io.Serializable;
-
 /**
  * Represents an airplane.
  */
