@@ -1,5 +1,4 @@
 
-import Exceptions.ValidationException;
 import Models.*;
 import Repo.InFileRepo;
 import Repo.InMemoryRepo;
@@ -38,6 +37,8 @@ public class Group_lab_map {
         Repository<Ticket> ticketRepo = createInFileTicketRepository();
         Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
         Repository<Airport> airportRepo = createInFileAirportRepository();
+
+        //Repository<Airplane> airplaneRepository = new DataBaseRepoAirplane();
         Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
 
