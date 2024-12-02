@@ -2,6 +2,8 @@ import Models.*;
 import Repo.InMemoryRepo;
 import Repo.*;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +18,7 @@ class ApplicationTest {
     private final  Repository<Payment> paymentRepository = new InMemoryRepo<>();
     private final  Repository<Reservation> reservationRepository = new InMemoryRepo<>();
     private final Repository<Ticket> ticketRepository = new InMemoryRepo<>();
+    Service flightService = new Service(pilotRepository, passengerRepository,cabinCrewRepository,flightRepository,paymentRepository,reservationRepository,ticketRepository,airplaneRepository, airportRepo);
 
     @Test
     void testCRUDOperationsForAirplane() {
@@ -391,6 +394,135 @@ class ApplicationTest {
         flightRepository.delete(1);
         assertEquals(0, flightRepository.getAll().size());
     }
+
+    @Test
+    void testBookSeatSuccessful() {
+        Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
+                new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
+                "2023-12-25", 500.0);
+        passengerRepository.create(passenger);
+        flightRepository.create(flight);
+
+        Ticket ticket = flightService.bookSeat("2023-12-25", 1, 1, "Card");
+        assertNotNull(ticket);
+        assertEquals("Oradea", ticket.getPayment().getPassenger().getFlight().getFrom());
+        assertEquals("Bucuresti", ticket.getPayment().getPassenger().getFlight().getTo());
+        assertEquals(199, flightRepository.get(1).getAirplane().getCapacity()); // Capacitate scăzută
+    }
+
+    @Test
+    void testBookSeatThrowsExceptionWhenNoSeatsAvailable() {
+        Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
+                new Airplane(1, "Boeing 737", 0, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
+                "2023-12-25", 500.0);
+        flightRepository.create(flight);
+
+        assertThrows(RuntimeException.class, () -> {
+            flightService.bookSeat("2023-12-25", 1, 1, "Card");
+        });
+
+    }
+
+    @Test
+    void testBookSeatByFlightSuccessful() {
+        Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
+                new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
+                "2023-12-25", 500.0);
+        passengerRepository.create(passenger);
+        flightRepository.create(flight);
+
+        Ticket ticket = flightService.bookSeatByFlight("2023-12-25", 1, 1, "Card", "Oradea", "Bucuresti");
+
+
+        assertNotNull(ticket);
+        assertEquals("Ticket Oradea Bucuresti", ticket.getTitle());
+        assertEquals("Card", ticket.getDescription());
+        assertEquals("2023-12-25", ticket.getDate());
+        assertEquals("John Doe", ticket.getPayment().getPassenger().getNume());
+        assertEquals("Oradea", ticket.getPayment().getPassenger().getFlight().getFrom());
+        assertEquals("Bucuresti", ticket.getPayment().getPassenger().getFlight().getTo());
+    }
+
+    @Test
+    void testBookSeatByFlightThrowsExceptionForInvalidLocations() {
+        Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
+                new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
+                "2023-12-25", 500.0);
+        passengerRepository.create(passenger);
+        flightRepository.create(flight);
+
+         assertThrows(RuntimeException.class, () -> {
+            flightService.bookSeatByFlight("2023-12-25", 1, 1, "Card", "Cluj", "Iasi");
+        });
+
+    }
+
+
+
+    @Test
+    void testFilterCabinCrewByProfession() {
+        cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
+        cabinCrewRepository.create(new CabinCrew("Tom Brown",2 , "tom@gmail.com","Pilot"));
+        cabinCrewRepository.create(new CabinCrew("Sarah Johnson",3 , "sarah@gmail.com","Flight Attendant"));
+
+        ArrayList<CabinCrew> flightAttendants = flightService.filterCabinCrewByProfession("Flight Attendant");
+        assertEquals(2, flightAttendants.size());
+        assertTrue(flightAttendants.stream().allMatch(c -> c.getProfession().equals("Flight Attendant")));
+    }
+
+    @Test
+    void testFilterCabinCrewByProfessionEmptyResult() {
+        cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
+
+        ArrayList<CabinCrew> flightAttendants = flightService.filterCabinCrewByProfession("Pilot");
+        assertTrue(flightAttendants.isEmpty());
+    }
+    @Test
+    void testSortAirplanesByCapacity() {
+        airplaneRepository.create(new Airplane(1, "Boeing 747", 400, true));
+        airplaneRepository.create(new Airplane(2, "Airbus A320", 300, true));
+        airplaneRepository.create(new Airplane(3, "Cessna 172", 100, true));
+
+        ArrayList<Airplane> sortedAirplanes = flightService.sortAirplanesByCapacity();
+        assertEquals(3, sortedAirplanes.size());
+        assertEquals(100, sortedAirplanes.get(0).getCapacity());
+        assertEquals(300, sortedAirplanes.get(1).getCapacity());
+        assertEquals(400, sortedAirplanes.get(2).getCapacity());
+    }
+
+    @Test
+    void testFilterFlightsByAmount() {
+        flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
+        flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
+        flightRepository.create(new Flight(3, "Cluj", "Timisoara", null, null, null, "2023-11-05", 700.0));
+
+        ArrayList<Flight> filteredFlights = flightService.filterFlightsByAmount(500.0);
+        assertEquals(2, filteredFlights.size());
+        assertTrue(filteredFlights.stream().allMatch(f -> f.getAmount() <= 500.0));
+    }
+
+    @Test
+    void testSortFlightsByDate() {
+        flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
+        flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
+        flightRepository.create(new Flight(3, "Cluj", "Timisoara", null, null, null, "2023-11-05", 400.0));
+
+        ArrayList<Flight> sortedFlights = flightService.sortFlightsByDate();
+        assertEquals(3, sortedFlights.size());
+        assertEquals("2023-10-15", sortedFlights.get(0).getDate());
+        assertEquals("2023-11-05", sortedFlights.get(1).getDate());
+        assertEquals("2023-12-25", sortedFlights.get(2).getDate());
+    }
+
+
+
+
+
+
+
 
 
 }
