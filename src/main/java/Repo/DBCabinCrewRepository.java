@@ -8,13 +8,13 @@ import java.util.List;
 
 public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
-    public DBCabinCrewRepository(String dbUrl, String dbUser, String dbPassword) {
-        super(dbUrl, dbUser, dbPassword);
+    public DBCabinCrewRepository(String dbUrl) {
+        super(dbUrl);
     }
 
     @Override
     public void create(CabinCrew obj) {
-        String sql = "INSERT INTO CabinCrew (ID, name, email, profession) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO CabinCrew (ID, nume, email, profession) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, obj.getID());
@@ -48,7 +48,7 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
     @Override
     public void update(CabinCrew obj) {
-        String sql = "UPDATE CabinCrew SET name = ?, email = ?, profession = ? WHERE ID = ?";
+        String sql = "UPDATE CabinCrew SET nume = ?, email = ?, profession = ? WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, obj.getNume());
@@ -94,7 +94,7 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
     private static CabinCrew extractFromResultSet(ResultSet resultSet) throws SQLException {
         return new CabinCrew(
-                resultSet.getString("name"),
+                resultSet.getString("nume"),
                 resultSet.getInt("ID"),
                 resultSet.getString("email"),
                 resultSet.getString("profession")

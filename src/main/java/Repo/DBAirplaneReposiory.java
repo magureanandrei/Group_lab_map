@@ -10,8 +10,8 @@ import java.util.List;
 
 public class DBAirplaneReposiory extends DBRepository<Airplane> {
 
-    public DBAirplaneReposiory(String dbUrl, String dbUser, String dbPassword) {
-        super(dbUrl, dbUser, dbPassword);
+    public DBAirplaneReposiory(String dbUrl) {
+            super(dbUrl);
     }
 
     @Override

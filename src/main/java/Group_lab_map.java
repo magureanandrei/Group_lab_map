@@ -1,8 +1,6 @@
 
 import Models.*;
-import Repo.InFileRepo;
-import Repo.InMemoryRepo;
-import Repo.Repository;
+import Repo.*;
 
 
 /**
@@ -28,17 +26,29 @@ public class Group_lab_map {
 //        Repository<Airport> airportRepo = createInMemoryAirportRepository();
 
 
-        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
-        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
-        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
-        Repository<Flight> flightRepo = createInFileFlightRepository();
-        Repository<Payment> paymentRepo = createInFilePaymentRepository();
-        Repository<Reservation> reservationRepo = createInFileReservationRepository();
-        Repository<Ticket> ticketRepo = createInFileTicketRepository();
-        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
-        Repository<Airport> airportRepo = createInFileAirportRepository();
+//        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
+//        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
+//        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
+//        Repository<Flight> flightRepo = createInFileFlightRepository();
+//        Repository<Payment> paymentRepo = createInFilePaymentRepository();
+//        Repository<Reservation> reservationRepo = createInFileReservationRepository();
+//        Repository<Ticket> ticketRepo = createInFileTicketRepository();
+//      Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
+//        Repository<Airport> airportRepo = createInFileAirportRepository();
 
-        //Repository<Airplane> airplaneRepository = new DataBaseRepoAirplane();
+        String DB_URL = "jdbc:sqlserver://localhost:1433;database=FlightManagement;integratedSecurity=true;trustServerCertificate=true";
+
+
+
+        Repository<Pilot> pilotsRepo = new DBPilorRepository(DB_URL);
+        Repository<CabinCrew> cabinCrewRepo = new DBCabinCrewRepository(DB_URL);;
+        Repository<Airport> airportRepo = new DBAirportRepository(DB_URL);
+        Repository<Airplane> airplaneRepository = new DBAirplaneReposiory(DB_URL);
+        Repository<Passenger> passengerRepo = new DBPassengerRepository(DB_URL);
+        Repository<Payment> paymentRepo = new DBPaymentRepository(DB_URL);
+        Repository<Ticket> ticketRepo = new DBTicketRepository(DB_URL);
+        Repository<Flight> flightRepo = new DBFlightRepository(DB_URL);
+        Repository<Reservation> reservationRepo = new DBReservationRepository(DB_URL);
         Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
 

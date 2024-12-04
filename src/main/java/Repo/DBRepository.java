@@ -9,9 +9,9 @@ public abstract class DBRepository<T extends HasID> implements Repository<T>, Au
 
     protected final Connection connection;
 
-    public DBRepository(String dbUrl, String dbUser, String dbPassword) {
+    public DBRepository(String dbUrl) {
         try {
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            connection = DriverManager.getConnection(dbUrl);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

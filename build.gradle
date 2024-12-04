@@ -37,6 +37,8 @@ sourceSets{
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     implementation 'mysql:mysql-connector-java:8.0.33'
+     //https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc
+    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '12.8.1.jre11'
 }
 test{
     useJUnitPlatform()
