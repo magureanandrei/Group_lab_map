@@ -346,13 +346,17 @@ public class Service {
      * @param newEmail The new email of the pilot.
      */
     public void updatePilot(Integer pilotID,String newName, String newEmail){
-        for(Pilot pilot: pilotsRepo.getAll())
-            if(pilot.getID().equals(pilotID))
-            {
-                pilot.setNume(newName);
-                pilot.setEmail(newEmail);
-                break;
-            }
+//        for(Pilot pilot: pilotsRepo.getAll())
+//            if(pilot.getID().equals(pilotID))
+//            {
+//                pilot.setNume(newName);
+//                pilot.setEmail(newEmail);
+//                break;
+//            }
+        Pilot pilot = pilotsRepo.get(pilotID);
+        pilot.setNume(newName);
+        pilot.setEmail(newEmail);
+        pilotsRepo.update(pilot);
     }
 
     /**
@@ -364,16 +368,22 @@ public class Service {
      * @param newFrom The new departure location of the passenger.
      */
     public void updatePassenger(Integer passengerID,String newName, String newEmail, String newTo, String newFrom){
-        for(Passenger passenger: passengerRepo.getAll())
-
-            if(passenger.getID().equals(passengerID))
-            {
-                passenger.setNume(newName);
-                passenger.setEmail(newEmail);
-                Pair pair= new Pair(newFrom,newTo);
-                passenger.setFlight(pair);
-                break;
-            }
+//        for(Passenger passenger: passengerRepo.getAll())
+//
+//            if(passenger.getID().equals(passengerID))
+//            {
+//                passenger.setNume(newName);
+//                passenger.setEmail(newEmail);
+//                Pair pair= new Pair(newFrom,newTo);
+//                passenger.setFlight(pair);
+//                break;
+//            }
+        Passenger passenger = passengerRepo.get(passengerID);
+        passenger.setNume(newName);
+        passenger.setEmail(newEmail);
+        Pair pair= new Pair(newFrom,newTo);
+        passenger.setFlight(pair);
+        passengerRepo.update(passenger);
     }
 
     /**
@@ -384,14 +394,19 @@ public class Service {
      * @param newProfesion The new profession of the cabin crew.
      */
     public void updateCabinCrew(Integer cabincrewID, String newName, String newEmail, String newProfesion){
-        for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
-            if(cabinCrew.getID().equals(cabincrewID))
-            {
-                cabinCrew.setNume(newName);
-                cabinCrew.setEmail(newEmail);
-                cabinCrew.setProfession(newProfesion);
-                break;
-            }
+//        for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
+//            if(cabinCrew.getID().equals(cabincrewID))
+//            {
+//                cabinCrew.setNume(newName);
+//                cabinCrew.setEmail(newEmail);
+//                cabinCrew.setProfession(newProfesion);
+//                break;
+//            }
+        CabinCrew cabinCrew = cabinCrewRepo.get(cabincrewID);
+        cabinCrew.setNume(newName);
+        cabinCrew.setEmail(newEmail);
+        cabinCrew.setProfession(newProfesion);
+        cabinCrewRepo.update(cabinCrew);
     }
 
     /**
@@ -412,15 +427,21 @@ public class Service {
             if(airplane.getID().equals(airplaneID))
                 a=airplane;
 
-        for (Flight flight: flightRepo.getAll())
-            if(flight.getID().equals(flightID))
-            {
-                flight.to=newTo;
-                flight.from=newFrom;
-                flight.pilot=p;
-                flight.airplane=a;
-                break;
-            }
+//        for (Flight flight: flightRepo.getAll())
+//            if(flight.getID().equals(flightID))
+//            {
+//                flight.to=newTo;
+//                flight.from=newFrom;
+//                flight.pilot=p;
+//                flight.airplane=a;
+//                break;
+//            }
+        Flight flight = flightRepo.get(flightID);
+        flight.setTo(newTo);
+        flight.setFrom(newFrom);
+        flight.setPilot(p);
+        flight.setAirplane(a);
+        flightRepo.update(flight);
     }
 
     /**
@@ -464,13 +485,17 @@ public class Service {
     public void updatePayment(Integer paymentID,String newDescription, double newAmount){
         //id of payment stays the same and id of passenger that pays stays the same
 
-        for(Payment payment: paymentRepo.getAll())
-            if(payment.getID().equals(paymentID))
-            {
-                payment.setAmount(newAmount);
-                payment.setDescription(newDescription);
-                break;
-            }
+//        for(Payment payment: paymentRepo.getAll())
+//            if(payment.getID().equals(paymentID))
+//            {
+//                payment.setAmount(newAmount);
+//                payment.setDescription(newDescription);
+//                break;
+//            }
+        Payment payment = paymentRepo.get(paymentID);
+        payment.setAmount(newAmount);
+        payment.setDescription(newDescription);
+        paymentRepo.update(payment);
 
     }
 
@@ -515,11 +540,14 @@ public class Service {
      * @param newDate The new date of the reservation.
      */
     public void updateReservation(Integer reservationID,String newDate){
-        for(Reservation reservation: reservationRepo.getAll())
-            if(reservation.getID().equals(reservationID)) {
-                reservation.setDate(newDate);
-                break;
-            }
+//        for(Reservation reservation: reservationRepo.getAll())
+//            if(reservation.getID().equals(reservationID)) {
+//                reservation.setDate(newDate);
+//                break;
+//            }
+        Reservation reservation = reservationRepo.get(reservationID);
+        reservation.setDate(newDate);
+        reservationRepo.update(reservation);
 
     }
 
@@ -559,12 +587,16 @@ public class Service {
      * @param newDescription The new description of the ticket.
      */
     public void updateTicket(Integer ticketID, String newTitle, String newDescription){
-        for(Ticket ticket: ticketRepo.getAll())
-            if(ticket.getID().equals(ticketID)) {
-                ticket.setTitle(newTitle);
-                ticket.setDescription(newDescription);
-                break;
-            }
+//        for(Ticket ticket: ticketRepo.getAll())
+//            if(ticket.getID().equals(ticketID)) {
+//                ticket.setTitle(newTitle);
+//                ticket.setDescription(newDescription);
+//                break;
+//            }
+        Ticket ticket = ticketRepo.get(ticketID);
+        ticket.setTitle(newTitle);
+        ticket.setDescription(newDescription);
+        ticketRepo.update(ticket);
     }
 
     /**
@@ -610,12 +642,17 @@ public class Service {
      */
     public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity,Boolean newAvaliable){
 
-        for(Airplane airplane: airplaneRepo.getAll())
-            if(airplane.getID().equals(airplaneID)) {
-                airplane.setModel(newModel);
-                airplane.setAvailable(newAvaliable);
-                airplane.setCapacity(newCapacity);
-            }
+//        for(Airplane airplane: airplaneRepo.getAll())
+//            if(airplane.getID().equals(airplaneID)) {
+//                airplane.setModel(newModel);
+//                airplane.setAvailable(newAvaliable);
+//                airplane.setCapacity(newCapacity);
+//            }
+        Airplane airplane = airplaneRepo.get(airplaneID);
+        airplane.setModel(newModel);
+        airplane.setAvailable(newAvaliable);
+        airplane.setCapacity(newCapacity);
+        airplaneRepo.update(airplane);
 
 
     }
@@ -676,13 +713,19 @@ public class Service {
      * @param newAvaliable The new availability of the airport.
      */
     public void updateAirport(Integer airportID, String newName, String newLocation,Integer newNumberOfAirstrips, Boolean newAvaliable){
-        for(Airport airport: airportRepo.getAll())
-            if(airport.getID().equals(airportID)) {
-                airport.setName(newName);
-                airport.setNumber_of_airstrips(newNumberOfAirstrips);
-                airport.setLocation(newLocation);
-                airport.setAvaliable(newAvaliable);
-            }
+//        for(Airport airport: airportRepo.getAll())
+//            if(airport.getID().equals(airportID)) {
+//                airport.setName(newName);
+//                airport.setNumber_of_airstrips(newNumberOfAirstrips);
+//                airport.setLocation(newLocation);
+//                airport.setAvaliable(newAvaliable);
+//            }
+        Airport airport = airportRepo.get(airportID);
+        airport.setName(newName);
+        airport.setNumber_of_airstrips(newNumberOfAirstrips);
+        airport.setLocation(newLocation);
+        airport.setAvaliable(newAvaliable);
+        airportRepo.update(airport);
     }
 
     /**
