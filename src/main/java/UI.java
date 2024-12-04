@@ -94,17 +94,34 @@ public class UI {
     public void run()  {
         Scanner scanner = new Scanner(System.in);
         greeting();
-        System.out.println("Are you an Operator(1) or a Passenger(2)?");
-        Integer userType = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character left by nextInt()
+        Integer userType = null;
+        try {
+            System.out.println("Are you an Operator(1) or a Passenger(2)?");
+            userType = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character left by nextInt()
+            if(userType<1 || userType>2)
+                throw new ValidationException("Invalid choice. Please try again.");
+        }
+        catch(ValidationException e) {
+            System.out.println(e.getMessage());
+        }
         // Validăm tipul de utilizator
         if (userType.equals(1)) {
             // Opțiuni pentru Operator
             boolean running = true;
             while (running) {
-                System.out.println(operatorMenu());
-                int choice = scanner.nextInt();// citeste un număr întreg (de tip int) introdus de utilizator în consolă
-                scanner.nextLine();
+                int choice = 0;
+                try {
+                    System.out.println(operatorMenu());
+                    choice = scanner.nextInt();// citeste un număr întreg (de tip int) introdus de utilizator în consolă
+                    scanner.nextLine();
+                    if(choice<0 || choice>14)
+                        throw new ValidationException("Invalid choice. Please try again.");
+                }
+                catch(ValidationException e) {
+                    System.out.println(e.getMessage());
+                    continue;
+                }
                 switch (choice) {
                     case 0:
                         running = false;
@@ -116,40 +133,157 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice1) {
                             case 1:
-                                System.out.print("Enter a Pilot ID for your flight: ");
-                                Integer pilotID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter an Airplane ID for your flight: ");
-                                Integer airplaneID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter the departure location for your flight: ");
-                                String departure = scanner.nextLine();
-                                System.out.print("Enter the destination: ");
-                                String destination = scanner.nextLine();
-                                System.out.print("Enter the Airport ID: ");
-                                Integer airportID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter the date of form (\"2023-10-01\"): ");
-                                String date = scanner.nextLine();
-                                System.out.print("Enter Payment Amount: ");
-                                double amount = scanner.nextDouble();
-                                scanner.nextLine();
+                                Integer pilotID = null;
+                                try {
+                                    System.out.print("Enter a Pilot ID for your flight: ");
+                                    pilotID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (pilotID <= 0 || pilotID == null)
+                                        throw new ValidationException("Pilot ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Integer airplaneID= null;
+
+                                try{
+                                    System.out.print("Enter an Airplane ID for your flight: ");
+                                    airplaneID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airplaneID <= 0 || airplaneID == null)
+                                        throw new ValidationException("Airplane ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String departure = null;
+                                try {
+                                    System.out.print("Enter the departure location for your flight: ");
+                                    departure = scanner.nextLine();
+                                    if (departure == null || departure.isEmpty())
+                                        throw new ValidationException("Departure location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String destination = null;
+                                try {
+                                    System.out.print("Enter the destination: ");
+                                    destination = scanner.nextLine();
+                                    if (destination == null || destination.isEmpty())
+                                        throw new ValidationException("Destination cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                Integer airportID = null;
+                                try {
+                                    System.out.print("Enter the Airport ID: ");
+                                    airportID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airportID <= 0 || airportID == null)
+                                        throw new ValidationException("Airport ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String date=null;
+                                try {
+                                    System.out.print("Enter the date of form (\"2023-10-01\"): ");
+                                    date = scanner.nextLine();
+                                    if (date == null || date.isEmpty())
+                                        throw new ValidationException("Date cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                double amount = 0;
+                                try {
+                                    System.out.print("Enter Payment Amount: ");
+                                    amount = scanner.nextDouble();
+                                    scanner.nextLine();
+                                    if (amount <= 0)
+                                        throw new ValidationException("Amount must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createFlight(departure,destination,pilotID,airplaneID,airportID,date,amount);
                                 break;
                             case 2:
-                                System.out.print("Enter a Flight ID to update: ");
-                                Integer flightID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter the new departure location for your flight: ");
-                                String departure2 = scanner.nextLine();
-                                System.out.print("Enter the new destination: ");
-                                String destination2 = scanner.nextLine();
-                                System.out.print("Enter a Pilot ID for your flight: ");
-                                Integer pilotID2 = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter an Airplane ID for your flight: ");
-                                Integer airplaneID2 = scanner.nextInt();
-                                scanner.nextLine();
+                                Integer flightID = null;
+                                try {
+                                    System.out.print("Enter a Flight ID to update: ");
+                                    flightID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (flightID <= 0 || flightID == null)
+                                        throw new ValidationException("Flight ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String departure2 = null;
+                                try {
+                                    System.out.print("Enter the new departure location for your flight: ");
+                                    departure2 = scanner.nextLine();
+                                    if (departure2 == null || departure2.isEmpty())
+                                        throw new ValidationException("Departure location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String destination2 = null;
+                                try {
+                                    System.out.print("Enter the new destination: ");
+                                    destination2 = scanner.nextLine();
+                                    if (destination2 == null || destination2.isEmpty())
+                                        throw new ValidationException("Destination cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                Integer pilotID2 = null;
+                                try {
+                                    System.out.print("Enter a new Pilot ID for your flight: ");
+                                    pilotID2 = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (pilotID2 <= 0 || pilotID2 == null)
+                                        throw new ValidationException("Pilot ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                Integer airplaneID2 = null;
+                                try {
+                                    System.out.print("Enter an Airplane ID for your flight: ");
+                                    airplaneID2 = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airplaneID2 <= 0 || airplaneID2 == null)
+                                        throw new ValidationException("Airplane ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.updateFlight(flightID,departure2,destination2,pilotID2,airplaneID2);
                                 break;
                             case 3:
@@ -166,23 +300,82 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice2) {
                             case 1:
-                                System.out.print("Enter Passenger ID: ");
-                                Integer passengerID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter Reservation Date: ");
-                                String date = scanner.nextLine();
-                                System.out.print("Enter Reservation Departure Location: ");
-                                String departure = scanner.nextLine();
-                                System.out.print("Enter Reservation Destination: ");
-                                String destination = scanner.nextLine();
+                                Integer passengerID = null;
+                                try {
+                                    System.out.print("Enter Passenger ID: ");
+                                    passengerID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (passengerID <= 0 || passengerID == null)
+                                        throw new ValidationException("Passenger ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String date = null;
+                                try {
+                                    System.out.print("Enter Reservation Date: ");
+                                    date = scanner.nextLine();
+                                    if (date == null || date.isEmpty())
+                                        throw new ValidationException("Date cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String departure = null;
+                                try {
+                                    System.out.print("Enter Reservation Departure Location: ");
+                                    departure = scanner.nextLine();
+                                    if (departure == null || departure.isEmpty())
+                                        throw new ValidationException("Departure location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String destination = null;
+                                try {
+                                    System.out.print("Enter Reservation Destination: ");
+                                    destination = scanner.nextLine();
+                                    if (destination == null || destination.isEmpty())
+                                        throw new ValidationException("Destination cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
                                 flightController.createReservation(date,passengerID,departure,destination);
                                 break;
                             case 2:
-                                System.out.print("Enter Reservation ID to update: ");
-                                Integer reservationID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Reservation Date: ");
-                                String newDate = scanner.nextLine();
+                                Integer reservationID = null;
+                                try {
+                                    System.out.print("Enter Reservation ID to update: ");
+                                    reservationID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (reservationID <= 0 || reservationID == null)
+                                        throw new ValidationException("Reservation ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String newDate = null;
+                                try {
+                                    System.out.print("Enter new Reservation Date: ");
+                                    newDate = scanner.nextLine();
+                                    if (newDate == null || newDate.isEmpty())
+                                        throw new ValidationException("Date cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.updateReservation(reservationID, newDate);
                                 break;
                             case 3:
@@ -199,25 +392,81 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice3) {
                             case 1:
-                                System.out.print("Enter Passenger ID for the Payment: ");
-                                Integer passengerID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter Payment Description: ");
-                                String description = scanner.nextLine();
-                                System.out.print("Enter Payment Amount: ");
-                                double amount = scanner.nextDouble();
-                                scanner.nextLine();
+                                Integer passengerID = null;
+                                try {
+                                    System.out.print("Enter Passenger ID for the Payment: ");
+                                    passengerID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (passengerID <= 0 || passengerID == null)
+                                        throw new ValidationException("Passenger ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String description = null;
+                                try{
+                                    System.out.print("Enter Payment Description: ");
+                                    description = scanner.nextLine();
+                                    if (description == null || description.isEmpty())
+                                        throw new ValidationException("Description cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                double amount = 0;
+                                try {
+                                    System.out.print("Enter Payment Amount: ");
+                                    amount = scanner.nextDouble();
+                                    scanner.nextLine();
+                                    if (amount <= 0)
+                                        throw new ValidationException("Amount must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createPayment(description, amount, passengerID);
                                 break;
                             case 2:
-                                System.out.print("Enter Payment ID to update: ");
-                                Integer paymentID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Payment Description: ");
-                                String newDescription = scanner.nextLine();
-                                System.out.print("Enter new Payment Amount: ");
-                                double newAmount = scanner.nextDouble();
-                                scanner.nextLine();
+                                Integer paymentID = null;
+                                try {
+                                    System.out.print("Enter Payment ID to update: ");
+                                    paymentID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (paymentID <= 0 || paymentID == null)
+                                        throw new ValidationException("Payment ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newDescription = null;
+                                try {
+                                    System.out.print("Enter new Payment Description: ");
+                                    newDescription = scanner.nextLine();
+                                    if (newDescription == null || newDescription.isEmpty())
+                                        throw new ValidationException("Description cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                double newAmount = 0;
+                                try {
+                                    System.out.print("Enter new Payment Amount: ");
+                                    newAmount = scanner.nextDouble();
+                                    scanner.nextLine();
+                                    if (newAmount <= 0)
+                                        throw new ValidationException("Amount must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.updatePayment(paymentID, newDescription, newAmount);
                                 break;
                             case 3:
@@ -234,25 +483,93 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice4) {
                             case 1:
-                                System.out.print("Enter Payment ID for Ticket: ");
-                                Integer paymentID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter Ticket Title: ");
-                                String title = scanner.nextLine();
-                                System.out.print("Enter Ticket Description: ");
-                                String description = scanner.nextLine();
-                                System.out.print("Enter the Flight date associated with the Ticket: ");
-                                String date = scanner.nextLine();
+                                Integer paymentID = null;
+                                try {
+                                    System.out.print("Enter Payment ID for Ticket: ");
+                                    paymentID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (paymentID <= 0 || paymentID == null)
+                                        throw new ValidationException("Payment ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String title = null;
+                                try {
+                                    System.out.print("Enter Ticket Title: ");
+                                    title = scanner.nextLine();
+                                    if (title == null || title.isEmpty())
+                                        throw new ValidationException("Title cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String description = null;
+                                try {
+                                    System.out.print("Enter Ticket Description: ");
+                                    description = scanner.nextLine();
+                                    if (description == null || description.isEmpty())
+                                        throw new ValidationException("Description cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String date = null;
+                                try {
+                                    System.out.print("Enter the Flight date associated with the Ticket: ");
+                                    date = scanner.nextLine();
+                                    if (date == null || date.isEmpty())
+                                        throw new ValidationException("Date cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createTicket(title, description, paymentID, date);
                                 break;
                             case 2:
-                                System.out.print("Enter Ticket ID to update: ");
-                                Integer ticketID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Ticket Title: ");
-                                String newTitle = scanner.nextLine();
-                                System.out.print("Enter new Ticket Description: ");
-                                String newDescription = scanner.nextLine();
+                                Integer ticketID = null;
+                                try {
+                                    System.out.print("Enter Ticket ID to update: ");
+                                    ticketID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (ticketID <= 0 || ticketID == null)
+                                        throw new ValidationException("Ticket ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String newTitle = null;
+                                try {
+                                    System.out.print("Enter new Ticket Title: ");
+                                    newTitle = scanner.nextLine();
+                                    if (newTitle == null || newTitle.isEmpty())
+                                        throw new ValidationException("Title cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String newDescription = null;
+                                try {
+                                    System.out.print("Enter new Ticket Description: ");
+                                    newDescription = scanner.nextLine();
+                                    if (newDescription == null || newDescription.isEmpty())
+                                        throw new ValidationException("Description cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.updateTicket(ticketID, newTitle, newDescription);
                                 break;
                             case 3:
@@ -269,28 +586,94 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice5) {
                             case 1:
-                                System.out.print("Enter Airplane Model: ");
-                                String model = scanner.nextLine();
-                                System.out.print("Enter Airplane Capacity: ");
-                                Integer capacity = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Is the airplane available? (true/false): ");
-                                Boolean available = scanner.nextBoolean();
-                                scanner.nextLine();
+                                String model = null;
+                                try {
+                                    System.out.print("Enter Airplane Model: ");
+                                    model = scanner.nextLine();
+                                    if (model == null || model.isEmpty())
+                                        throw new ValidationException("Model cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Integer capacity = null;
+                                try {
+                                    System.out.print("Enter Airplane Capacity: ");
+                                    capacity = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (capacity <= 0 || capacity == null)
+                                        throw new ValidationException("Capacity must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Boolean available = null;
+                                try {
+                                    System.out.print("Is the airplane available? (true/false): ");
+                                    available = scanner.nextBoolean();
+                                    scanner.nextLine();
+                                    if (available == null)
+                                        throw new ValidationException("Availability must be true or false");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createAirplane(model, capacity, available);
                                 break;
                             case 2:
-                                System.out.print("Enter Airplane ID to update: ");
-                                Integer airplaneID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Airplane Model: ");
-                                String newModel = scanner.nextLine();
-                                System.out.print("Enter new Airplane Capacity: ");
-                                Integer newCapacity = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Is the airplane available? (true/false): ");
-                                Boolean newAvailable = scanner.nextBoolean();
-                                scanner.nextLine();
+                                Integer airplaneID = null;
+                                try {
+                                    System.out.print("Enter Airplane ID to update: ");
+                                    airplaneID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airplaneID <= 0 || airplaneID == null)
+                                        throw new ValidationException("Airplane ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                String newModel = null;
+                                try {
+                                    System.out.print("Enter new Airplane Model: ");
+                                    newModel = scanner.nextLine();
+                                    if (newModel == null || newModel.isEmpty())
+                                        throw new ValidationException("Model cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
+                                Integer newCapacity = null;
+                                try {
+                                    System.out.print("Enter new Airplane Capacity: ");
+                                    newCapacity = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (newCapacity <= 0 || newCapacity == null)
+                                        throw new ValidationException("Capacity must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Boolean newAvailable = null;
+                                try {
+                                    System.out.print("Is the airplane available? (true/false): ");
+                                    newAvailable = scanner.nextBoolean();
+                                    scanner.nextLine();
+                                    if (newAvailable == null)
+                                        throw new ValidationException("Availability must be true or false");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
                                 flightController.updateAirplane(airplaneID, newModel, newCapacity, newAvailable);
                                 break;
                             case 3:
@@ -307,28 +690,109 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice6) {
                             case 1:
-                                System.out.print("Enter Passenger Name: ");
-                                String passengerName = scanner.nextLine();
-                                System.out.print("Enter Departure Location: ");
-                                String from = scanner.nextLine();
-                                System.out.print("Enter Destination: ");
-                                String to = scanner.nextLine();
-                                System.out.print("Enter Passenger Email: ");
-                                String email = scanner.nextLine();
+                                String passengerName = null;
+                                try {
+                                    System.out.print("Enter Passenger Name: ");
+                                    passengerName = scanner.nextLine();
+                                    if (passengerName == null || passengerName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String from = null;
+                                try {
+                                    System.out.print("Enter Departure Location: ");
+                                    from = scanner.nextLine();
+                                    if (from == null || from.isEmpty())
+                                        throw new ValidationException("Departure location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String to = null;
+                                try {
+                                    System.out.print("Enter Destination: ");
+                                    to = scanner.nextLine();
+                                    if (to == null || to.isEmpty())
+                                        throw new ValidationException("Destination cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String email = null;
+                                try {
+                                    System.out.print("Enter Passenger Email: ");
+                                    email = scanner.nextLine();
+                                    if (email == null || email.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createPassenger(passengerName, from, to, email);
                                 break;
                             case 2:
-                                System.out.print("Enter Passenger ID to update: ");
-                                Integer passengerID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Passenger Name: ");
-                                String newName = scanner.nextLine();
-                                System.out.print("Enter new Passenger Email: ");
-                                String newEmail = scanner.nextLine();
-                                System.out.print("Enter new Departure Location: ");
-                                String newFrom = scanner.nextLine();
-                                System.out.print("Enter new Destination: ");
-                                String newTo = scanner.nextLine();
+                                Integer passengerID = null;
+                                try {
+                                    System.out.print("Enter Passenger ID to update: ");
+                                    passengerID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (passengerID <= 0 || passengerID == null)
+                                        throw new ValidationException("Passenger ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newName = null;
+                                try {
+                                    System.out.print("Enter new Passenger Name: ");
+                                    newName = scanner.nextLine();
+                                    if (newName == null || newName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newEmail = null;
+                                try {
+                                    System.out.print("Enter new Passenger Email: ");
+                                    newEmail = scanner.nextLine();
+                                    if (newEmail == null || newEmail.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newFrom = null;
+                                try {
+                                    System.out.print("Enter new Departure Location: ");
+                                    newFrom = scanner.nextLine();
+                                    if (newFrom == null || newFrom.isEmpty())
+                                        throw new ValidationException("Departure location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newTo = null;
+                                try {
+                                    System.out.print("Enter new Destination: ");
+                                    newTo = scanner.nextLine();
+                                    if (newTo == null || newTo.isEmpty())
+                                        throw new ValidationException("Destination cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.updatePassenger(passengerID, newName, newEmail, newTo, newFrom);
                                 break;
                             case 3:
@@ -345,23 +809,78 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice7) {
                             case 1:
-                                System.out.print("Enter Pilot Name: ");
-                                String pilotName = scanner.nextLine();
-                                System.out.print("Enter Pilot Email: ");
-                                String pilotEmail = scanner.nextLine();
-                                System.out.print("Is the pilot available? (true/false): ");
-                                Boolean availability = scanner.nextBoolean();
-                                scanner.nextLine();
+                                String pilotName = null;
+                                try {
+                                    System.out.print("Enter Pilot Name: ");
+                                    pilotName = scanner.nextLine();
+                                    if (pilotName == null || pilotName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String pilotEmail = null;
+                                try {
+                                    System.out.print("Enter Pilot Email: ");
+                                    pilotEmail = scanner.nextLine();
+                                    if (pilotEmail == null || pilotEmail.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Boolean availability = null;
+                                try {
+                                    System.out.print("Is the pilot available? (true/false): ");
+                                    availability = scanner.nextBoolean();
+                                    scanner.nextLine();
+                                    if (availability == null)
+                                        throw new ValidationException("Availability must be true or false");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createPilot(pilotName, pilotEmail, availability);
                                 break;
                             case 2:
-                                System.out.print("Enter Pilot ID to update: ");
-                                Integer pilotID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Pilot Name: ");
-                                String newPilotName = scanner.nextLine();
-                                System.out.print("Enter new Pilot Email: ");
-                                String newPilotEmail = scanner.nextLine();
+                                Integer pilotID = null;
+                                try {
+                                    System.out.print("Enter Pilot ID to update: ");
+                                    pilotID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (pilotID <= 0 || pilotID == null)
+                                        throw new ValidationException("Pilot ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newPilotName = null;
+                                try {
+                                    System.out.print("Enter new Pilot Name: ");
+                                    newPilotName = scanner.nextLine();
+                                    if (newPilotName == null || newPilotName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newPilotEmail = null;
+                                try {
+                                    System.out.print("Enter new Pilot Email: ");
+                                    newPilotEmail = scanner.nextLine();
+                                    if (newPilotEmail == null || newPilotEmail.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
                                 flightController.updatePilot(pilotID, newPilotName, newPilotEmail);
                                 break;
                             case 3:
@@ -378,32 +897,114 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice8) {
                             case 1:
-                                System.out.print("Enter Airport Name: ");
-                                String airportName = scanner.nextLine();
-                                System.out.print("Enter the location of the Airport: ");
-                                String location = scanner.nextLine();
-                                System.out.print("Enter the number of airstrips of the Airport: ");
-                                Integer airstrips = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Is the airport available? (true/false): ");
-                                Boolean availability = scanner.nextBoolean();
-                                scanner.nextLine();
+                                String airportName = null;
+                                try {
+                                    System.out.print("Enter Airport Name: ");
+                                    airportName = scanner.nextLine();
+                                    if (airportName == null || airportName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String location = null;
+                                try {
+                                    System.out.print("Enter the location of the Airport: ");
+                                    location = scanner.nextLine();
+                                    if (location == null || location.isEmpty())
+                                        throw new ValidationException("Location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Integer airstrips = null;
+                                try {
+                                    System.out.print("Enter the number of airstrips of the Airport: ");
+                                    airstrips = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airstrips <= 0 || airstrips == null)
+                                        throw new ValidationException("Airstrips must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Boolean availability = null;
+                                try {
+                                    System.out.print("Is the airport available? (true/false): ");
+                                    availability = scanner.nextBoolean();
+                                    scanner.nextLine();
+                                    if (availability == null)
+                                        throw new ValidationException("Availability must be true or false");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createAirport(airportName, location, airstrips, availability);
                                 break;
                             case 2:
-                                System.out.print("Enter Airport ID to update: ");
-                                Integer airportID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter the new Airport Name: ");
-                                String newAirportName = scanner.nextLine();
-                                System.out.print("Enter the new location of the Airport: ");
-                                String newLocation = scanner.nextLine();
-                                System.out.print("Enter the new number of airstrips of the Airport: ");
-                                Integer newAirstrips = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Is the airport available? (true/false): ");
-                                Boolean newAvailability = scanner.nextBoolean();
-                                scanner.nextLine();
+                                Integer airportID = null;
+                                try{
+                                    System.out.print("Enter Airport ID to update: ");
+                                    airportID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (airportID <= 0 || airportID == null)
+                                        throw new ValidationException("Airport ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newAirportName = null;
+                                try {
+                                    System.out.print("Enter the new Airport Name: ");
+                                    newAirportName = scanner.nextLine();
+                                    if (newAirportName == null || newAirportName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newLocation = null;
+                                try {
+                                    System.out.print("Enter the new location of the Airport: ");
+                                    newLocation = scanner.nextLine();
+                                    if (newLocation == null || newLocation.isEmpty())
+                                        throw new ValidationException("Location cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Integer newAirstrips = null;
+                                try {
+                                    System.out.print("Enter the new number of airstrips of the Airport: ");
+                                    newAirstrips = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (newAirstrips <= 0 || newAirstrips == null)
+                                        throw new ValidationException("Airstrips must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                Boolean newAvailability = null;
+                                try {
+                                    System.out.print("Is the airport available? (true/false): ");
+                                    newAvailability = scanner.nextBoolean();
+                                    scanner.nextLine();
+                                    if (newAvailability == null)
+                                        throw new ValidationException("Availability must be true or false");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
                                 flightController.updateAirport(airportID,newAirportName,newLocation,newAirstrips,newAvailability);
                                 break;
                             case 3:
@@ -420,24 +1021,88 @@ public class UI {
                         scanner.nextLine();
                         switch (operatorChoice9) {
                             case 1:
-                                System.out.print("Enter Cabin Crew Name: ");
-                                String crewName = scanner.nextLine();
-                                System.out.print("Enter Cabin Crew Email: ");
-                                String crewEmail = scanner.nextLine();
-                                System.out.print("Enter Cabin Crew Profession: ");
-                                String profession = scanner.nextLine();
+                                String crewName = null;
+                                try {
+                                    System.out.print("Enter Cabin Crew Name: ");
+                                    crewName = scanner.nextLine();
+                                    if (crewName == null || crewName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String crewEmail = null;
+                                try {
+                                    System.out.print("Enter Cabin Crew Email: ");
+                                    crewEmail = scanner.nextLine();
+                                    if (crewEmail == null || crewEmail.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String profession = null;
+                                try {
+                                    System.out.print("Enter Cabin Crew Profession: ");
+                                    profession = scanner.nextLine();
+                                    if (profession == null || profession.isEmpty())
+                                        throw new ValidationException("Profession cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
                                 flightController.createCabinCrew(crewName, crewEmail, profession);
                                 break;
                             case 2:
-                                System.out.print("Enter Cabin Crew ID to update: ");
-                                Integer cabinID = scanner.nextInt();
-                                scanner.nextLine();
-                                System.out.print("Enter new Cabin Crew Name: ");
-                                String newCrewName = scanner.nextLine();
-                                System.out.print("Enter new Cabin Crew Email: ");
-                                String newCrewEmail = scanner.nextLine();
-                                System.out.print("Enter new Cabin Crew Profession: ");
-                                String newProfession = scanner.nextLine();
+                                Integer cabinID = null;
+                                try {
+                                    System.out.print("Enter Cabin Crew ID to update: ");
+                                    cabinID = scanner.nextInt();
+                                    scanner.nextLine();
+                                    if (cabinID <= 0 || cabinID == null)
+                                        throw new ValidationException("Cabin Crew ID must be a positive number");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newCrewName = null;
+                                try {
+                                    System.out.print("Enter new Cabin Crew Name: ");
+                                    newCrewName = scanner.nextLine();
+                                    if (newCrewName == null || newCrewName.isEmpty())
+                                        throw new ValidationException("Name cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newCrewEmail = null;
+                                try {
+                                    System.out.print("Enter new Cabin Crew Email: ");
+                                    newCrewEmail = scanner.nextLine();
+                                    if (newCrewEmail == null || newCrewEmail.isEmpty())
+                                        throw new ValidationException("Email cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+                                String newProfession = null;
+                                try {
+                                    System.out.print("Enter new Cabin Crew Profession: ");
+                                    newProfession = scanner.nextLine();
+                                    if (newProfession == null || newProfession.isEmpty())
+                                        throw new ValidationException("Profession cannot be empty");
+                                }
+                                catch (ValidationException e) {
+                                    System.out.println(e.getMessage());
+                                    break;
+                                }
+
                                 flightController.updateCabinCrew(cabinID, newCrewName, newCrewEmail, newProfession);
                                 break;
                             case 3:
@@ -449,26 +1114,53 @@ public class UI {
                         }
                         break;
                     case 10:
-                        System.out.print("Enter Flight ID to see its Passengers: ");
-                        Integer flightID = scanner.nextInt();
-                        scanner.nextLine();
+                        Integer flightID = null;
+                        try {
+                            System.out.print("Enter Flight ID to see its Passengers: ");
+                            flightID = scanner.nextInt();
+                            scanner.nextLine();
+                            if (flightID <= 0 || flightID == null)
+                                throw new ValidationException("Flight ID must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         flightController.viewPassengersByFlight(flightID);
                         break;
                     case 11:
                         flightController.sortAirplanesByCapacity();
                         break;
                     case 12:
-                        System.out.print("Enter the amount for your Flight: ");
-                        double flightAmount = scanner.nextDouble();
-                        scanner.nextLine();
+                        double flightAmount = 0;
+                        try {
+                            System.out.print("Enter the amount for your Flight: ");
+                            flightAmount = scanner.nextDouble();
+                            scanner.nextLine();
+                            if (flightAmount <= 0)
+                                throw new ValidationException("Amount must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         flightController.filterFlightsByAmount(flightAmount);
                         break;
                     case 13: //sort flight by date
                         flightController.sortFlightsByDate();
                         break;
                     case 14: //filter cabincrew by profession
-                        System.out.println("Enter the profession of the cabin crew you want to filter by: ");
-                        String profession = scanner.nextLine();
+                        String profession = null;
+                        try {
+                            System.out.print("Enter the profession of the cabin crew you want to filter by: ");
+                            profession = scanner.nextLine();
+                            if (profession == null || profession.isEmpty())
+                                throw new ValidationException("Profession cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         flightController.filterCabinCrewByProfession(profession);
                         break;
 
@@ -481,22 +1173,70 @@ public class UI {
             // Opțiuni pentru Passenger
             boolean running = true;
             while (running) {
-                System.out.println( passengerMenu());
-                int choice = scanner.nextInt();
-                scanner.nextLine();
+                int choice=0;
+                try {
+                    System.out.println(operatorMenu());
+                    choice = scanner.nextInt();// citeste un număr întreg (de tip int) introdus de utilizator în consolă
+                    scanner.nextLine();
+                    if(choice<0 || choice>9)
+                        throw new ValidationException("Invalid choice. Please try again.");
+                }
+                catch(ValidationException e) {
+                    System.out.println(e.getMessage());
+                    continue;
+                }
                 switch (choice) {
                     case 0:
                         running = false;
                         System.out.println("Exiting Passenger mode.");
                         break;
                     case 1:
-                        System.out.print("Enter the date when you would like to fly: ");
-                        String date = scanner.nextLine();
-                        System.out.print("Enter your ID as passenger: ");
-                        Integer passengerID = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.println("How do you want to pay? (credit card/debit card)");
-                        String paymentType=scanner.nextLine();
+                        String date = null;
+                        try {
+                            System.out.print("Enter the date when you would like to fly: ");
+                            date = scanner.nextLine();
+                            if (date == null || date.isEmpty())
+                                throw new ValidationException("Date cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        Integer passengerID = null;
+                        try {
+                            System.out.print("Enter your ID as passenger: ");
+                            passengerID = scanner.nextInt();
+                            scanner.nextLine();
+                            if (passengerID <= 0 || passengerID == null)
+                                throw new ValidationException("Passenger ID must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+
+                        String departure = null;
+                        try {
+                            System.out.println("Enter the departure location for your flight: ");
+                            departure = scanner.nextLine();
+                            if (departure == null || departure.isEmpty())
+                                throw new ValidationException("Departure location cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String paymentType=null;
+                        try{
+                            System.out.println("How do you want to pay? (credit card/debit card)");
+                            paymentType=scanner.nextLine();
+                            if (paymentType == null || paymentType.isEmpty())
+                                throw new ValidationException("Payment type cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         Boolean ans=flightController.getAllAvalibleFlightsForPassenger(passengerID,date);
                         if(ans.equals(Boolean.FALSE)) {
                             Passenger pas=flightController.getPassengerByID(passengerID);
@@ -520,23 +1260,68 @@ public class UI {
                         flightController.deleteReservation(readId(scanner));
                         break;
                     case 4:
-                        System.out.print("Enter Ticket ID to update: ");
-                        Integer ticketID = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.print("Enter new Title: ");
-                        String newTitle = scanner.nextLine();
-                        System.out.print("Enter new Description: ");
-                        String newDescription = scanner.nextLine();
+                        Integer ticketID = null;
+                        try {
+                            System.out.print("Enter Ticket ID to update: ");
+                            ticketID = scanner.nextInt();
+                            scanner.nextLine();
+                            if (ticketID <= 0 || ticketID == null)
+                                throw new ValidationException("Ticket ID must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String newTitle = null;
+                        try {
+                            System.out.print("Enter new Title: ");
+                            newTitle = scanner.nextLine();
+                            if (newTitle == null || newTitle.isEmpty())
+                                throw new ValidationException("Title cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String newDescription = null;
+                        try {
+                            System.out.print("Enter new Description: ");
+                            newDescription = scanner.nextLine();
+                            if (newDescription == null || newDescription.isEmpty())
+                                throw new ValidationException("Description cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         flightController.updateTicket(ticketID, newTitle, newDescription);
                         System.out.println("Updated Ticket: " + newTitle + " with new description.");
-                        flightController.updateTicket(ticketID, newTitle, newDescription);
                         break;
                     case 5:
-                        System.out.print("Enter Reservation ID to update: ");
-                        Integer reservationID = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.print("Enter new Date: ");
-                        String newDate = scanner.nextLine();
+                        Integer reservationID = null;
+                        try{
+                            System.out.print("Enter Reservation ID to update: ");
+                            reservationID = scanner.nextInt();
+                            scanner.nextLine();
+                            if (reservationID <= 0 || reservationID == null)
+                                throw new ValidationException("Reservation ID must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String newDate = null;
+                        try {
+                            System.out.print("Enter new Date: ");
+                            newDate = scanner.nextLine();
+                            if (newDate == null || newDate.isEmpty())
+                                throw new ValidationException("Date cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+
                         flightController.updateReservation(reservationID, newDate);
                         break;
                     case 6:
@@ -549,28 +1334,82 @@ public class UI {
                         flightController.sortFlightsByDate();
                         break;
                     case 9: //bookseatByflight
-                        System.out.print("Enter the date when you would like to fly: ");
-                        String date1 = scanner.nextLine();
-                        System.out.print("Enter your ID as passenger: ");
-                        Integer passengerID1 = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.println("How do you want to pay? (credit card/debit card)");
-                        String paymentType1=scanner.nextLine();
-                        System.out.println("Enter the departure location for your flight: ");
-                        String departure = scanner.nextLine();
-                        System.out.println("Enter the destination: ");
-                        String destination = scanner.nextLine();
+                        String date1 = null;
+                        try {
+                            System.out.print("Enter the date when you would like to fly: ");
+                            date1 = scanner.nextLine();
+                            if (date1 == null || date1.isEmpty())
+                                throw new ValidationException("Date cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        Integer passengerID1 = null;
+                        try {
+                            System.out.print("Enter your ID as passenger: ");
+                            passengerID1 = scanner.nextInt();
+                            scanner.nextLine();
+                            if (passengerID1 <= 0 || passengerID1 == null)
+                                throw new ValidationException("Passenger ID must be a positive number");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String paymentType1=null;
+                        try{
+                            System.out.println("How do you want to pay? (credit card/debit card)");
+                            paymentType1=scanner.nextLine();
+                            if (paymentType1 == null || paymentType1.isEmpty())
+                                throw new ValidationException("Payment type cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String departure1 = null;
+                        try{
+                            System.out.println("Enter the departure location for your flight: ");
+                            departure1 = scanner.nextLine();
+                            if (departure1 == null || departure1.isEmpty())
+                                throw new ValidationException("Departure location cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
+                        String destination1 = null;
+                        try{
+                            System.out.println("Enter the destination for your flight: ");
+                            destination1 = scanner.nextLine();
+                            if (destination1 == null || destination1.isEmpty())
+                                throw new ValidationException("Destination cannot be empty");
+                        }
+                        catch (ValidationException e) {
+                            System.out.println(e.getMessage());
+                            break;
+                        }
                         Boolean ans1=flightController.getAllAvalibleFlightsForPassenger(passengerID1,date1);
                         if(ans1.equals(Boolean.FALSE)) {
                             Passenger pas=flightController.getPassengerByID(passengerID1);
-                            flightController.createReservation(date1,passengerID1,departure,destination);
+                            flightController.createReservation(date1,passengerID1,departure1,destination1);
                             break;
                         }
                         else {
-                            System.out.println("Choose the ID of your flight");
-                            Integer flightID = scanner.nextInt();
-                            scanner.nextLine();
-                            flightController.bookSeatByFlight(date1,passengerID1,flightID,paymentType1,departure,destination);
+                            Integer flightID = null;
+                            try {
+                                System.out.println("Choose the ID of your flight");
+                                flightID = scanner.nextInt();
+                                scanner.nextLine();
+                                if(flightID<=0 || flightID==null)
+                                    throw new ValidationException("Flight ID must be a positive number");
+                            }
+                            catch (ValidationException e) {
+                                System.out.println(e.getMessage());
+                                break;
+                            }
+                            flightController.bookSeatByFlight(date1,passengerID1,flightID,paymentType1,departure1,destination1);
                             System.out.println();
                         }
                         break;
