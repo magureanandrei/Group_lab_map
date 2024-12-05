@@ -253,7 +253,7 @@ public class Service {
         if(a==null)
             throw new EntityNotFoundException("Airplane not found");
         for(Airport airport: airportRepo.getAll())
-            if(airportID.equals(airport.getID()) && airport.getAvaliable().equals(true) && airport.getLocation().equals(to))
+            if(airportID.equals(airport.getID()) && airport.getAvaliable().equals(true))
                 ap=airport;
         if(ap==null)
             throw new EntityNotFoundException("Airport not found");
@@ -456,7 +456,7 @@ public class Service {
      * @param newName The new name of the pilot.
      * @param newEmail The new email of the pilot.
      */
-    public void updatePilot(Integer pilotID,String newName, String newEmail) throws BusinessLogicException {
+    public void updatePilot(Integer pilotID,String newName, String newEmail) throws BusinessLogicException, EntityNotFoundException {
 //        for(Pilot pilot: pilotsRepo.getAll())
 //            if(pilot.getID().equals(pilotID))
 //            {
@@ -474,8 +474,12 @@ public class Service {
         if(newEmail == null || newEmail.isEmpty()) {
             throw new BusinessLogicException("New email cannot be null or empty");
         }
+        Pilot pilot = null;
+        pilot = pilotsRepo.get(pilotID);
+        if(pilot == null) {
+            throw new EntityNotFoundException("Pilot not found");
+        }
 
-        Pilot pilot = pilotsRepo.get(pilotID);
         pilot.setNume(newName);
         pilot.setEmail(newEmail);
         pilotsRepo.update(pilot);

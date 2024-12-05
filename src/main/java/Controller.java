@@ -305,8 +305,11 @@ public class Controller {
             flightService.updatePilot(pilotID, newName, newEmail);
             System.out.println("Updated Pilot " + newName + ".");
         }
-        catch(BusinessLogicException e){
+        catch(BusinessLogicException  e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e) {
+            System.err.println("Entity Logic Error: " + e.getMessage());
         }
     }
     /**

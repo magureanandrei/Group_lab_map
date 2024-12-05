@@ -313,11 +313,11 @@ public class UI {
                                     break;
                                 }
 
-                                String date = null;
+                                String date2 = null;
                                 try {
                                     System.out.print("Enter Reservation Date: ");
-                                    date = scanner.nextLine();
-                                    if (date == null || date.isEmpty())
+                                    date2 = scanner.nextLine();
+                                    if (date2 == null || date2.isEmpty())
                                         throw new ValidationException("Date cannot be empty");
                                 }
                                 catch (ValidationException e) {
@@ -349,7 +349,7 @@ public class UI {
                                     break;
                                 }
 
-                                flightController.createReservation(date,passengerID,departure,destination);
+                                flightController.createReservation(date2,passengerID,departure,destination);
                                 break;
                             case 2:
                                 Integer reservationID = null;

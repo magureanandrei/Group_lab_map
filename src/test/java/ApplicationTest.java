@@ -458,6 +458,7 @@ class ApplicationTest {
             flightService.bookSeatByFlight("2023-12-25", 1, 1, "Card", "Cluj", "Iasi");
         });
 
+
     }
 
 
