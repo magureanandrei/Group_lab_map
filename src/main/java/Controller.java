@@ -1,4 +1,5 @@
 import Exceptions.BusinessLogicException;
+import Exceptions.EntityNotFoundException;
 import Models.*;
 
 import java.util.ArrayList;
@@ -66,6 +67,9 @@ public class Controller {
             }
         } catch (BusinessLogicException e) {
             System.out.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.out.println("Entity Not Found Error: " + e.getMessage());
         }
     }
 
@@ -282,6 +286,9 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
 
     }
 
@@ -374,6 +381,9 @@ public class Controller {
         catch (BusinessLogicException e) {
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -393,6 +403,9 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -407,8 +420,12 @@ public class Controller {
         try{
         flightService.createPayment(description, amount, passengerID);
         System.out.println("Payment was created");
-        } catch (BusinessLogicException e) {
+        }
+        catch (BusinessLogicException e) {
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
         }
     }
 
@@ -428,6 +445,9 @@ public class Controller {
         }
         catch (BusinessLogicException e) {
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
         }
     }
 
@@ -749,6 +769,10 @@ public class Controller {
             System.err.println("Business Logic Error: " + e.getMessage());
             return Boolean.FALSE;
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+            return Boolean.FALSE;
+        }
     }
 
     /**
@@ -768,6 +792,9 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -782,6 +809,10 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+            return null;
+        }
+        catch (EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
             return null;
         }
     }
@@ -827,6 +858,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
         }
     }
 

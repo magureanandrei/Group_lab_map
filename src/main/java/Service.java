@@ -1,4 +1,5 @@
 import Exceptions.BusinessLogicException;
+import Exceptions.EntityNotFoundException;
 import Models.*;
 import Repo.Repository;
 
@@ -145,7 +146,7 @@ public class Service {
      * Gets all the passengers filtered by flight.
      * @return The list of all passengers filtered by flight.
      */
-    public List<Passenger> getPassengersByFlight(Integer flightID) throws BusinessLogicException {
+    public List<Passenger> getPassengersByFlight(Integer flightID) throws BusinessLogicException, EntityNotFoundException {
         ArrayList<Passenger> passengerByFlight = new ArrayList<Passenger>();
         Flight f=null;
         if (flightID == null) {
@@ -156,10 +157,16 @@ public class Service {
                 f=flight;
             }
         }
+        if(f==null) {
+            throw new EntityNotFoundException("Flight not found");
+        }
         for( Passenger passenger: passengerRepo.getAll())
                 if(passenger.getFlight().getFrom().equals(f.from) && passenger.getFlight().getTo().equals(f.to)) {
                     passengerByFlight.add(passenger);
                 }
+        if (passengerByFlight.isEmpty()) {
+            throw new EntityNotFoundException("No passengers found for this flight");
+        }
         return passengerByFlight;
     }
 
@@ -209,7 +216,7 @@ public class Service {
      * @param date The date of the flight.
      * @param amount     The amount of the flight.
      */
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date,double amount) throws BusinessLogicException {
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date,double amount) throws BusinessLogicException, EntityNotFoundException {
         Integer flightID=createFlightID();
         Pilot p=null;
         Airplane a=null;
@@ -238,12 +245,18 @@ public class Service {
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilotID.equals(pilot.getID()) && pilot.getAvailability().equals(true))
                 p=pilot;
+        if(p==null)
+            throw new EntityNotFoundException("Pilot not found");
         for(Airplane airplane: airplaneRepo.getAll())
             if(airplaneID.equals(airplane.getID()) && airplane.getAvailable().equals(true))
                 a=airplane;
+        if(a==null)
+            throw new EntityNotFoundException("Airplane not found");
         for(Airport airport: airportRepo.getAll())
             if(airportID.equals(airport.getID()) && airport.getAvaliable().equals(true) && airport.getLocation().equals(to))
                 ap=airport;
+        if(ap==null)
+            throw new EntityNotFoundException("Airport not found");
 
         Flight flight = new Flight(flightID,from,to,p,a,ap,date,amount);
         flightRepo.create(flight);
@@ -333,7 +346,7 @@ public class Service {
      * @param paymentType The type of payment used for the booking (e.g., credit card, cash).
      * @return A new Ticket object representing the booking.
      */
-    public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType) throws BusinessLogicException {
+    public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType) throws BusinessLogicException, EntityNotFoundException {
         //asta e o functie care e folosita doar de pasager(in ui ar trebui sa se autentifice cu id-ul sau si asa luam from si to)
         Passenger p=null;
         Flight f=null;
@@ -355,10 +368,13 @@ public class Service {
         for(Passenger passenger:passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
-
+        if(p==null)
+            throw new EntityNotFoundException("Passenger not found");
         for(Flight flight: flightRepo.getAll())
             if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0 && flight.getDate().equals(date))
                 f=flight;
+        if(f==null)
+            throw new EntityNotFoundException("Flight not found");
 
         f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
         Payment pay=createPayment(paymentType,f.getAmount(),p.getID());
@@ -554,7 +570,7 @@ public class Service {
      * @param pilotID The pilot identifier.
      * @param airplaneID The airplane identifier.
      */
-    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID) throws BusinessLogicException {
+    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID) throws BusinessLogicException, EntityNotFoundException {
         Pilot p=null;
         Airplane a=null;
 
@@ -577,9 +593,13 @@ public class Service {
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilot.getID().equals(pilotID))
                 p=pilot;
+        if(p==null)
+            throw new EntityNotFoundException("Pilot not found");
         for(Airplane airplane: airplaneRepo.getAll())
             if(airplane.getID().equals(airplaneID))
                 a=airplane;
+        if(a==null)
+            throw new EntityNotFoundException("Airplane not found");
 
 //        for (Flight flight: flightRepo.getAll())
 //            if(flight.getID().equals(flightID))
@@ -604,7 +624,7 @@ public class Service {
      * @param amount The amount of the payment.
      * @param passengerID The passenger identifier.
      */
-    public Payment createPayment(String description, double amount,Integer passengerID) throws BusinessLogicException {
+    public Payment createPayment(String description, double amount,Integer passengerID) throws BusinessLogicException, EntityNotFoundException {
         //trebe scris si o descriere din main.java.UI cumva si main.java.data ca parametru
 
         if(description == null || description.isEmpty()) {
@@ -625,6 +645,8 @@ public class Service {
                 p=passenger;
                 break;
             }
+        if(p==null)
+            throw new EntityNotFoundException("Passenger not found");
         Payment newpay=new Payment(payID,description,amount,p);
         paymentRepo.create(newpay);
         return newpay;
@@ -690,7 +712,7 @@ public class Service {
      * @param from The departure location.
      * @param to The arrival location.
      */
-    public void createReservation(String date, Integer passengerID, String from, String to) throws BusinessLogicException {
+    public void createReservation(String date, Integer passengerID, String from, String to) throws BusinessLogicException, EntityNotFoundException {
 
         if(date == null || date.isEmpty()) {
             throw new BusinessLogicException("Date cannot be null or empty");
@@ -712,6 +734,8 @@ public class Service {
         for(Passenger passenger: passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
+        if(p==null)
+            throw new EntityNotFoundException("Passenger not found");
 
         Reservation newReservation= new Reservation(resID,date,p,fl);
         reservationRepo.create(newReservation);
@@ -766,7 +790,7 @@ public class Service {
      * @param date The date .
      *
      */
-    public Ticket createTicket(String title, String description, Integer paymentID, String date) throws BusinessLogicException {
+    public Ticket createTicket(String title, String description, Integer paymentID, String date) throws BusinessLogicException, EntityNotFoundException {
         Integer ticketID=createTicketID();
         Payment p=null;
 
@@ -786,6 +810,8 @@ public class Service {
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))
                 p=payment;
+        if(p==null)
+            throw new EntityNotFoundException("Payment not found");
         Ticket newTicket=new Ticket(ticketID,title,description,p,date);
         ticketRepo.create(newTicket);
         return newTicket;
@@ -1044,7 +1070,7 @@ public class Service {
      * @param date        The date for which to retrieve available flights.
      * @return A list of flights that match the passenger's destination and departure location.
      */
-    public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date) throws BusinessLogicException {
+    public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date) throws BusinessLogicException, EntityNotFoundException {
         String from=null;
         String to=null;
 
@@ -1061,6 +1087,8 @@ public class Service {
                 from=passenger.getFlight().getFrom();
                 to=passenger.getFlight().getTo();
             }
+        if(from==null || to==null)
+            throw new EntityNotFoundException("Passenger not found");
 
         for(Flight flight: flightRepo.getAll())
             if(flight.getFrom().equals(from) && flight.getTo().equals(to) && flight.getDate().equals(date))
@@ -1075,7 +1103,7 @@ public class Service {
      * @param passengerID The unique identifier of the passenger.
      * @return The passenger with the specified ID, or null if not found.
      */
-    public Passenger getPassengerByID(Integer passengerID) throws BusinessLogicException {
+    public Passenger getPassengerByID(Integer passengerID) throws BusinessLogicException, EntityNotFoundException {
         Passenger p =null;
 
         if(passengerID == null) {
@@ -1087,6 +1115,8 @@ public class Service {
                 p=passenger;
                 break;
             }
+        if (p==null)
+            throw new EntityNotFoundException("Passenger not found");
         return p;
     }
 
@@ -1155,7 +1185,7 @@ public class Service {
      * @param to The arrival location.
      * @return A new Ticket object representing the booking.
      */
-    public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to) throws BusinessLogicException {
+    public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to) throws BusinessLogicException, EntityNotFoundException {
         Passenger p=null;
         Flight f=null;
 
@@ -1181,10 +1211,14 @@ public class Service {
         for(Passenger passenger:passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
+        if(p==null)
+            throw new EntityNotFoundException("Passenger not found");
 
         for(Flight flight: flightRepo.getAll())
             if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0 && flight.getFrom().equals(from) && flight.getTo().equals(to))
                 f=flight;
+        if(f==null)
+            throw new EntityNotFoundException("Flight not found");
 
         f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
         Payment pay=createPayment(paymentType,f.getAmount(),p.getID());
