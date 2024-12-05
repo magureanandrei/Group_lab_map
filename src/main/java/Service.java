@@ -1,3 +1,4 @@
+import Exceptions.BusinessLogicException;
 import Models.*;
 import Repo.Repository;
 
@@ -144,9 +145,12 @@ public class Service {
      * Gets all the passengers filtered by flight.
      * @return The list of all passengers filtered by flight.
      */
-    public List<Passenger> getPassengersByFlight(Integer flightID) {
+    public List<Passenger> getPassengersByFlight(Integer flightID) throws BusinessLogicException {
         ArrayList<Passenger> passengerByFlight = new ArrayList<Passenger>();
         Flight f=null;
+        if (flightID == null) {
+            throw new BusinessLogicException("Flight ID cannot be null");
+        }
         for(Flight flight : flightRepo.getAll()) {
             if(flight.getID().equals(flightID)) {
                 f=flight;
@@ -205,11 +209,32 @@ public class Service {
      * @param date The date of the flight.
      * @param amount     The amount of the flight.
      */
-    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date,double amount){
+    public void createFlight(String from, String to, Integer pilotID, Integer airplaneID,Integer airportID, String date,double amount) throws BusinessLogicException {
         Integer flightID=createFlightID();
         Pilot p=null;
         Airplane a=null;
         Airport ap=null;
+        if(from == null || from.isEmpty()) {
+            throw new BusinessLogicException("From cannot be null or empty");
+        }
+        if(to == null || to.isEmpty()) {
+            throw new BusinessLogicException("To cannot be null or empty");
+        }
+        if (date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
+        if (amount <= 0) {
+            throw new BusinessLogicException("Amount must be greater than zero");
+        }
+        if(pilotID == null) {
+            throw new BusinessLogicException("Pilot ID cannot be null");
+        }
+        if(airplaneID == null) {
+            throw new BusinessLogicException("Airplane ID cannot be null");
+        }
+        if(airportID == null) {
+            throw new BusinessLogicException("Airport ID cannot be null");
+        }
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilotID.equals(pilot.getID()) && pilot.getAvailability().equals(true))
                 p=pilot;
@@ -231,7 +256,20 @@ public class Service {
      * @param to The arrival location.
      * @param email The email of the passenger.
      */
-    public void createPassenger(String passengerName, String from, String to, String email){
+    public void createPassenger(String passengerName, String from, String to, String email) throws BusinessLogicException {
+
+        if(passengerName == null || passengerName.isEmpty()) {
+            throw new BusinessLogicException("Passenger name cannot be null or empty");
+        }
+        if(from == null || from.isEmpty()) {
+            throw new BusinessLogicException("Departure Location cannot be null or empty");
+        }
+        if(to == null || to.isEmpty()) {
+            throw new BusinessLogicException("Destination Location cannot be null or empty");
+        }
+        if(email == null || email.isEmpty()) {
+            throw new BusinessLogicException("Email cannot be null or empty");
+        }
 
         Pair pair = new Pair(from,to);
         Integer passengerID=createPassengerID();
@@ -245,7 +283,18 @@ public class Service {
      * @param email The email of the pilot.
      * @param availibility The availability of the pilot.
      */
-    public void createPilot(String nume, String email, Boolean availibility){
+    public void createPilot(String nume, String email, Boolean availibility) throws BusinessLogicException {
+
+        if(nume == null || nume.isEmpty()) {
+            throw new BusinessLogicException("Pilot name cannot be null or empty");
+        }
+        if(email == null || email.isEmpty()) {
+            throw new BusinessLogicException("Email cannot be null or empty");
+        }
+        if(availibility == null) {
+            throw new BusinessLogicException("Availability cannot be null");
+        }
+
         Integer id=createPilotID();
         Pilot pilot = new Pilot(nume,id,email,availibility);
         pilotsRepo.create(pilot);
@@ -257,7 +306,18 @@ public class Service {
      * @param email The email of the cabin crew.
      * @param profession The profession of the cabin crew.
      */
-    public void createCabinCrew(String nume, String email, String profession){
+    public void createCabinCrew(String nume, String email, String profession) throws BusinessLogicException {
+
+        if(nume == null || nume.isEmpty()) {
+            throw new BusinessLogicException("Cabin crew name cannot be null or empty");
+        }
+        if(email == null || email.isEmpty()) {
+            throw new BusinessLogicException("Email cannot be null or empty");
+        }
+        if(profession == null || profession.isEmpty()) {
+            throw new BusinessLogicException("Profession cannot be null or empty");
+        }
+
         Integer id=createCabincrewID();
         CabinCrew cabin = new CabinCrew(nume,id,email,profession);
         cabinCrewRepo.create(cabin);
@@ -273,16 +333,31 @@ public class Service {
      * @param paymentType The type of payment used for the booking (e.g., credit card, cash).
      * @return A new Ticket object representing the booking.
      */
-    public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType){
+    public Ticket bookSeat(String date, Integer passengerID ,Integer flightID,String paymentType) throws BusinessLogicException {
         //asta e o functie care e folosita doar de pasager(in ui ar trebui sa se autentifice cu id-ul sau si asa luam from si to)
         Passenger p=null;
         Flight f=null;
+
+        if(date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+        if(flightID == null) {
+            throw new BusinessLogicException("Flight ID cannot be null");
+        }
+        if(paymentType == null || paymentType.isEmpty()) {
+            throw new BusinessLogicException("Payment type cannot be null or empty");
+        }
+
+
         for(Passenger passenger:passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
 
         for(Flight flight: flightRepo.getAll())
-            if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0)
+            if(flight.getID().equals(flightID) && flight.getAirplane().getCapacity()>0 && flight.getDate().equals(date))
                 f=flight;
 
         f.getAirplane().setCapacity(f.getAirplane().getCapacity()-1);
@@ -302,7 +377,12 @@ public class Service {
      * Deletes a pilot.
      * @param pilotID The pilot identifier.
      */
-    public void deletePilot(Integer pilotID){
+    public void deletePilot(Integer pilotID) throws BusinessLogicException {
+
+        if(pilotID == null) {
+            throw new BusinessLogicException("Pilot ID cannot be null");
+        }
+
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilot.getID().equals(pilotID))
                 pilotsRepo.delete(pilot.getID());
@@ -312,7 +392,12 @@ public class Service {
      * Deletes a passenger.
      * @param passengerID The passenger identifier.
      */
-    public void deletePassenger(Integer passengerID){
+    public void deletePassenger(Integer passengerID) throws BusinessLogicException {
+
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+
         for(Passenger passenger: passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 passengerRepo.delete(passenger.getID());
@@ -323,7 +408,12 @@ public class Service {
      * Deletes a cabin crew.
      * @param cabincrewID The cabin crew identifier.
      */
-    public void deleteCabinCrew(Integer cabincrewID){
+    public void deleteCabinCrew(Integer cabincrewID) throws BusinessLogicException {
+
+        if(cabincrewID == null) {
+            throw new BusinessLogicException("Cabin crew ID cannot be null");
+        }
+
         for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
             if(cabinCrew.getID().equals(cabincrewID))
                 cabinCrewRepo.delete(cabinCrew.getID());
@@ -333,7 +423,12 @@ public class Service {
      * Deletes a flight.
      * @param flightID The flight identifier.
      */
-    public void deleteFlight(Integer flightID){
+    public void deleteFlight(Integer flightID) throws BusinessLogicException {
+
+        if(flightID == null) {
+            throw new BusinessLogicException("Flight ID cannot be null");
+        }
+
         for(Flight flight: flightRepo.getAll())
             if(flight.getID().equals(flightID))
                 flightRepo.delete(flight.getID());
@@ -345,7 +440,7 @@ public class Service {
      * @param newName The new name of the pilot.
      * @param newEmail The new email of the pilot.
      */
-    public void updatePilot(Integer pilotID,String newName, String newEmail){
+    public void updatePilot(Integer pilotID,String newName, String newEmail) throws BusinessLogicException {
 //        for(Pilot pilot: pilotsRepo.getAll())
 //            if(pilot.getID().equals(pilotID))
 //            {
@@ -353,6 +448,17 @@ public class Service {
 //                pilot.setEmail(newEmail);
 //                break;
 //            }
+
+        if(pilotID == null) {
+            throw new BusinessLogicException("Pilot ID cannot be null");
+        }
+        if(newName == null || newName.isEmpty()) {
+            throw new BusinessLogicException("New name cannot be null or empty");
+        }
+        if(newEmail == null || newEmail.isEmpty()) {
+            throw new BusinessLogicException("New email cannot be null or empty");
+        }
+
         Pilot pilot = pilotsRepo.get(pilotID);
         pilot.setNume(newName);
         pilot.setEmail(newEmail);
@@ -367,7 +473,7 @@ public class Service {
      * @param newTo The new arrival location of the passenger.
      * @param newFrom The new departure location of the passenger.
      */
-    public void updatePassenger(Integer passengerID,String newName, String newEmail, String newTo, String newFrom){
+    public void updatePassenger(Integer passengerID,String newName, String newEmail, String newTo, String newFrom) throws BusinessLogicException {
 //        for(Passenger passenger: passengerRepo.getAll())
 //
 //            if(passenger.getID().equals(passengerID))
@@ -378,6 +484,23 @@ public class Service {
 //                passenger.setFlight(pair);
 //                break;
 //            }
+
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+        if(newName == null || newName.isEmpty()) {
+            throw new BusinessLogicException("New name cannot be null or empty");
+        }
+        if(newEmail == null || newEmail.isEmpty()) {
+            throw new BusinessLogicException("New email cannot be null or empty");
+        }
+        if(newTo == null || newTo.isEmpty()) {
+            throw new BusinessLogicException("New to cannot be null or empty");
+        }
+        if(newFrom == null || newFrom.isEmpty()) {
+            throw new BusinessLogicException("New from cannot be null or empty");
+        }
+
         Passenger passenger = passengerRepo.get(passengerID);
         passenger.setNume(newName);
         passenger.setEmail(newEmail);
@@ -393,7 +516,7 @@ public class Service {
      * @param newEmail The new email of the cabin crew.
      * @param newProfesion The new profession of the cabin crew.
      */
-    public void updateCabinCrew(Integer cabincrewID, String newName, String newEmail, String newProfesion){
+    public void updateCabinCrew(Integer cabincrewID, String newName, String newEmail, String newProfesion) throws BusinessLogicException {
 //        for(CabinCrew cabinCrew: cabinCrewRepo.getAll())
 //            if(cabinCrew.getID().equals(cabincrewID))
 //            {
@@ -402,6 +525,20 @@ public class Service {
 //                cabinCrew.setProfession(newProfesion);
 //                break;
 //            }
+
+        if(cabincrewID == null) {
+            throw new BusinessLogicException("Cabin crew ID cannot be null");
+        }
+        if(newName == null || newName.isEmpty()) {
+            throw new BusinessLogicException("New name cannot be null or empty");
+        }
+        if(newEmail == null || newEmail.isEmpty()) {
+            throw new BusinessLogicException("New email cannot be null or empty");
+        }
+        if(newProfesion == null || newProfesion.isEmpty()) {
+            throw new BusinessLogicException("New profession cannot be null or empty");
+        }
+
         CabinCrew cabinCrew = cabinCrewRepo.get(cabincrewID);
         cabinCrew.setNume(newName);
         cabinCrew.setEmail(newEmail);
@@ -417,9 +554,26 @@ public class Service {
      * @param pilotID The pilot identifier.
      * @param airplaneID The airplane identifier.
      */
-    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID){
+    public void updateFlight(Integer flightID,String newFrom, String newTo, Integer pilotID, Integer airplaneID) throws BusinessLogicException {
         Pilot p=null;
         Airplane a=null;
+
+        if(flightID == null) {
+            throw new BusinessLogicException("Flight ID cannot be null");
+        }
+        if(newFrom == null || newFrom.isEmpty()) {
+            throw new BusinessLogicException("Departure cannot be null or empty");
+        }
+        if(newTo == null || newTo.isEmpty()) {
+            throw new BusinessLogicException("Destination cannot be null or empty");
+        }
+        if(pilotID == null) {
+            throw new BusinessLogicException("Pilot ID cannot be null");
+        }
+        if(airplaneID == null) {
+            throw new BusinessLogicException("Airplane ID cannot be null");
+        }
+
         for(Pilot pilot: pilotsRepo.getAll())
             if(pilot.getID().equals(pilotID))
                 p=pilot;
@@ -450,8 +604,19 @@ public class Service {
      * @param amount The amount of the payment.
      * @param passengerID The passenger identifier.
      */
-    public Payment createPayment(String description, double amount,Integer passengerID){
+    public Payment createPayment(String description, double amount,Integer passengerID) throws BusinessLogicException {
         //trebe scris si o descriere din main.java.UI cumva si main.java.data ca parametru
+
+        if(description == null || description.isEmpty()) {
+            throw new BusinessLogicException("Description cannot be null or empty");
+        }
+        if(amount <= 0) {
+            throw new BusinessLogicException("Amount must be greater than zero");
+        }
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+
         Integer payID=createPaymentID();
         Passenger p=null;
         for( Passenger passenger: passengerRepo.getAll())
@@ -469,7 +634,12 @@ public class Service {
      * Deletes a payment.
      * @param payID The payment identifier.
      */
-    public void deletePayment(Integer payID){
+    public void deletePayment(Integer payID) throws BusinessLogicException {
+
+        if(payID == null) {
+            throw new BusinessLogicException("Payment ID cannot be null");
+        }
+
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(payID))
                 paymentRepo.delete(payment.getID());
@@ -482,7 +652,7 @@ public class Service {
      * @param newDescription The new description of the payment.
      * @param newAmount The new amount of the payment.
      */
-    public void updatePayment(Integer paymentID,String newDescription, double newAmount){
+    public void updatePayment(Integer paymentID,String newDescription, double newAmount) throws BusinessLogicException {
         //id of payment stays the same and id of passenger that pays stays the same
 
 //        for(Payment payment: paymentRepo.getAll())
@@ -492,6 +662,17 @@ public class Service {
 //                payment.setDescription(newDescription);
 //                break;
 //            }
+
+        if(paymentID == null) {
+            throw new BusinessLogicException("Payment ID cannot be null");
+        }
+        if(newDescription == null || newDescription.isEmpty()) {
+            throw new BusinessLogicException("New description cannot be null or empty");
+        }
+        if(newAmount <= 0) {
+            throw new BusinessLogicException("New amount must be greater than zero");
+        }
+
         Payment payment = paymentRepo.get(paymentID);
         payment.setAmount(newAmount);
         payment.setDescription(newDescription);
@@ -509,7 +690,20 @@ public class Service {
      * @param from The departure location.
      * @param to The arrival location.
      */
-    public void createReservation(String date, Integer passengerID, String from, String to){
+    public void createReservation(String date, Integer passengerID, String from, String to) throws BusinessLogicException {
+
+        if(date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+        if(from == null || from.isEmpty()) {
+            throw new BusinessLogicException("From cannot be null or empty");
+        }
+        if(to == null || to.isEmpty()) {
+            throw new BusinessLogicException("To cannot be null or empty");
+        }
 
         Passenger p=null;
         Pair fl= new Pair(from,to);
@@ -528,7 +722,12 @@ public class Service {
      * Deletes a reservation.
      * @param reservationID The reservation identifier.
      */
-    public void deleteReservation(Integer reservationID){
+    public void deleteReservation(Integer reservationID) throws BusinessLogicException {
+
+        if(reservationID == null) {
+            throw new BusinessLogicException("Reservation ID cannot be null");
+        }
+
         for(Reservation reservation: reservationRepo.getAll())
             if(reservation.getID().equals(reservationID))
                 reservationRepo.delete(reservationID);
@@ -539,12 +738,20 @@ public class Service {
      * @param reservationID The reservation identifier.
      * @param newDate The new date of the reservation.
      */
-    public void updateReservation(Integer reservationID,String newDate){
+    public void updateReservation(Integer reservationID,String newDate) throws BusinessLogicException {
 //        for(Reservation reservation: reservationRepo.getAll())
 //            if(reservation.getID().equals(reservationID)) {
 //                reservation.setDate(newDate);
 //                break;
 //            }
+
+        if(reservationID == null) {
+            throw new BusinessLogicException("Reservation ID cannot be null");
+        }
+        if(newDate == null || newDate.isEmpty()) {
+            throw new BusinessLogicException("New date cannot be null or empty");
+        }
+
         Reservation reservation = reservationRepo.get(reservationID);
         reservation.setDate(newDate);
         reservationRepo.update(reservation);
@@ -559,9 +766,23 @@ public class Service {
      * @param date The date .
      *
      */
-    public Ticket createTicket(String title, String description, Integer paymentID, String date){
+    public Ticket createTicket(String title, String description, Integer paymentID, String date) throws BusinessLogicException {
         Integer ticketID=createTicketID();
         Payment p=null;
+
+        if(title == null || title.isEmpty()) {
+            throw new BusinessLogicException("Title cannot be null or empty");
+        }
+        if(description == null || description.isEmpty()) {
+            throw new BusinessLogicException("Description cannot be null or empty");
+        }
+        if(paymentID == null) {
+            throw new BusinessLogicException("Payment ID cannot be null");
+        }
+        if(date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
+
         for(Payment payment: paymentRepo.getAll())
             if(payment.getID().equals(paymentID))
                 p=payment;
@@ -574,7 +795,13 @@ public class Service {
      * Deletes a ticket.
      * @param ticketID The ticket identifier.
      */
-    public void deleteTicket(Integer ticketID){
+    public void deleteTicket(Integer ticketID) throws BusinessLogicException {
+
+        if(ticketID == null) {
+            throw new BusinessLogicException("Ticket ID cannot be null");
+        }
+
+
         for(Ticket ticket: ticketRepo.getAll())
             if(ticket.getID().equals(ticketID))
                 ticketRepo.delete(ticketID);
@@ -586,13 +813,24 @@ public class Service {
      * @param newTitle The new title of the ticket.
      * @param newDescription The new description of the ticket.
      */
-    public void updateTicket(Integer ticketID, String newTitle, String newDescription){
+    public void updateTicket(Integer ticketID, String newTitle, String newDescription) throws BusinessLogicException {
 //        for(Ticket ticket: ticketRepo.getAll())
 //            if(ticket.getID().equals(ticketID)) {
 //                ticket.setTitle(newTitle);
 //                ticket.setDescription(newDescription);
 //                break;
 //            }
+
+        if(ticketID == null) {
+            throw new BusinessLogicException("Ticket ID cannot be null");
+        }
+        if(newTitle == null || newTitle.isEmpty()) {
+            throw new BusinessLogicException("New title cannot be null or empty");
+        }
+        if(newDescription == null || newDescription.isEmpty()) {
+            throw new BusinessLogicException("New description cannot be null or empty");
+        }
+
         Ticket ticket = ticketRepo.get(ticketID);
         ticket.setTitle(newTitle);
         ticket.setDescription(newDescription);
@@ -617,8 +855,19 @@ public class Service {
      * Gets all the available cabin crew.
      * @return The list of all available cabin crew.
      */
-    public void createAirplane(String model, Integer capacity, Boolean avaliable){
+    public void createAirplane(String model, Integer capacity, Boolean avaliable) throws BusinessLogicException {
         Integer airplaneID=createAirplaneID();
+
+        if(model == null || model.isEmpty()) {
+            throw new BusinessLogicException("Model cannot be null or empty");
+        }
+        if(capacity == null || capacity <= 0) {
+            throw new BusinessLogicException("Capacity must be greater than zero");
+        }
+        if(avaliable == null) {
+            throw new BusinessLogicException("Availability cannot be null");
+        }
+
         Airplane newaAirplane=new Airplane(airplaneID,model,capacity,avaliable);
         airplaneRepo.create(newaAirplane);
     }
@@ -627,7 +876,12 @@ public class Service {
      * Deletes an airplane.
      * @param airplaneID The airplane identifier.
      */
-    public void deleteAirplane(Integer airplaneID){
+    public void deleteAirplane(Integer airplaneID) throws BusinessLogicException {
+
+        if(airplaneID == null) {
+            throw new BusinessLogicException("Airplane ID cannot be null");
+        }
+
         for(Airplane airplane: airplaneRepo.getAll())
             if(airplane.getID().equals(airplaneID))
                 airplaneRepo.delete(airplaneID);
@@ -640,7 +894,7 @@ public class Service {
      * @param newCapacity The new capacity of the airplane.
      * @param newAvaliable The new availability of the airplane.
      */
-    public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity,Boolean newAvaliable){
+    public void updateAirplane(Integer airplaneID, String newModel, Integer newCapacity,Boolean newAvaliable) throws BusinessLogicException {
 
 //        for(Airplane airplane: airplaneRepo.getAll())
 //            if(airplane.getID().equals(airplaneID)) {
@@ -648,6 +902,20 @@ public class Service {
 //                airplane.setAvailable(newAvaliable);
 //                airplane.setCapacity(newCapacity);
 //            }
+
+        if(airplaneID == null) {
+            throw new BusinessLogicException("Airplane ID cannot be null");
+        }
+        if(newModel == null || newModel.isEmpty()) {
+            throw new BusinessLogicException("New model cannot be null or empty");
+        }
+        if(newCapacity == null || newCapacity <= 0) {
+            throw new BusinessLogicException("New capacity must be greater than zero");
+        }
+        if(newAvaliable == null) {
+            throw new BusinessLogicException("New availability cannot be null");
+        }
+
         Airplane airplane = airplaneRepo.get(airplaneID);
         airplane.setModel(newModel);
         airplane.setAvailable(newAvaliable);
@@ -661,7 +929,12 @@ public class Service {
      * Gets all the available airplanes.
      * @return The list of all available airplanes.
      */
-    public Ticket getTicket(Integer ticketID){
+    public Ticket getTicket(Integer ticketID) throws BusinessLogicException {
+
+        if(ticketID == null) {
+            throw new BusinessLogicException("Ticket ID cannot be null");
+        }
+
         for(Ticket ticket: ticketRepo.getAll()){
             if(ticket.getID().equals(ticketID))
                 return ticket;
@@ -673,7 +946,12 @@ public class Service {
      * Gets all the available airports.
      * @return The list of all available airports.
      */
-    public Reservation getReservation(Integer reservationID){
+    public Reservation getReservation(Integer reservationID) throws BusinessLogicException {
+
+        if(reservationID == null) {
+            throw new BusinessLogicException("Reservation ID cannot be null");
+        }
+
         for(Reservation reservation: reservationRepo.getAll()) {
             if(reservation.getID().equals(reservationID))
                 return reservation;
@@ -688,7 +966,16 @@ public class Service {
      * @param number_of_airstrips  The number of airstrips of the airport.
      * @param avaliable The availability of the airport.
      */
-    public void createAirport(String name, String location, Integer number_of_airstrips, Boolean avaliable){
+    public void createAirport(String name, String location, Integer number_of_airstrips, Boolean avaliable) throws BusinessLogicException {
+        if (name == null || name.isEmpty()) {
+            throw new BusinessLogicException("Airport name cannot be null or empty");
+        }
+        if (location == null || location.isEmpty()) {
+            throw new BusinessLogicException("Airport location cannot be null or empty");
+        }
+        if (number_of_airstrips == null || number_of_airstrips <= 0) {
+            throw new BusinessLogicException("Number of airstrips must be greater than zero");
+        }
         Integer airportID=createAirportID();
         Airport newAirport=new Airport(airportID,name,location,number_of_airstrips,avaliable);
         airportRepo.create(newAirport);
@@ -698,7 +985,12 @@ public class Service {
      * Deletes an airport.
      * @param airportID The airport identifier.
      */
-    public void deleteAirport(Integer airportID){
+    public void deleteAirport(Integer airportID) throws BusinessLogicException {
+
+        if(airportID == null) {
+            throw new BusinessLogicException("Airport ID cannot be null");
+        }
+
         for(Airport airport: airportRepo.getAll())
             if(airport.getID().equals(airportID))
                 airportRepo.delete(airportID);
@@ -712,7 +1004,7 @@ public class Service {
      * @param newNumberOfAirstrips The new number of airstrips of the airport.
      * @param newAvaliable The new availability of the airport.
      */
-    public void updateAirport(Integer airportID, String newName, String newLocation,Integer newNumberOfAirstrips, Boolean newAvaliable){
+    public void updateAirport(Integer airportID, String newName, String newLocation,Integer newNumberOfAirstrips, Boolean newAvaliable) throws BusinessLogicException {
 //        for(Airport airport: airportRepo.getAll())
 //            if(airport.getID().equals(airportID)) {
 //                airport.setName(newName);
@@ -720,6 +1012,23 @@ public class Service {
 //                airport.setLocation(newLocation);
 //                airport.setAvaliable(newAvaliable);
 //            }
+
+        if(airportID == null) {
+            throw new BusinessLogicException("Airport ID cannot be null");
+        }
+        if(newName == null || newName.isEmpty()) {
+            throw new BusinessLogicException("New name cannot be null or empty");
+        }
+        if(newLocation == null || newLocation.isEmpty()) {
+            throw new BusinessLogicException("New location cannot be null or empty");
+        }
+        if(newNumberOfAirstrips == null || newNumberOfAirstrips <= 0) {
+            throw new BusinessLogicException("New number of airstrips must be greater than zero");
+        }
+        if(newAvaliable == null) {
+            throw new BusinessLogicException("New availability cannot be null");
+        }
+
         Airport airport = airportRepo.get(airportID);
         airport.setName(newName);
         airport.setNumber_of_airstrips(newNumberOfAirstrips);
@@ -735,9 +1044,16 @@ public class Service {
      * @param date        The date for which to retrieve available flights.
      * @return A list of flights that match the passenger's destination and departure location.
      */
-    public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date){
+    public ArrayList<Flight> getAllAvalibleFlightsForPassenger(Integer passengerID,String date) throws BusinessLogicException {
         String from=null;
         String to=null;
+
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+        if(date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
 
         for(Passenger passenger: passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
@@ -759,8 +1075,13 @@ public class Service {
      * @param passengerID The unique identifier of the passenger.
      * @return The passenger with the specified ID, or null if not found.
      */
-    public Passenger getPassengerByID(Integer passengerID){
+    public Passenger getPassengerByID(Integer passengerID) throws BusinessLogicException {
         Passenger p =null;
+
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+
         for(Passenger passenger: passengerRepo.getAll())
             if(passenger.getID().equals(passengerID)) {
                 p=passenger;
@@ -784,8 +1105,13 @@ public class Service {
      * @param amount The amount of the flight.
      * @return The list of flights filtered by amount.
      */
-    public ArrayList<Flight> filterFlightsByAmount(double amount){
+    public ArrayList<Flight> filterFlightsByAmount(double amount) throws BusinessLogicException {
         ArrayList<Flight> filteredFlights = new ArrayList<Flight>();
+
+        if(amount <= 0) {
+            throw new BusinessLogicException("Amount must be greater than zero");
+        }
+
         filteredFlights.addAll(flightRepo.getAll().stream().filter(flight -> flight.getAmount() <= amount).toList());
         return filteredFlights;
     }
@@ -806,8 +1132,13 @@ public class Service {
      * @param profession The profession of the cabin crew.
      * @return The list of cabin crew filtered by profession.
      */
-    public ArrayList<CabinCrew> filterCabinCrewByProfession(String profession){
+    public ArrayList<CabinCrew> filterCabinCrewByProfession(String profession) throws BusinessLogicException {
         ArrayList<CabinCrew> filteredCabinCrew= new ArrayList<CabinCrew>();
+
+        if(profession == null || profession.isEmpty()) {
+            throw new BusinessLogicException("Profession cannot be null or empty");
+        }
+
         filteredCabinCrew.addAll(cabinCrewRepo.getAll().stream()
                 .filter(cabinCrew -> cabinCrew.getProfession().equals(profession))
                 .toList());
@@ -824,9 +1155,29 @@ public class Service {
      * @param to The arrival location.
      * @return A new Ticket object representing the booking.
      */
-    public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to){
+    public Ticket bookSeatByFlight(String date, Integer passengerID ,Integer flightID,String paymentType, String from, String to) throws BusinessLogicException {
         Passenger p=null;
         Flight f=null;
+
+        if(date == null || date.isEmpty()) {
+            throw new BusinessLogicException("Date cannot be null or empty");
+        }
+        if(passengerID == null) {
+            throw new BusinessLogicException("Passenger ID cannot be null");
+        }
+        if(flightID == null) {
+            throw new BusinessLogicException("Flight ID cannot be null");
+        }
+        if(paymentType == null || paymentType.isEmpty()) {
+            throw new BusinessLogicException("Payment type cannot be null or empty");
+        }
+        if(from == null || from.isEmpty()) {
+            throw new BusinessLogicException("From cannot be null or empty");
+        }
+        if(to == null || to.isEmpty()) {
+            throw new BusinessLogicException("To cannot be null or empty");
+        }
+
         for(Passenger passenger:passengerRepo.getAll())
             if(passenger.getID().equals(passengerID))
                 p=passenger;
