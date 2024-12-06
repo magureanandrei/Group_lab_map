@@ -1,3 +1,5 @@
+import Exceptions.BusinessLogicException;
+import Exceptions.EntityNotFoundException;
 import Models.*;
 import Repo.InMemoryRepo;
 import Repo.*;
@@ -396,7 +398,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testBookSeatSuccessful() {
+    void testBookSeatSuccessful() throws BusinessLogicException, EntityNotFoundException {
         Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
                 new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
@@ -425,7 +427,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testBookSeatByFlightSuccessful() {
+    void testBookSeatByFlightSuccessful() throws BusinessLogicException, EntityNotFoundException {
         Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
                 new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
@@ -464,7 +466,7 @@ class ApplicationTest {
 
 
     @Test
-    void testFilterCabinCrewByProfession() {
+    void testFilterCabinCrewByProfession() throws BusinessLogicException {
         cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
         cabinCrewRepository.create(new CabinCrew("Tom Brown",2 , "tom@gmail.com","Pilot"));
         cabinCrewRepository.create(new CabinCrew("Sarah Johnson",3 , "sarah@gmail.com","Flight Attendant"));
@@ -475,7 +477,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testFilterCabinCrewByProfessionEmptyResult() {
+    void testFilterCabinCrewByProfessionEmptyResult() throws BusinessLogicException {
         cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
 
         ArrayList<CabinCrew> flightAttendants = flightService.filterCabinCrewByProfession("Pilot");
@@ -495,7 +497,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testFilterFlightsByAmount() {
+    void testFilterFlightsByAmount() throws BusinessLogicException {
         flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
         flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
         flightRepository.create(new Flight(3, "Cluj", "Timisoara", null, null, null, "2023-11-05", 700.0));
