@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.DatabaseException;
 import Models.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface Repository<T extends HasID> {
      *
      * @param obj The object to create.
      */
-    void create(T obj);
+    void create(T obj) throws DatabaseException;
 
     /**
      * Retrieves an object from the repository by its ID.
@@ -24,26 +25,26 @@ public interface Repository<T extends HasID> {
      * @param id The unique identifier of the object to retrieve.
      * @return The object with the specified ID, or null if not found.
      */
-    T get(Integer id);
+    T get(Integer id) throws DatabaseException;
 
     /**
      * Updates an existing object in the repository.
      *
      * @param obj The object to update.
      */
-    void update(T obj);
+    void update(T obj) throws DatabaseException;
 
     /**
      * Deletes an object from the repository by its ID.
      *
      * @param id The unique identifier of the object to delete.
      */
-    void delete(Integer id);
+    void delete(Integer id) throws DatabaseException;
 
     /**
      * Retrieves all objects from the repository.
      *
      * @return A list of all objects in the repository.
      */
-    List<T> getAll();
+    List<T> getAll() throws DatabaseException;
 }

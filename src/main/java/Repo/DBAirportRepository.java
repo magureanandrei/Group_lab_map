@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.DatabaseException;
 import Models.Airport;
 
 import java.sql.PreparedStatement;
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class DBAirportRepository extends DBRepository<Airport> {
 
-        public DBAirportRepository(String dbUrl) {
+        public DBAirportRepository(String dbUrl) throws DatabaseException {
             super(dbUrl);
         }
 
         @Override
-        public void create(Airport obj) {
+        public void create(Airport obj) throws DatabaseException {
             String sql = "INSERT INTO Airport (ID, name, location, number_of_airstrips, avaliable) VALUES (?, ?, ?, ?, ?)";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -27,12 +28,12 @@ public class DBAirportRepository extends DBRepository<Airport> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public Airport get(Integer id) {
+        public Airport get(Integer id) throws DatabaseException {
             String sql = "SELECT * FROM Airport WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -45,12 +46,12 @@ public class DBAirportRepository extends DBRepository<Airport> {
                     return null;
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public void update(Airport obj) {
+        public void update(Airport obj) throws DatabaseException {
             String sql = "UPDATE Airport SET name = ?, location = ?, number_of_airstrips = ?, avaliable = ? WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -62,24 +63,24 @@ public class DBAirportRepository extends DBRepository<Airport> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public void delete(Integer id) {
+        public void delete(Integer id) throws DatabaseException {
             String sql = "DELETE FROM Airport WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, id);
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public List<Airport> getAll() {
+        public List<Airport> getAll() throws DatabaseException {
             String sql = "SELECT * FROM Airport";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -92,7 +93,7 @@ public class DBAirportRepository extends DBRepository<Airport> {
 
                 return airports;
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 

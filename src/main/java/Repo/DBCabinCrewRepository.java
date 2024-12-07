@@ -1,4 +1,5 @@
 package Repo;
+import Exceptions.DatabaseException;
 import Models.CabinCrew;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,12 +9,12 @@ import java.util.List;
 
 public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
-    public DBCabinCrewRepository(String dbUrl) {
+    public DBCabinCrewRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
     }
 
     @Override
-    public void create(CabinCrew obj) {
+    public void create(CabinCrew obj) throws DatabaseException {
         String sql = "INSERT INTO CabinCrew (ID, nume, email, profession) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -24,12 +25,12 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public CabinCrew get(Integer id) {
+    public CabinCrew get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM CabinCrew WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -42,12 +43,12 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void update(CabinCrew obj) {
+    public void update(CabinCrew obj) throws DatabaseException {
         String sql = "UPDATE CabinCrew SET nume = ?, email = ?, profession = ? WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -58,24 +59,24 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM CabinCrew WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public List<CabinCrew> getAll() {
+    public List<CabinCrew> getAll() throws DatabaseException {
         String sql = "SELECT * FROM CabinCrew";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -88,7 +89,7 @@ public class DBCabinCrewRepository extends DBRepository<CabinCrew> {
 
             return cabinCrews;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

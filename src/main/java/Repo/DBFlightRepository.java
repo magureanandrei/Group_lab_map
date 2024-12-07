@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.DatabaseException;
 import Models.Airplane;
 import Models.Airport;
 import Models.Flight;
@@ -15,7 +16,7 @@ public class DBFlightRepository extends DBRepository<Flight> {
         private final DBAirplaneReposiory airplaneRepository;
         private final DBAirportRepository airportRepository;
 
-        public DBFlightRepository(String dbUrl) {
+        public DBFlightRepository(String dbUrl) throws DatabaseException {
             super(dbUrl);
             this.pilotRepository = new DBPilorRepository(dbUrl);
             this.airplaneRepository = new DBAirplaneReposiory(dbUrl);
@@ -23,7 +24,7 @@ public class DBFlightRepository extends DBRepository<Flight> {
         }
 
         @Override
-        public void create(Flight flight) {
+        public void create(Flight flight) throws DatabaseException {
             String sql = "INSERT INTO Flight (flightID, fromLocation, toLocation, pilotID, airplaneID, airportID, flightDate, amount) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -39,12 +40,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException("Error while creating flight: " + e.getMessage(), e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public Flight get(Integer id) {
+        public Flight get(Integer id) throws DatabaseException {
             String sql = "SELECT * FROM Flight WHERE flightID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -57,12 +58,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
                     return null;
                 }
             } catch (SQLException e) {
-                throw new RuntimeException("Error while reading flight: " + e.getMessage(), e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public void update(Flight flight) {
+        public void update(Flight flight) throws DatabaseException {
             String sql = "UPDATE Flight SET fromLocation = ?, toLocation = ?, pilotID = ?, airplaneID = ?, airportID = ?, flightDate = ?, amount = ? " +
                     "WHERE flightID = ?";
 
@@ -78,7 +79,7 @@ public class DBFlightRepository extends DBRepository<Flight> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException("Error while updating flight: " + e.getMessage(), e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
@@ -95,7 +96,7 @@ public class DBFlightRepository extends DBRepository<Flight> {
         }
 
         @Override
-        public List<Flight> getAll() {
+        public List<Flight> getAll() throws DatabaseException {
             String sql = "SELECT * FROM Flight";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -107,12 +108,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
                 }
 
                 return flights;
-            } catch (SQLException e) {
-                throw new RuntimeException("Error while getting all flights: " + e.getMessage(), e);
+            } catch (SQLException | DatabaseException e) {
+                throw new DatabaseException(e.getMessage());
             }
         }
 
-        private Flight extractFromResultSet(ResultSet resultSet) throws SQLException {
+        private Flight extractFromResultSet(ResultSet resultSet) throws SQLException, DatabaseException {
             int flightID = resultSet.getInt("flightID");
             String from = resultSet.getString("fromLocation");
             String to = resultSet.getString("toLocation");

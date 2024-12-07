@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.DatabaseException;
 import Models.Pair;
 import Models.Passenger;
 import Models.Reservation;
@@ -12,13 +13,13 @@ public class DBReservationRepository extends DBRepository<Reservation> {
 
     private final DBPassengerRepository passengerRepository;
 
-    public DBReservationRepository(String dbUrl) {
+    public DBReservationRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
         this.passengerRepository = new DBPassengerRepository(dbUrl);
     }
 
     @Override
-    public void create(Reservation reservation) {
+    public void create(Reservation reservation) throws DatabaseException {
         String sql = "INSERT INTO Reservation (id, reservationDate, passengerID, fromLocation, toLocation) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -37,12 +38,12 @@ public class DBReservationRepository extends DBRepository<Reservation> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while creating reservation: " + e.getMessage(), e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public Reservation get(Integer id) {
+    public Reservation get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Reservation WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -55,12 +56,12 @@ public class DBReservationRepository extends DBRepository<Reservation> {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error while reading reservation: " + e.getMessage(), e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void update(Reservation reservation) {
+    public void update(Reservation reservation) throws DatabaseException {
         String sql = "UPDATE Reservation SET reservationDate = ?, passengerID = ?, fromLocation = ?, toLocation = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -79,24 +80,24 @@ public class DBReservationRepository extends DBRepository<Reservation> {
             statement.setInt(5, reservation.getID());
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while updating reservation: " + e.getMessage(), e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Reservation WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException("Error while deleting reservation: " + e.getMessage(), e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public List<Reservation> getAll() {
+    public List<Reservation> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Reservation";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -109,11 +110,11 @@ public class DBReservationRepository extends DBRepository<Reservation> {
 
             return reservations;
         } catch (SQLException e) {
-            throw new RuntimeException("Error while getting all reservations: " + e.getMessage(), e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
-    private Reservation extractFromResultSet(ResultSet resultSet) throws SQLException {
+    private Reservation extractFromResultSet(ResultSet resultSet) throws SQLException, DatabaseException {
         int id = resultSet.getInt("id");
         String date = resultSet.getDate("reservationDate").toString();
 

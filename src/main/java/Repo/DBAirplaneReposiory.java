@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.DatabaseException;
 import Models.Airplane;
 
 import java.sql.PreparedStatement;
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class DBAirplaneReposiory extends DBRepository<Airplane> {
 
-    public DBAirplaneReposiory(String dbUrl) {
+    public DBAirplaneReposiory(String dbUrl) throws DatabaseException {
             super(dbUrl);
     }
 
     @Override
-    public void create(Airplane obj) {
+    public void create(Airplane obj) throws DatabaseException {
         String sql = "INSERT INTO Airplane (ID, model, capacity, available) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -26,12 +27,12 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public Airplane get(Integer id) {
+    public Airplane get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Airplane WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -44,12 +45,12 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void update(Airplane obj) {
+    public void update(Airplane obj) throws DatabaseException {
         String sql = "UPDATE Airplane SET model = ?, capacity = ?, available = ? WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -60,24 +61,24 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Airplane WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public List<Airplane> getAll() {
+    public List<Airplane> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Airplane";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -90,7 +91,7 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
 
             return airplanes;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

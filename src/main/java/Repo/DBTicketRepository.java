@@ -1,4 +1,5 @@
 package Repo;
+import Exceptions.DatabaseException;
 import Models.Payment;
 import Models.Ticket;
 
@@ -12,13 +13,13 @@ public class DBTicketRepository extends DBRepository<Ticket> {
 
         private final DBPaymentRepository paymentRepository;
 
-        public DBTicketRepository(String dbUrl) {
+        public DBTicketRepository(String dbUrl) throws DatabaseException {
             super(dbUrl);
             this.paymentRepository = new DBPaymentRepository(dbUrl);
         }
 
         @Override
-        public void create(Ticket obj) {
+        public void create(Ticket obj) throws DatabaseException {
             String sql = "INSERT INTO Ticket (ID, title, description, paymentID, ticketDate) VALUES (?, ?, ?, ?, ?)";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -30,12 +31,12 @@ public class DBTicketRepository extends DBRepository<Ticket> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public Ticket get(Integer id) {
+        public Ticket get(Integer id) throws DatabaseException {
             String sql = "SELECT * FROM Ticket WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -48,12 +49,12 @@ public class DBTicketRepository extends DBRepository<Ticket> {
                     return null;
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public void update(Ticket obj) {
+        public void update(Ticket obj) throws DatabaseException {
             String sql = "UPDATE Ticket SET title = ?, description = ?, paymentID = ?, ticketDate = ? WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -65,24 +66,24 @@ public class DBTicketRepository extends DBRepository<Ticket> {
 
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public void delete(Integer id) {
+        public void delete(Integer id) throws DatabaseException {
             String sql = "DELETE FROM Ticket WHERE ID = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, id);
                 statement.execute();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
         @Override
-        public List<Ticket> getAll() {
+        public List<Ticket> getAll() throws DatabaseException {
             String sql = "SELECT * FROM Ticket";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -95,11 +96,11 @@ public class DBTicketRepository extends DBRepository<Ticket> {
 
                 return tickets;
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException(e.getMessage());
             }
         }
 
-        private Ticket extractFromResultSet(ResultSet resultSet) throws SQLException {
+        private Ticket extractFromResultSet(ResultSet resultSet) throws SQLException, DatabaseException {
             int id = resultSet.getInt("ID");
             String title = resultSet.getString("title");
             String description = resultSet.getString("description");

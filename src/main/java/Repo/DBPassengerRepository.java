@@ -1,4 +1,5 @@
 package Repo;
+import Exceptions.DatabaseException;
 import Models.Pair;
 import Models.Passenger;
 
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class DBPassengerRepository extends DBRepository<Passenger> {
 
-    public DBPassengerRepository(String dbUrl) {
+    public DBPassengerRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
     }
 
     @Override
-    public void create(Passenger obj) {
+    public void create(Passenger obj) throws DatabaseException {
         String sql = "INSERT INTO Passenger (ID, nume, email, fromLocation, toLocation) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -34,12 +35,12 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public Passenger get(Integer id) {
+    public Passenger get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Passenger WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -52,12 +53,12 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void update(Passenger obj) {
+    public void update(Passenger obj) throws DatabaseException {
         String sql = "UPDATE Passenger SET nume = ?, email = ?, fromLocation = ?, toLocation = ? WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -76,24 +77,24 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
             statement.setInt(5, obj.getID());
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Passenger WHERE ID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
     @Override
-    public List<Passenger> getAll() {
+    public List<Passenger> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Passenger";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -106,7 +107,7 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
 
             return passengers;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

@@ -1,4 +1,5 @@
 import Exceptions.BusinessLogicException;
+import Exceptions.DatabaseException;
 import Exceptions.EntityNotFoundException;
 import Models.*;
 
@@ -26,30 +27,48 @@ public class Controller {
      */
     public void viewAvailablePilots() {
         //1- availible 2- not available
-        ArrayList<Pilot> availablePilots = flightService.getAvailablePilots();
-        System.out.println("Available Pilots:\n");
-        for (Pilot pilot : availablePilots) {
-            System.out.println(pilot.toString() + " \n");
+        try {
+            ArrayList<Pilot> availablePilots = flightService.getAvailablePilots();
+            System.out.println("Available Pilots:\n");
+            for (Pilot pilot : availablePilots) {
+                System.out.println(pilot.toString() + " \n");
+            }
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
      * Displays all passengers.
      */
     public void viewPassengers() {
-        List<Passenger> allPassengers = flightService.getAllPassengers();
-        System.out.println("Passengers:\n");
-        for (Passenger passenger : allPassengers) {
-            System.out.println(passenger.toString() + " \n");
+        try {
+            List<Passenger> allPassengers = flightService.getAllPassengers();
+            System.out.println("Passengers:\n");
+            for (Passenger passenger : allPassengers) {
+                System.out.println(passenger.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
         }
     }
     /**
      * Displays all cabin crew members.
      */
     public void viewCabinCrew() {
-        List<CabinCrew> allCabinCrew = flightService.getAllCabinCrews();
-        System.out.println("Cabin Crew:\n");
-        for (CabinCrew cabinCrew : allCabinCrew) {
-            System.out.println(cabinCrew.toString() + " \n");
+        try {
+            List<CabinCrew> allCabinCrew = flightService.getAllCabinCrews();
+            System.out.println("Cabin Crew:\n");
+            for (CabinCrew cabinCrew : allCabinCrew) {
+                System.out.println(cabinCrew.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
         }
     }
     /**
@@ -71,26 +90,39 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.out.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch (DatabaseException e){
+            System.out.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
      * Displays all flights.
      */
     public void viewAllFlights(){
-        List<Flight> allFlights = flightService.getAllFlights();
-        System.out.println("All Flights:\n");
-        for (Flight flight : allFlights) {
-            System.out.println(flight.toString() + " \n");
+        try {
+            List<Flight> allFlights = flightService.getAllFlights();
+            System.out.println("All Flights:\n");
+            for (Flight flight : allFlights) {
+                System.out.println(flight.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
      * Displays all reservations.
      */
     public void viewAllReservation(){
-        List<Reservation> allReservations = flightService.getAllReservations();
-        System.out.println("All Reservations:\n");
-        for (Reservation reservation : allReservations) {
-            System.out.println(reservation.toString() + " \n");
+        try {
+            List<Reservation> allReservations = flightService.getAllReservations();
+            System.out.println("All Reservations:\n");
+            for (Reservation reservation : allReservations) {
+                System.out.println(reservation.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -98,20 +130,30 @@ public class Controller {
      * Displays all tickets.
      */
     public void viewAllTickets(){
-        List<Ticket> allTickets = flightService.getAllTickets();
-        System.out.println("All Tickets:\n");
-        for (Ticket ticket : allTickets) {
-            System.out.println(ticket.toString() + " \n");
+        try {
+            List<Ticket> allTickets = flightService.getAllTickets();
+            System.out.println("All Tickets:\n");
+            for (Ticket ticket : allTickets) {
+                System.out.println(ticket.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
      * Displays all payments.
      */
     public void viewAllPayments(){
-        List<Payment> allPayments = flightService.getAllPayments();
-        System.out.println("All Payments:\n");
-        for (Payment payment : allPayments) {
-            System.out.println(payment.toString() + " \n");
+        try {
+            List<Payment> allPayments = flightService.getAllPayments();
+            System.out.println("All Payments:\n");
+            for (Payment payment : allPayments) {
+                System.out.println(payment.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -119,10 +161,15 @@ public class Controller {
      * Displays all airplanes.
      */
     public void viewAllAirplanes(){
-        List<Airplane> allPlanes = flightService.getAllAirplanes();
-        System.out.println("All Airplanes:\n");
-        for(Airplane airplane : allPlanes){
-            System.out.println(airplane.toString() + " \n");
+        try {
+            List<Airplane> allPlanes = flightService.getAllAirplanes();
+            System.out.println("All Airplanes:\n");
+            for (Airplane airplane : allPlanes) {
+                System.out.println(airplane.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -130,10 +177,15 @@ public class Controller {
      * Displays all airports.
      */
     public void viewAllAirports(){
-        List<Airport> allAirports = flightService.getAllAirports();
-        System.out.println("All Airports:\n");
-        for(Airport airport : allAirports){
-            System.out.println(airport.toString() + " \n");
+        try {
+            List<Airport> allAirports = flightService.getAllAirports();
+            System.out.println("All Airports:\n");
+            for (Airport airport : allAirports) {
+                System.out.println(airport.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -143,22 +195,27 @@ public class Controller {
      * @param passengerID The unique identifier of the passenger to delete.
      */
     public void deletePassenger(Integer passengerID) {
-        Passenger p = null;
-        try{
-            for(Passenger passenger : flightService.getAllPassengers()){
-                if(passenger.getID().equals(passengerID)){
-                    p=passenger;
+        try {
+            Passenger p = null;
+            try {
+                for (Passenger passenger : flightService.getAllPassengers()) {
+                    if (passenger.getID().equals(passengerID)) {
+                        p = passenger;
+                    }
                 }
+                if (p != null) {
+                    flightService.deletePassenger(passengerID);
+                    System.out.println("Removed Passenger " + p + ".");
+                } else
+                    System.out.println("Passenger not found.");
+            } catch (BusinessLogicException e) {
+                System.err.println("Business Logic Error: " + e.getMessage());
+            } catch (EntityNotFoundException e) {
+                System.err.println("Entity Not Found Error: " + e.getMessage());
             }
-            if(p!=null){
-                flightService.deletePassenger(passengerID);
-                System.out.println("Removed Passenger " + p + ".");
-            }
-            else
-                System.out.println("Passenger not found.");
         }
-        catch(BusinessLogicException e){
-            System.err.println("Business Logic Error: " + e.getMessage());
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
@@ -184,6 +241,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Deletes a flight.
@@ -208,6 +271,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Deletes a pilot.
@@ -231,6 +300,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Updates a passenger's details.
@@ -249,6 +324,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch (EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Updates a cabin crew member's details.
@@ -266,6 +347,12 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
@@ -289,6 +376,9 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
 
     }
 
@@ -311,6 +401,9 @@ public class Controller {
         catch(EntityNotFoundException e) {
             System.err.println("Entity Logic Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Creates a new pilot.
@@ -327,6 +420,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
@@ -345,6 +441,9 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
     /**
      * Creates a new passenger.
@@ -362,6 +461,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
@@ -387,6 +489,9 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -409,6 +514,9 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -429,6 +537,9 @@ public class Controller {
         }
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -452,6 +563,9 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -469,6 +583,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -488,6 +605,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -516,6 +636,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -543,6 +669,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch (EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -567,6 +699,12 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -594,6 +732,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -620,6 +764,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch (EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -636,6 +786,12 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -655,6 +811,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -672,6 +834,12 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -692,6 +860,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -711,6 +885,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -727,6 +907,12 @@ public class Controller {
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
         }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -742,6 +928,12 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(EntityNotFoundException e){
+            System.err.println("Entity Not Found Error: " + e.getMessage());
+        }
+        catch (DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -776,6 +968,10 @@ public class Controller {
             System.err.println("Entity Not Found Error: " + e.getMessage());
             return Boolean.FALSE;
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+            return Boolean.FALSE;
+        }
     }
 
     /**
@@ -798,6 +994,9 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -818,16 +1017,25 @@ public class Controller {
             System.err.println("Entity Not Found Error: " + e.getMessage());
             return null;
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
      * Retrieves a pilot by their unique identifier.
      */
     public void sortFlightsByDate(){
-        ArrayList<Flight> sortedFlights=flightService.sortFlightsByDate();
-        System.out.println("All Flights sorted by date: ");
-        for (Flight flight : sortedFlights)
-            System.out.println(flight.toString() + "\n");
+        try {
+            ArrayList<Flight> sortedFlights = flightService.sortFlightsByDate();
+            System.out.println("All Flights sorted by date: ");
+            for (Flight flight : sortedFlights)
+                System.out.println(flight.toString() + "\n");
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -844,6 +1052,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
     /**
@@ -865,16 +1076,24 @@ public class Controller {
         catch(EntityNotFoundException e){
             System.err.println("Entity Not Found Error: " + e.getMessage());
         }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
+        }
     }
 
     /**
      * Sorts airplanes by capacity.
      */
     public void sortAirplanesByCapacity(){
-        ArrayList<Airplane> sortedAirplanes = flightService.sortAirplanesByCapacity();
-        System.out.println("Sorted Airplanes by capacity:\n");
-        for (Airplane airplane : sortedAirplanes) {
-            System.out.println(airplane.toString() + " \n");
+        try {
+            ArrayList<Airplane> sortedAirplanes = flightService.sortAirplanesByCapacity();
+            System.out.println("Sorted Airplanes by capacity:\n");
+            for (Airplane airplane : sortedAirplanes) {
+                System.out.println(airplane.toString() + " \n");
+            }
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 
@@ -893,6 +1112,9 @@ public class Controller {
         }
         catch(BusinessLogicException e){
             System.err.println("Business Logic Error: " + e.getMessage());
+        }
+        catch(DatabaseException e){
+            System.err.println("Database Error: " + e.getMessage());
         }
     }
 

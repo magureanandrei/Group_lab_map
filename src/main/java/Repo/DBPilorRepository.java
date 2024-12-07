@@ -1,4 +1,5 @@
 package Repo;
+import Exceptions.DatabaseException;
 import Models.Pilot;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,12 +9,12 @@ import java.util.List;
 
 public class DBPilorRepository  extends DBRepository<Pilot> {
 
-    public DBPilorRepository(String dbUrl) {
+    public DBPilorRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
     }
 
     @Override
-    public void create(Pilot obj) {
+    public void create(Pilot obj) throws DatabaseException {
         String sql = "INSERT INTO Pilot (ID, nume, email, availability) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -24,7 +25,7 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
 
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 
