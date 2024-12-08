@@ -6,13 +6,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * A repository implementation that interacts with the database to store and retrieve Pilot data.
+ */
 public class DBPilorRepository  extends DBRepository<Pilot> {
 
+    /**
+     * Constructs a new DBPilorRepository with the specified database URL.
+     *
+     * @param dbUrl The URL of the database to connect to.
+     * @throws DatabaseException If there is an error connecting to the database.
+     */
     public DBPilorRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
     }
 
+    /**
+     * Creates a new Pilot object in the database.
+     *
+     * @param obj The Pilot object to be created.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void create(Pilot obj) throws DatabaseException {
         String sql = "INSERT INTO Pilot (ID, nume, email, availability) VALUES (?, ?, ?, ?)";
@@ -29,6 +43,12 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
         }
     }
 
+    /**
+     * Retrieves a Pilot object from the database by its ID.
+     *
+     * @param id The ID of the Pilot to retrieve.
+     * @return The Pilot object, or null if not found.
+     */
     @Override
     public Pilot get(Integer id) {
         String sql = "SELECT * FROM Pilot WHERE ID = ?";
@@ -47,6 +67,11 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
         }
     }
 
+    /**
+     * Updates an existing Pilot object in the database.
+     *
+     * @param obj The Pilot object to update.
+     */
     @Override
     public void update(Pilot obj) {
         String sql = "UPDATE Pilot SET nume = ?, email = ?, availability = ? WHERE ID = ?";
@@ -63,6 +88,11 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
         }
     }
 
+    /**
+     * Deletes a Pilot object from the database by its ID.
+     *
+     * @param id The ID of the Pilot to delete.
+     */
     @Override
     public void delete(Integer id) {
         String sql = "DELETE FROM Pilot WHERE ID = ?";
@@ -75,6 +105,11 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
         }
     }
 
+    /**
+     * Retrieves all Pilot objects from the database.
+     *
+     * @return A list of all Pilot objects.
+     */
     @Override
     public List<Pilot> getAll() {
         String sql = "SELECT * FROM Pilot";
@@ -93,6 +128,13 @@ public class DBPilorRepository  extends DBRepository<Pilot> {
         }
     }
 
+    /**
+     * Extracts a Pilot object from the given ResultSet.
+     *
+     * @param resultSet The ResultSet containing the Pilot data.
+     * @return The extracted Pilot object.
+     * @throws SQLException If there is an error retrieving data from the ResultSet.
+     */
     private static Pilot extractFromResultSet(ResultSet resultSet) throws SQLException {
         return new Pilot(
                 resultSet.getString("nume"),

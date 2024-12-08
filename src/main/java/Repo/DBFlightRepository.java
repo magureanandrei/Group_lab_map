@@ -9,13 +9,22 @@ import Models.Pilot;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * A repository implementation that interacts with the database to manage Flight entities.
+ */
 public class DBFlightRepository extends DBRepository<Flight> {
 
         private final DBPilorRepository pilotRepository;
         private final DBAirplaneReposiory airplaneRepository;
         private final DBAirportRepository airportRepository;
 
+
+    /**
+     * Constructs a new DBFlightRepository with the specified database URL.
+     *
+     * @param dbUrl The URL of the database to connect to.
+     * @throws DatabaseException If there is an error connecting to the database.
+     */
         public DBFlightRepository(String dbUrl) throws DatabaseException {
             super(dbUrl);
             this.pilotRepository = new DBPilorRepository(dbUrl);
@@ -23,6 +32,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
             this.airportRepository = new DBAirportRepository(dbUrl);
         }
 
+    /**
+     * Creates a new Flight object in the database.
+     *
+     * @param flight The Flight object to be created.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
         @Override
         public void create(Flight flight) throws DatabaseException {
             String sql = "INSERT INTO Flight (flightID, fromLocation, toLocation, pilotID, airplaneID, airportID, flightDate, amount) " +
@@ -44,6 +59,13 @@ public class DBFlightRepository extends DBRepository<Flight> {
             }
         }
 
+    /**
+     * Retrieves a Flight object from the database by its ID.
+     *
+     * @param id The ID of the Flight to retrieve.
+     * @return The Flight object, or null if not found.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
         @Override
         public Flight get(Integer id) throws DatabaseException {
             String sql = "SELECT * FROM Flight WHERE flightID = ?";
@@ -62,6 +84,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
             }
         }
 
+    /**
+     * Updates an existing Flight object in the database.
+     *
+     * @param flight The Flight object to update.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
         @Override
         public void update(Flight flight) throws DatabaseException {
             String sql = "UPDATE Flight SET fromLocation = ?, toLocation = ?, pilotID = ?, airplaneID = ?, airportID = ?, flightDate = ?, amount = ? " +
@@ -83,6 +111,11 @@ public class DBFlightRepository extends DBRepository<Flight> {
             }
         }
 
+    /**
+     * Deletes a Flight object from the database by its ID.
+     *
+     * @param id The ID of the Flight to delete.
+     */
         @Override
         public void delete(Integer id) {
             String sql = "DELETE FROM Flight WHERE flightID = ?";
@@ -95,6 +128,12 @@ public class DBFlightRepository extends DBRepository<Flight> {
             }
         }
 
+    /**
+     * Retrieves all Flight objects from the database.
+     *
+     * @return A list of all Flight objects.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
         @Override
         public List<Flight> getAll() throws DatabaseException {
             String sql = "SELECT * FROM Flight";
@@ -113,6 +152,14 @@ public class DBFlightRepository extends DBRepository<Flight> {
             }
         }
 
+    /**
+     * Extracts a Flight object from the given ResultSet.
+     *
+     * @param resultSet The ResultSet containing the Flight data.
+     * @return The extracted Flight object.
+     * @throws SQLException        If there is an error retrieving data from the ResultSet.
+     * @throws DatabaseException If there is an error retrieving related entities.
+     */
         private Flight extractFromResultSet(ResultSet resultSet) throws SQLException, DatabaseException {
             int flightID = resultSet.getInt("flightID");
             String from = resultSet.getString("fromLocation");

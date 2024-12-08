@@ -1,4 +1,5 @@
 import Exceptions.BusinessLogicException;
+import Exceptions.DatabaseException;
 import Exceptions.EntityNotFoundException;
 import Models.*;
 import Repo.InMemoryRepo;
@@ -23,7 +24,7 @@ class ApplicationTest {
     Service flightService = new Service(pilotRepository, passengerRepository,cabinCrewRepository,flightRepository,paymentRepository,reservationRepository,ticketRepository,airplaneRepository, airportRepo);
 
     @Test
-    void testCRUDOperationsForAirplane() {
+    void testCRUDOperationsForAirplane() throws DatabaseException {
         // Create
         airplaneRepository.create(new Airplane(1, "Boeing 747", 400, true));
         List<Airplane> airplanes = airplaneRepository.getAll();
@@ -53,7 +54,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForAirport() {
+    void testCRUDOperationsForAirport() throws DatabaseException {
         // Create
         airportRepo.create(new Airport(1, "Heathrow", "London", 5, true));
         List<Airport> airports = airportRepo.getAll();
@@ -85,7 +86,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForCabinCrew() {
+    void testCRUDOperationsForCabinCrew() throws DatabaseException {
         // Create
         cabinCrewRepository.create(new CabinCrew("John Doe", 1, "john.doe@gmail.com", "Steward"));
         List<CabinCrew> cabins = cabinCrewRepository.getAll();
@@ -118,7 +119,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForPilot() {
+    void testCRUDOperationsForPilot() throws DatabaseException {
         //Create
         pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
         List<Pilot> pilots = pilotRepository.getAll();
@@ -152,7 +153,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForReservation() {
+    void testCRUDOperationsForReservation() throws DatabaseException {
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
         reservationRepository.create(new Reservation(1, "2023-10-02", passenger1, new Pair("New York", "Los Angeles")));
         List<Reservation> reservations = reservationRepository.getAll();
@@ -198,7 +199,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForPassenger() {
+    void testCRUDOperationsForPassenger() throws DatabaseException {
         //Create
          passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Oradea", "Bucuresti"))) ;
          List<Passenger> passengers = passengerRepository.getAll();
@@ -233,7 +234,7 @@ class ApplicationTest {
         assertEquals(0,passengerRepository.getAll().size());
     }
     @Test
-    void testCRUDOperationsForTicket(){
+    void testCRUDOperationsForTicket() throws DatabaseException {
         //Create
         Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
         ticketRepository.create(new Ticket(1, "Economy Class", "Seat 12A", payment1,"2023-10-01"));
@@ -285,7 +286,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForPayment() {
+    void testCRUDOperationsForPayment() throws DatabaseException {
         // Create
         Passenger passenger = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Oradea", "Bucuresti"));
         paymentRepository.create(new Payment(1, "Flight payment", 200.0, passenger));
@@ -327,7 +328,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testCRUDOperationsForFlight() {
+    void testCRUDOperationsForFlight() throws DatabaseException {
         // Create
         Pilot pilot = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
         Airplane airplane = new Airplane(1, "Boeing 747", 400, Boolean.TRUE);
@@ -398,7 +399,85 @@ class ApplicationTest {
     }
 
     @Test
-    void testBookSeatSuccessful() throws BusinessLogicException, EntityNotFoundException {
+    void testGetPassengerByID() throws BusinessLogicException, EntityNotFoundException, DatabaseException {
+
+        Passenger passenger = new Passenger("John Doe", 1, "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        passengerRepository.create(passenger);
+        Passenger foundPassenger = flightService.getPassengerByID(1);
+
+        assertNotNull(foundPassenger);
+        assertEquals(1, foundPassenger.getID());
+        assertEquals("John Doe", foundPassenger.getNume());
+        assertEquals("john.doe@gmail.com", foundPassenger.getEmail());
+        assertEquals("Oradea", foundPassenger.getFlight().getFrom());
+        assertEquals("Bucuresti", foundPassenger.getFlight().getTo());
+    }
+
+    @Test
+    void testGetAllAvailableFlightsForPassenger() throws BusinessLogicException, EntityNotFoundException, DatabaseException {
+
+        Passenger passenger = new Passenger("John Doe", 1, "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        passengerRepository.create(passenger);
+
+        Flight flight1 = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot", 1, "jane.pilot@gmail.com", true),
+                new Airplane(1, "Boeing 737", 200, true), new Airport(1, "Oradea Airport", "Oradea", 2, true),
+                "2023-12-25", 500.0);
+        Flight flight2 = new Flight(2, "Oradea", "Bucuresti", new Pilot("Mark Captain", 2, "mark.captain@gmail.com", true),
+                new Airplane(2, "Airbus A320", 150, true), new Airport(1, "Oradea Airport", "Oradea", 2, true),
+                "2023-12-25", 450.0);
+
+        flightRepository.create(flight1);
+        flightRepository.create(flight2);
+
+        ArrayList<Flight> availableFlights = flightService.getAllAvalibleFlightsForPassenger(1, "2023-12-25");
+
+        assertNotNull(availableFlights);
+        assertEquals(2, availableFlights.size());
+        assertTrue(availableFlights.contains(flight1));
+        assertTrue(availableFlights.contains(flight2));
+    }
+
+    @Test
+    void testGetPassengersByFlight() throws BusinessLogicException, EntityNotFoundException, DatabaseException {
+
+        Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot", 1, "jane.pilot@gmail.com", true),
+                new Airplane(1, "Boeing 737", 200, true), new Airport(1, "Oradea Airport", "Oradea", 2, true),
+                "2023-12-25", 500.0);
+        flightRepository.create(flight);
+
+        Passenger passenger1 = new Passenger("John Doe", 1, "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
+        Passenger passenger2 = new Passenger("Alice Smith", 2, "alice.smith@gmail.com", new Pair("Oradea", "Bucuresti"));
+        passengerRepository.create(passenger1);
+        passengerRepository.create(passenger2);
+
+        List<Passenger> passengers = flightService.getPassengersByFlight(1);
+
+        assertNotNull(passengers);
+        assertEquals(2, passengers.size());
+        assertTrue(passengers.contains(passenger1));
+        assertTrue(passengers.contains(passenger2));
+    }
+
+    @Test
+    void testGetAvailablePilots() throws EntityNotFoundException, DatabaseException {
+
+        Pilot pilot1 = new Pilot("Jane Pilot", 1, "jane.pilot@gmail.com", true);
+        Pilot pilot2 = new Pilot("John Doe", 2, "john.doe@gmail.com", false);
+        pilotRepository.create(pilot1);
+        pilotRepository.create(pilot2);
+
+        ArrayList<Pilot> availablePilots = flightService.getAvailablePilots();
+
+        assertNotNull(availablePilots);
+        assertEquals(1, availablePilots.size());
+        assertTrue(availablePilots.contains(pilot1));
+        assertFalse(availablePilots.contains(pilot2));
+    }
+
+
+
+    @Test
+    void testBookSeatSuccessful() throws BusinessLogicException, EntityNotFoundException, DatabaseException {
         Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
                 new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
@@ -414,20 +493,21 @@ class ApplicationTest {
     }
 
     @Test
-    void testBookSeatThrowsExceptionWhenNoSeatsAvailable() {
+    void testBookSeatThrowsExceptionWhenNoSeatsAvailable() throws DatabaseException {
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
-                new Airplane(1, "Boeing 737", 0, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
+                new Airplane(1, "Boeing 737", 100, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
                 "2023-12-25", 500.0);
         flightRepository.create(flight);
 
-        assertThrows(RuntimeException.class, () -> {
-            flightService.bookSeat("2023-12-25", 1, 1, "Card");
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            flightService.bookSeat("2023-12-25", 100, 1, "Card");
         });
+        assertEquals("Passenger not found", exception.getMessage());
 
     }
 
     @Test
-    void testBookSeatByFlightSuccessful() throws BusinessLogicException, EntityNotFoundException {
+    void testBookSeatByFlightSuccessful() throws BusinessLogicException, EntityNotFoundException, DatabaseException {
         Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
                 new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
@@ -448,7 +528,7 @@ class ApplicationTest {
     }
 
     @Test
-    void testBookSeatByFlightThrowsExceptionForInvalidLocations() {
+    void testBookSeatByFlightThrowsExceptionForInvalidLocations() throws DatabaseException {
         Passenger passenger = new Passenger("John Doe",1 , "john.doe@gmail.com", new Pair("Oradea", "Bucuresti"));
         Flight flight = new Flight(1, "Oradea", "Bucuresti", new Pilot("Jane Pilot",1 , "jane.pilot@gmail.com", Boolean.TRUE),
                 new Airplane(1, "Boeing 737", 200, Boolean.TRUE), new Airport(1, "Oradea Airport", "Oradea", 2, Boolean.TRUE),
@@ -456,17 +536,17 @@ class ApplicationTest {
         passengerRepository.create(passenger);
         flightRepository.create(flight);
 
-         assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
             flightService.bookSeatByFlight("2023-12-25", 1, 1, "Card", "Cluj", "Iasi");
         });
-
+        assertEquals("Flight not found", exception.getMessage());
 
     }
 
 
 
     @Test
-    void testFilterCabinCrewByProfession() throws BusinessLogicException {
+    void testFilterCabinCrewByProfession() throws BusinessLogicException, DatabaseException {
         cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
         cabinCrewRepository.create(new CabinCrew("Tom Brown",2 , "tom@gmail.com","Pilot"));
         cabinCrewRepository.create(new CabinCrew("Sarah Johnson",3 , "sarah@gmail.com","Flight Attendant"));
@@ -477,14 +557,17 @@ class ApplicationTest {
     }
 
     @Test
-    void testFilterCabinCrewByProfessionEmptyResult() throws BusinessLogicException {
-        cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Flight Attendant"));
+    void testFilterCabinCrewByProfessionEmptyResult() throws BusinessLogicException, DatabaseException {
+        cabinCrewRepository.create(new CabinCrew("Anna Smith",1 ,"anna@gmail.com", "Engineer"));
 
-        ArrayList<CabinCrew> flightAttendants = flightService.filterCabinCrewByProfession("Pilot");
-        assertTrue(flightAttendants.isEmpty());
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
+            flightService.filterCabinCrewByProfession("");
+        });
+
+        assertEquals("Profession cannot be null or empty", exception.getMessage());
     }
     @Test
-    void testSortAirplanesByCapacity() {
+    void testSortAirplanesByCapacity() throws DatabaseException {
         airplaneRepository.create(new Airplane(1, "Boeing 747", 400, true));
         airplaneRepository.create(new Airplane(2, "Airbus A320", 300, true));
         airplaneRepository.create(new Airplane(3, "Cessna 172", 100, true));
@@ -496,8 +579,9 @@ class ApplicationTest {
         assertEquals(400, sortedAirplanes.get(2).getCapacity());
     }
 
+
     @Test
-    void testFilterFlightsByAmount() throws BusinessLogicException {
+    void testFilterFlightsByAmount() throws BusinessLogicException, DatabaseException {
         flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
         flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
         flightRepository.create(new Flight(3, "Cluj", "Timisoara", null, null, null, "2023-11-05", 700.0));
@@ -508,7 +592,22 @@ class ApplicationTest {
     }
 
     @Test
-    void testSortFlightsByDate() {
+    void testFilterFlightsByAmountThrowsBusinessLogicExceptionForInvalidAmount() throws DatabaseException {
+
+        flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
+        flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
+
+
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
+            flightService.filterFlightsByAmount(-50.0);
+        });
+
+        assertEquals("Amount must be greater than zero", exception.getMessage());
+    }
+
+
+    @Test
+    void testSortFlightsByDate() throws DatabaseException {
         flightRepository.create(new Flight(1, "Oradea", "Bucuresti", null, null, null, "2023-12-25", 500.0));
         flightRepository.create(new Flight(2, "Bucuresti", "Cluj", null, null, null, "2023-10-15", 300.0));
         flightRepository.create(new Flight(3, "Cluj", "Timisoara", null, null, null, "2023-11-05", 400.0));
@@ -519,11 +618,6 @@ class ApplicationTest {
         assertEquals("2023-11-05", sortedFlights.get(1).getDate());
         assertEquals("2023-12-25", sortedFlights.get(2).getDate());
     }
-
-
-
-
-
 
 
 

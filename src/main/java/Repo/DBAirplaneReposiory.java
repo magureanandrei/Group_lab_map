@@ -9,12 +9,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A repository implementation that interacts with the database to store and retrieve Airplane data.
+ *
+ */
 public class DBAirplaneReposiory extends DBRepository<Airplane> {
-
+    /**
+     * Constructs a new DBAirplaneRepository with the specified database URL.
+     *
+     * @param dbUrl The URL of the database to connect to.
+     * @throws DatabaseException If there is an error connecting to the database.
+     */
     public DBAirplaneReposiory(String dbUrl) throws DatabaseException {
             super(dbUrl);
     }
 
+    /**
+     * Creates a new Airplane object in the database.
+     *
+     * @param obj The Airplane object to be created.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void create(Airplane obj) throws DatabaseException {
         String sql = "INSERT INTO Airplane (ID, model, capacity, available) VALUES (?, ?, ?, ?)";
@@ -31,6 +46,13 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
         }
     }
 
+    /**
+     * Retrieves an Airplane object from the database by its ID.
+     *
+     * @param id The ID of the Airplane to retrieve.
+     * @return The Airplane object, or null if not found.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public Airplane get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Airplane WHERE ID = ?";
@@ -49,6 +71,12 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
         }
     }
 
+    /**
+     * Updates an existing Airplane object in the database.
+     *
+     * @param obj The Airplane object to update.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void update(Airplane obj) throws DatabaseException {
         String sql = "UPDATE Airplane SET model = ?, capacity = ?, available = ? WHERE ID = ?";
@@ -65,6 +93,12 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
         }
     }
 
+    /**
+     * Deletes an Airplane object from the database by its ID.
+     *
+     * @param id The ID of the Airplane to delete.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Airplane WHERE ID = ?";
@@ -77,6 +111,12 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
         }
     }
 
+    /**
+     * Retrieves all Airplane objects from the database.
+     *
+     * @return A list of all Airplane objects.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public List<Airplane> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Airplane";
@@ -95,6 +135,13 @@ public class DBAirplaneReposiory extends DBRepository<Airplane> {
         }
     }
 
+    /**
+     * Extracts an Airplane object from the given ResultSet.
+     *
+     * @param resultSet The ResultSet containing the Airplane data.
+     * @return The extracted Airplane object.
+     * @throws SQLException If there is an error retrieving data from the ResultSet.
+     */
     private static Airplane extractFromResultSet(ResultSet resultSet) throws SQLException {
         return new Airplane(
                 resultSet.getInt("ID"),

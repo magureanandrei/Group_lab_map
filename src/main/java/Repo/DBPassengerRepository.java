@@ -9,12 +9,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A repository implementation that interacts with the database to store and retrieve Passenger data.
+ */
 public class DBPassengerRepository extends DBRepository<Passenger> {
 
+    /**
+     * Constructs a new DBPassengerRepository with the specified database URL.
+     *
+     * @param dbUrl The URL of the database to connect to.
+     * @throws DatabaseException If there is an error connecting to the database.
+     */
     public DBPassengerRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
     }
 
+    /**
+     * Creates a new Passenger object in the database.
+     *
+     * @param obj The Passenger object to be created.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void create(Passenger obj) throws DatabaseException {
         String sql = "INSERT INTO Passenger (ID, nume, email, fromLocation, toLocation) VALUES (?, ?, ?, ?, ?)";
@@ -39,6 +54,13 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
         }
     }
 
+    /**
+     * Retrieves a Passenger object from the database by its ID.
+     *
+     * @param id The ID of the Passenger to retrieve.
+     * @return The Passenger object, or null if not found.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public Passenger get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Passenger WHERE ID = ?";
@@ -57,6 +79,12 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
         }
     }
 
+    /**
+     * Updates an existing Passenger object in the database.
+     *
+     * @param obj The Passenger object to update.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void update(Passenger obj) throws DatabaseException {
         String sql = "UPDATE Passenger SET nume = ?, email = ?, fromLocation = ?, toLocation = ? WHERE ID = ?";
@@ -81,6 +109,12 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
         }
     }
 
+    /**
+     * Deletes a Passenger object from the database by its ID.
+     *
+     * @param id The ID of the Passenger to delete.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Passenger WHERE ID = ?";
@@ -93,6 +127,12 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
         }
     }
 
+    /**
+     * Retrieves all Passenger objects from the database.
+     *
+     * @return A list of all Passenger objects.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public List<Passenger> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Passenger";
@@ -111,6 +151,13 @@ public class DBPassengerRepository extends DBRepository<Passenger> {
         }
     }
 
+    /**
+     * Extracts a Passenger object from the given ResultSet.
+     *
+     * @param resultSet The ResultSet containing the Passenger data.
+     * @return The extracted Passenger object.
+     * @throws SQLException If there is an error retrieving data from the ResultSet.
+     */
     private static Passenger extractFromResultSet(ResultSet resultSet) throws SQLException {
         String name = resultSet.getString("nume");
         int id = resultSet.getInt("ID");

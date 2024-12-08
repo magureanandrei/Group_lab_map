@@ -1,4 +1,5 @@
 
+import Exceptions.DatabaseException;
 import Models.*;
 import Repo.*;
 
@@ -14,7 +15,7 @@ public class Group_lab_map {
      *
      * @param args Command line arguments (not used).
      */
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws DatabaseException {
 //        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
 //        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
 //        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
@@ -62,7 +63,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for pilots.
      */
-    private static Repository<Pilot> createInMemoryPilotRepository(){
+    private static Repository<Pilot> createInMemoryPilotRepository() throws DatabaseException {
         Repository<Pilot> pilotRepository = new InMemoryRepo<>();
         pilotRepository.create(new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE));
         pilotRepository.create(new Pilot("Andrei Iustin", 2, "andrei.iustin@gmail.com", Boolean.FALSE));
@@ -77,7 +78,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for passengers.
      */
-    private static Repository<Passenger> createInMemoryPassengerRepository(){
+    private static Repository<Passenger> createInMemoryPassengerRepository() throws DatabaseException {
         Repository<Passenger> passengerRepository = new InMemoryRepo<>();
         passengerRepository.create(new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("Barcelona","Madrid")));
         passengerRepository.create(new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
@@ -92,7 +93,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for cabin crew.
      */
-    private static Repository<CabinCrew> createInMemoryCabinCrewRepository(){
+    private static Repository<CabinCrew> createInMemoryCabinCrewRepository() throws DatabaseException {
         Repository<CabinCrew> cabinCrewRepository = new InMemoryRepo<>();
         cabinCrewRepository.create(new CabinCrew("John Doe", 1, "john.doe@gmail.com", "Steward"));
         cabinCrewRepository.create(new CabinCrew("Jane Smith", 2, "jane.smith@gmail.com", "Stewardess"));
@@ -107,7 +108,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for flights.
      */
-    private static Repository<Flight> createInMemoryFlightRepository(){
+    private static Repository<Flight> createInMemoryFlightRepository() throws DatabaseException {
         Repository<Flight> flightRepository = new InMemoryRepo<>();
         Pilot p1 = new Pilot("Mihai Serban", 1, "mihai.serban@gmail.com", Boolean.TRUE);
         Airplane a1 = new Airplane(1, "Boeing 737", 180, Boolean.TRUE);
@@ -125,7 +126,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for payments.
      */
-    private static Repository<Payment> createInMemoryPaymentRepository(){
+    private static Repository<Payment> createInMemoryPaymentRepository() throws DatabaseException {
         Repository<Payment> paymentRepository = new InMemoryRepo<>();
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
         Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
@@ -142,7 +143,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for reservations.
      */
-    private static Repository<Reservation> createInMemoryReservationRepository(){
+    private static Repository<Reservation> createInMemoryReservationRepository() throws DatabaseException {
         Repository<Reservation> reservationRepository = new InMemoryRepo<>();
         Passenger passenger1 = new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles"));
         Passenger passenger2 = new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago"));
@@ -160,7 +161,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for tickets.
      */
-    private static Repository<Ticket> createInMemoryTicketRepository(){
+    private static Repository<Ticket> createInMemoryTicketRepository() throws DatabaseException {
         Repository<Ticket> ticketRepository = new InMemoryRepo<>();
         Payment payment1 = new Payment(1, "Flight payment", 200.0, new Passenger("Mr Johnson", 1, "mr.johnson@gmail.com", new Pair("New York", "Los Angeles")));
         Payment payment2 = new Payment(3, "Flight payment", 300.0, new Passenger("Ms Johnson", 2, "ms.johnson@gmail.com", new Pair("San Francisco", "Chicago")));
@@ -177,7 +178,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for airplanes.
      */
-    private static Repository<Airplane> createInMemoryAirplaneRepository(){
+    private static Repository<Airplane> createInMemoryAirplaneRepository() throws DatabaseException {
         Repository<Airplane> airplaneRepository = new InMemoryRepo<>();
         airplaneRepository.create(new Airplane(1, "Boeing 737", 180, Boolean.TRUE));
         airplaneRepository.create(new Airplane(2, "Airbus A320", 150, Boolean.FALSE));
@@ -192,7 +193,7 @@ public class Group_lab_map {
      *
      * @return The in-memory repository for airports.
      */
-    private static Repository<Airport> createInMemoryAirportRepository(){
+    private static Repository<Airport> createInMemoryAirportRepository() throws DatabaseException {
         Repository<Airport> airportRepository = new InMemoryRepo<>();
         airportRepository.create(new Airport(1, "Henri Coanda", "Otopeni", 2,true));
         airportRepository.create(new Airport(2, "Baneasa", "Bucharest", 1,true));
@@ -207,7 +208,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for pilots.
      */
-    private static Repository<Pilot> createInFilePilotRepository() {
+    private static Repository<Pilot> createInFilePilotRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\pilot.csv";
         Repository<Pilot> pilotRepository = new InFileRepo<>(filePath, Pilot::fromCSV);
         if (pilotRepository.getAll().isEmpty()) {
@@ -224,7 +225,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for passengers.
      */
-    private static Repository<Passenger> createInFilePassengerRepository(){
+    private static Repository<Passenger> createInFilePassengerRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\passenger.csv";
         Repository<Passenger> passengerRepository = new InFileRepo<>(filePath, Passenger::fromCSV);
         if (passengerRepository.getAll().isEmpty()) {
@@ -242,7 +243,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for cabin crew.
      */
-    private static Repository<CabinCrew> createInFileCabinCrewRepository(){
+    private static Repository<CabinCrew> createInFileCabinCrewRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\cabinCrew.csv";
         Repository<CabinCrew> cabinCrewRepository = new InFileRepo<>(filePath, CabinCrew::fromCSV);
         if (cabinCrewRepository.getAll().isEmpty()) {
@@ -261,7 +262,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for flights.
      */
-    private static Repository<Flight> createInFileFlightRepository(){
+    private static Repository<Flight> createInFileFlightRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\flight.csv";
         Repository<Flight> flightRepository = new InFileRepo<>(filePath, Flight::fromCSV);
         if (flightRepository.getAll().isEmpty()) {
@@ -282,7 +283,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for payments.
      */
-    private static Repository<Payment> createInFilePaymentRepository(){
+    private static Repository<Payment> createInFilePaymentRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\payment.csv";
         Repository<Payment> paymentRepository = new InFileRepo<>(filePath, Payment::fromCSV);
         if (paymentRepository.getAll().isEmpty()) {
@@ -302,7 +303,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for reservations.
      */
-    private static Repository<Reservation> createInFileReservationRepository(){
+    private static Repository<Reservation> createInFileReservationRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\reservation.csv";
         Repository<Reservation> reservationRepository = new InFileRepo<>(filePath, Reservation::fromCSV);
         if (reservationRepository.getAll().isEmpty()) {
@@ -323,7 +324,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for tickets.
      */
-    private static Repository<Ticket> createInFileTicketRepository(){
+    private static Repository<Ticket> createInFileTicketRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\ticket.csv";
         Repository<Ticket> ticketRepository = new InFileRepo<>(filePath, Ticket::fromCSV);
         if (ticketRepository.getAll().isEmpty()) {
@@ -343,7 +344,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for airplanes.
      */
-    private static Repository<Airplane> createInFileAirplaneRepository(){
+    private static Repository<Airplane> createInFileAirplaneRepository() throws DatabaseException {
         String filePath = System.getProperty("user.dir") +"\\src\\main\\java\\data\\airplane.csv";
         Repository<Airplane> airplaneRepository = new InFileRepo<>(filePath, Airplane::fromCSV);
         if (airplaneRepository.getAll().isEmpty()) {
@@ -361,7 +362,7 @@ public class Group_lab_map {
      *
      * @return The in-File repository for airports.
      */
-    private static Repository<Airport> createInFileAirportRepository(){
+    private static Repository<Airport> createInFileAirportRepository() throws DatabaseException {
         String filePath =System.getProperty("user.dir") + "\\src\\main\\java\\data\\airport.csv";
         Repository<Airport> airportRepository = new InFileRepo<>(filePath, Airport::fromCSV);
         if (airportRepository.getAll().isEmpty()) {

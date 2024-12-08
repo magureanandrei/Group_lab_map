@@ -9,15 +9,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A repository implementation that interacts with the database to store and retrieve Reservation data.
+ */
 public class DBReservationRepository extends DBRepository<Reservation> {
 
     private final DBPassengerRepository passengerRepository;
 
+    /**
+     * Constructs a new  DBReservationRepository with the specified database URL.
+     *
+     * @param dbUrl The URL of the database.
+     * @throws DatabaseException If there is an error connecting to the database.
+     */
     public DBReservationRepository(String dbUrl) throws DatabaseException {
         super(dbUrl);
         this.passengerRepository = new DBPassengerRepository(dbUrl);
     }
 
+    /**
+     * Adds a new reservation to the database.
+     *
+     * @param reservation The reservation to create.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void create(Reservation reservation) throws DatabaseException {
         String sql = "INSERT INTO Reservation (id, reservationDate, passengerID, fromLocation, toLocation) VALUES (?, ?, ?, ?, ?)";
@@ -42,6 +57,13 @@ public class DBReservationRepository extends DBRepository<Reservation> {
         }
     }
 
+    /**
+     * Retrieves a reservation by its ID.
+     *
+     * @param id The ID of the reservation.
+     * @return The reservation, or null if no reservation is found with the given ID.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public Reservation get(Integer id) throws DatabaseException {
         String sql = "SELECT * FROM Reservation WHERE id = ?";
@@ -60,6 +82,12 @@ public class DBReservationRepository extends DBRepository<Reservation> {
         }
     }
 
+    /**
+     * Updates an existing reservation in the database.
+     *
+     * @param reservation The reservation with updated details.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void update(Reservation reservation) throws DatabaseException {
         String sql = "UPDATE Reservation SET reservationDate = ?, passengerID = ?, fromLocation = ?, toLocation = ? WHERE id = ?";
@@ -84,6 +112,12 @@ public class DBReservationRepository extends DBRepository<Reservation> {
         }
     }
 
+    /**
+     * Deletes a reservation from the database by its ID.
+     *
+     * @param id The ID of the reservation to delete.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public void delete(Integer id) throws DatabaseException {
         String sql = "DELETE FROM Reservation WHERE id = ?";
@@ -96,6 +130,12 @@ public class DBReservationRepository extends DBRepository<Reservation> {
         }
     }
 
+    /**
+     * Retrieves all reservations from the database.
+     *
+     * @return A list of all reservations.
+     * @throws DatabaseException If there is an error executing the SQL query.
+     */
     @Override
     public List<Reservation> getAll() throws DatabaseException {
         String sql = "SELECT * FROM Reservation";
@@ -114,6 +154,14 @@ public class DBReservationRepository extends DBRepository<Reservation> {
         }
     }
 
+    /**
+     * Extracts a  Reservation from a  ResultSet.
+     *
+     * @param resultSet The result set containing the reservation data.
+     * @return A  Reservation object.
+     * @throws SQLException If there is an error reading from the result set.
+     * @throws DatabaseException If there is an error fetching the associated passenger.
+     */
     private Reservation extractFromResultSet(ResultSet resultSet) throws SQLException, DatabaseException {
         int id = resultSet.getInt("id");
         String date = resultSet.getDate("reservationDate").toString();
