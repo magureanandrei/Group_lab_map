@@ -1175,7 +1175,7 @@ public class UI {
             while (running) {
                 int choice=0;
                 try {
-                    System.out.println(operatorMenu());
+                    System.out.println(passengerMenu());
                     choice = scanner.nextInt();// citeste un număr întreg (de tip int) introdus de utilizator în consolă
                     scanner.nextLine();
                     if(choice<0 || choice>9)
