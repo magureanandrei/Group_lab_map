@@ -1,7 +1,10 @@
 
 import Exceptions.DatabaseException;
+import Exceptions.ValidationException;
 import Models.*;
 import Repo.*;
+
+import java.util.Scanner;
 
 
 /**
@@ -16,30 +19,68 @@ public class Group_lab_map {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) throws DatabaseException {
-//        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
-//        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
-//        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
-//        Repository<Flight> flightRepo = createInMemoryFlightRepository();
-//        Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
-//        Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
-//        Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
-//        Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
-//        Repository<Airport> airportRepo = createInMemoryAirportRepository();
+        Scanner scanner = new Scanner(System.in);
+        Integer userType = null;
+        while (userType == null) {
+            try {
+            System.out.println("""
+                    Please choose the repository you want to work with:\s
+                    1. In Memory Repository\s
+                    2. In File Repository\s
+                    3. Database Repository"""
+            );
+            System.out.print("Enter your choice (1-3): \n");
+            String input = scanner.nextLine().trim();
+            userType = Integer.parseInt(input);
+            if(userType<1 || userType>3)
+                throw new ValidationException("Invalid choice. Please try again.");
 
+            }
+            catch(ValidationException e) {
+                System.out.println(e.getMessage());
+                userType = null;
+            }
+            catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number (1-3).");
+            userType = null;}
+        }
 
-//        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
-//        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
-//        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
-//        Repository<Flight> flightRepo = createInFileFlightRepository();
-//        Repository<Payment> paymentRepo = createInFilePaymentRepository();
-//        Repository<Reservation> reservationRepo = createInFileReservationRepository();
-//        Repository<Ticket> ticketRepo = createInFileTicketRepository();
-//      Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
-//        Repository<Airport> airportRepo = createInFileAirportRepository();
+        if (userType.equals(1)) {
 
+        Repository<Pilot> pilotsRepo = createInMemoryPilotRepository();
+        Repository<Passenger> passengerRepo = createInMemoryPassengerRepository();
+        Repository<CabinCrew> cabinCrewRepo = createInMemoryCabinCrewRepository();
+        Repository<Flight> flightRepo = createInMemoryFlightRepository();
+        Repository<Payment> paymentRepo = createInMemoryPaymentRepository();
+        Repository<Reservation> reservationRepo = createInMemoryReservationRepository();
+        Repository<Ticket> ticketRepo = createInMemoryTicketRepository();
+        Repository<Airplane> airplaneRepository = createInMemoryAirplaneRepository();
+        Repository<Airport> airportRepo = createInMemoryAirportRepository();
+
+        Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
+        Controller flightController = new Controller(flightService);
+        UI consoleApp = new UI(flightController);
+        consoleApp.run();
+        }
+        else if (userType.equals(2)) {
+
+        Repository<Pilot> pilotsRepo = createInFilePilotRepository();
+        Repository<Passenger> passengerRepo = createInFilePassengerRepository();
+        Repository<CabinCrew> cabinCrewRepo = createInFileCabinCrewRepository();
+        Repository<Flight> flightRepo = createInFileFlightRepository();
+        Repository<Payment> paymentRepo = createInFilePaymentRepository();
+        Repository<Reservation> reservationRepo = createInFileReservationRepository();
+        Repository<Ticket> ticketRepo = createInFileTicketRepository();
+        Repository<Airplane> airplaneRepository = createInFileAirplaneRepository();
+        Repository<Airport> airportRepo = createInFileAirportRepository();
+
+        Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
+        Controller flightController = new Controller(flightService);
+        UI consoleApp = new UI(flightController);
+        consoleApp.run();
+        }
+        else if (userType.equals(3)) {
         String DB_URL = "jdbc:sqlserver://localhost:1433;database=FlightManagement;integratedSecurity=true;trustServerCertificate=true";
-
-
 
         Repository<Pilot> pilotsRepo = new DBPilorRepository(DB_URL);
         Repository<CabinCrew> cabinCrewRepo = new DBCabinCrewRepository(DB_URL);;
@@ -50,11 +91,16 @@ public class Group_lab_map {
         Repository<Ticket> ticketRepo = new DBTicketRepository(DB_URL);
         Repository<Flight> flightRepo = new DBFlightRepository(DB_URL);
         Repository<Reservation> reservationRepo = new DBReservationRepository(DB_URL);
+
         Service flightService = new Service(pilotsRepo, passengerRepo,cabinCrewRepo,flightRepo,paymentRepo,reservationRepo,ticketRepo,airplaneRepository, airportRepo);
         Controller flightController = new Controller(flightService);
-
         UI consoleApp = new UI(flightController);
         consoleApp.run();
+        }
+
+
+
+
 
     }
 

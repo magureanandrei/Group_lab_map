@@ -23,7 +23,7 @@ public class UI {
      * Displays a greeting message to the user.
      */
     public void greeting() {
-        System.out.println("Welcome to Airplane Management System! \n");
+        System.out.println("-----------Welcome to Airplane Management System!-----------\n");
     }
 
     /**
@@ -95,15 +95,21 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         greeting();
         Integer userType = null;
-        try {
-            System.out.println("Are you an Operator(1) or a Passenger(2)?");
-            userType = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character left by nextInt()
-            if(userType<1 || userType>2)
-                throw new ValidationException("Invalid choice. Please try again.");
-        }
-        catch(ValidationException e) {
-            System.out.println(e.getMessage());
+        while (userType == null) {
+            try {
+                System.out.println("Are you an Operator(1) or a Passenger(2)?\n");
+                System.out.print("Enter your choice (1 or 2): \n");
+                String input = scanner.nextLine().trim();
+                userType = Integer.parseInt(input);
+                if (userType < 1 || userType > 2)
+                    throw new ValidationException("Invalid choice. Please try again.");
+            } catch (ValidationException e) {
+                System.out.println(e.getMessage());
+                userType = null;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number (1 or 2).");
+                userType = null; // Reset pentru o nouă încercare
+            }
         }
         // Validăm tipul de utilizator
         if (userType.equals(1)) {
@@ -113,13 +119,17 @@ public class UI {
                 int choice = 0;
                 try {
                     System.out.println(operatorMenu());
-                    choice = scanner.nextInt();// citeste un număr întreg (de tip int) introdus de utilizator în consolă
-                    scanner.nextLine();
+                    String input = scanner.nextLine().trim();
+                    choice = Integer.parseInt(input);
                     if(choice<0 || choice>14)
                         throw new ValidationException("Invalid choice. Please try again.");
                 }
                 catch(ValidationException e) {
                     System.out.println(e.getMessage());
+                    continue;
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number between 0 and 14.");
                     continue;
                 }
                 switch (choice) {
