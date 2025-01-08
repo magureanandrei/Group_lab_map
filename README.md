@@ -17,3 +17,5 @@ Operators oversee the airline's operations with tools to:
 - **Efficient Resource Management:** Operators can manage flights, pilots, and planes effortlessly in one place.
 - **Passenger-Centric Design:** Passengers enjoy a smooth booking experience, with options to plan for future flights conveniently.
 - **Clear Flight Availability:** Passengers can check available seats and flights that meet their needs, ensuring a seamless booking process.
+
+![uml_pic](https://github.com/user-attachments/assets/b57a6090-1de7-428f-a0fd-ea9d1590c223)
